@@ -50,7 +50,7 @@ ORDER BY Title ASC;";
 
             try
             {
-                String queryUsers = "SELECT ID, Name, Username FROM Users";
+                String queryUsers = "SELECT ID, Name, Username FROM Users WHERE IsAdmin = 0";
                 DataTable mediaDt2 = new DataTable();
                 ObjDBAccess.readDatathroughAdapter(queryUsers, mediaDt2);
 

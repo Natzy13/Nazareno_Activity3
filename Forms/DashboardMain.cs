@@ -29,7 +29,7 @@ namespace BogsySystem.Forms
             SqlCommand totalRentals = new SqlCommand(queryTotalMedia);
             totalrentalstxt.Text = Convert.ToInt32(ObjDBAccess.executeScalar(totalRentals)).ToString();
 
-            string queryTotalUsers = "SELECT COUNT(*) FROM Users";
+            string queryTotalUsers = "SELECT COUNT(*) FROM Users WHERE IsAdmin = 0";
             SqlCommand totalUsers = new SqlCommand(queryTotalUsers);
             totalregisteredtxt.Text = Convert.ToInt32(ObjDBAccess.executeScalar(totalUsers)).ToString();
 

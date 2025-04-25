@@ -82,8 +82,7 @@ namespace BogsySystem.Forms
                     clearDataFields();
                     MessageBox.Show("Account Created Successfully");
 
-                    //Hide this current form
-                    this.Close();
+                    this.Hide();
 
                     //Transfer to this new form
                     Login login = new Login();
