@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="Dashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\DashboardMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Report.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SignUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Users.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\VideoLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserPay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserRent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UserForms\UserReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
