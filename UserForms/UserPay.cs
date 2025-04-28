@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -108,39 +109,53 @@ WHERE RentalHistory.UserID = @userID
         }
 
         private void paybtn_Click(object sender, EventArgs e)
-        {
-            decimal pay = Convert.ToDecimal(paytxt.Text);
+        {                         
             decimal totalFee = Convert.ToDecimal(totalfeetxt.Text);
 
-            if (pay < totalFee)
+            if (string.IsNullOrWhiteSpace(paytxt.Text))
             {
-                MessageBox.Show("The amount paid is not enough");
+                MessageBox.Show("Please enter an amount to pay.");
             }
             else
             {
-                decimal change = pay - totalFee;
-
-
-                int userID = int.Parse(Login.ID);
-                SqlCommand payRental = new SqlCommand("UPDATE RentalHistory SET IsPaid = 1 WHERE RentalID = @rentalID AND UserID = @userID;");
-                payRental.Parameters.AddWithValue("@rentalID", rentalID);
-                payRental.Parameters.AddWithValue("@userID", userID);
-                int row = ObjDBAccess.executeQuery(payRental);
-                ObjDBAccess.closeConn();
-
-                if (row > 0)
+                decimal pay;
+                if (decimal.TryParse(paytxt.Text, out pay))
                 {
-                    MessageBox.Show($"Payment successful!\nChange: {change:F2}");
-                    paytxt.Text = "";
-                    dataGridPay.ClearSelection();
-                    componentHide();
-                    refreshDataGrid();
+                    if (pay == 0 || pay < totalFee)
+                    {
+                        MessageBox.Show("The amount paid is not enough.");
+                    }
+                    else
+                    {
+                        decimal change = pay - totalFee;
+
+                        int userID = int.Parse(Login.ID);
+                        SqlCommand payRental = new SqlCommand("UPDATE RentalHistory SET IsPaid = 1 WHERE RentalID = @rentalID AND UserID = @userID;");
+                        payRental.Parameters.AddWithValue("@rentalID", rentalID);
+                        payRental.Parameters.AddWithValue("@userID", userID);
+                        int row = ObjDBAccess.executeQuery(payRental);
+                        ObjDBAccess.closeConn();
+
+                        if (row > 0)
+                        {
+                            MessageBox.Show($"Payment successful!\nChange: {change:F2}");
+                            paytxt.Text = "";
+                            dataGridPay.ClearSelection();
+                            componentHide();
+                            refreshDataGrid();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There was an error with the rental.");
+                        }
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("There was an error with the rental.");
+                    MessageBox.Show("Please enter a valid number.");
                 }
             }
+
         }
 
         private void dataGridProperties()

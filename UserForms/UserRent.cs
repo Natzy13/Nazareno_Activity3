@@ -108,7 +108,6 @@ WHERE MediaID = @mediaID;");
             }
         }
 
-
         private void dataGridRent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try

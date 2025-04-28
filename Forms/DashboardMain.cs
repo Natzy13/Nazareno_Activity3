@@ -21,7 +21,7 @@ namespace BogsySystem.Forms
 
         private void DashboardMain_Load(object sender, EventArgs e)
         {
-            string queryTotalMedia = "SELECT COUNT(*) FROM MediaItems";
+            string queryTotalMedia = "SELECT COUNT(*) FROM MediaItems WHERE IsAvailable = 1";
             SqlCommand totalMedia = new SqlCommand(queryTotalMedia);
             totalmediatxt.Text = Convert.ToInt32(ObjDBAccess.executeScalar(totalMedia)).ToString();
 
@@ -94,13 +94,7 @@ ORDER BY RH.ReturnDate DESC";
             dataGridHistory.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             dataGridHistory.Columns["ReturnDate"].HeaderText = "Return Date";
-            dataGridHistory.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-          
-
-   
-
-     
+            dataGridHistory.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;     
         }
     }
     }
