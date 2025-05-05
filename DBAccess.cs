@@ -11,12 +11,11 @@ namespace BogsySystem
 
     class DBAccess
     {
-        private static SqlConnection connection = new SqlConnection();
-        private static SqlCommand command = new SqlCommand();
-        private static SqlDataReader DbReader;
-        private static SqlDataAdapter adapter = new SqlDataAdapter();
-        public SqlTransaction DbTran;
-
+        private static SqlConnection connection = new SqlConnection(); //Empty connection object to the database
+        private static SqlCommand command = new SqlCommand();          //For sql query command
+        private static SqlDataAdapter adapter = new SqlDataAdapter();  //Use to store data in the data table from database bridge connection.
+        
+        //This is the connection to the sql server
         private static string strConnString = "Data Source=DESKTOP-ND2PEO8\\SQLEXPRESS;Initial Catalog=BogsyDb;Integrated Security=True;TrustServerCertificate=True";
 
 
@@ -25,10 +24,10 @@ namespace BogsySystem
         {
             try
             {
-                if (connection.State != ConnectionState.Open)
+                if (connection.State != ConnectionState.Open)    // Check the connection if open
                 {
-                    connection.ConnectionString = strConnString;
-                    connection.Open();
+                    connection.ConnectionString = strConnString; //Use the empty connection and use the sql server connection 
+                    connection.Open();                           //Open the connection
                 }
             }
             catch (Exception ex)
@@ -37,31 +36,27 @@ namespace BogsySystem
             }
         }
 
-        public void closeConn()
+        public void closeConn() //Use to close the database connection 
         {
             connection.Close();
         }
 
-        public int executeDataAdapter(DataTable tblName, string strSelectSql)
+       
+        public void readDatathroughAdapter(string query, DataTable tblName) //Store data that comes from db to data table, for display
         {
             try
             {
-                if (connection.State == 0)
+                if (connection.State == ConnectionState.Closed) //Check if the connection is closed 
                 {
-                    createConn();
+                    createConn();                               //Open a connection
                 }
 
-                adapter.SelectCommand.CommandText = strSelectSql;
-                adapter.SelectCommand.CommandType = CommandType.Text;
-                SqlCommandBuilder DbCommandBuilder = new SqlCommandBuilder(adapter);
+                command.Connection = connection; // tells the command which database connection to use to execute the SQL
+                command.CommandText = query;     // tells the command what sql query to run
+                command.CommandType = CommandType.Text; //specify what type of command in this code it is plain SQL text
 
-
-                string insert = DbCommandBuilder.GetInsertCommand().CommandText.ToString();
-                string update = DbCommandBuilder.GetUpdateCommand().CommandText.ToString();
-                string delete = DbCommandBuilder.GetDeleteCommand().CommandText.ToString();
-
-
-                return adapter.Update(tblName);
+                adapter = new SqlDataAdapter(command); //Prepares the adapter to execute the command and pull data.
+                adapter.Fill(tblName); //Fill the datatable that comes from sqldata adapter
             }
             catch (Exception ex)
             {
@@ -69,57 +64,7 @@ namespace BogsySystem
             }
         }
 
-
-        public void readDatathroughAdapter(string query, DataTable tblName)
-        {
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                {
-                    createConn();
-                }
-
-                command.Connection = connection;
-                command.CommandText = query;
-                command.CommandType = CommandType.Text;
-
-                adapter = new SqlDataAdapter(command);
-                adapter.Fill(tblName);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-        public SqlDataReader readDatathroughReader(string query)
-        {
-            //DataReader used to sequentially read data from a data source
-            SqlDataReader reader;
-
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                {
-                    createConn();
-                }
-
-                command.Connection = connection;
-                command.CommandText = query;
-                command.CommandType = CommandType.Text;
-
-                reader = command.ExecuteReader();
-                return reader;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-        public int executeQuery(SqlCommand dbCommand)
+        public int executeQuery(SqlCommand dbCommand) //Use for INSERT, UPDATE with dbCommand parameter for query
         {
             try
             {
@@ -132,7 +77,7 @@ namespace BogsySystem
                 dbCommand.CommandType = CommandType.Text;
 
 
-                return dbCommand.ExecuteNonQuery();
+                return dbCommand.ExecuteNonQuery(); //Return number of rows of how many is affected based on INSERT and UPDATE
             }
             catch (Exception ex)
             {
@@ -164,35 +109,9 @@ namespace BogsySystem
             }
         }
 
-        public void readDatathroughAdapter(string query, DataTable tblName, int rentalHistoryID, int quantityReturn, decimal overdueChargePerDay)
+        public object executeScalar(SqlCommand command) //Use for counting rows in database
         {
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                {
-                    createConn();
-                }
-
-                command.Connection = connection;
-                command.CommandText = query;
-                command.CommandType = CommandType.Text;
-                command.Parameters.Clear();
-                command.Parameters.AddWithValue("@rentalHistoryID", rentalHistoryID);
-                command.Parameters.AddWithValue("@quantityReturn", quantityReturn);
-                command.Parameters.AddWithValue("@overdueChargePerDay", overdueChargePerDay);
-
-                adapter = new SqlDataAdapter(command);
-                adapter.Fill(tblName);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public object executeScalar(SqlCommand command)
-        {
-            object result = null;
+            object result = null; //Store the return value of the SQL query
 
             if (connection.State == ConnectionState.Closed)
             {
@@ -201,7 +120,7 @@ namespace BogsySystem
 
             command.Connection = connection; 
 
-            result = command.ExecuteScalar();
+            result = command.ExecuteScalar(); //Returns the single value in the first column of the first row of the query
 
             closeConn(); 
             return result;
