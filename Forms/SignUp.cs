@@ -9,13 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BogsySystem.Forms.Properties;
 using Microsoft.Data.SqlClient;
 
 namespace BogsySystem.Forms
 {
     public partial class SignUp : Form
     {
-        DBAccess ObjDBAccess = new DBAccess();
+        SignUpServices services = new SignUpServices();
 
         public SignUp()
         {
@@ -30,44 +31,19 @@ namespace BogsySystem.Forms
             string email = emailregtxt.Text;
             string gender = genderregtxt.Text;
 
-            if (fullname.Equals(""))
-            {
-                MessageBox.Show("Enter Your Full Name");
-            }
-            else if (username.Equals(""))
-            {
-                MessageBox.Show("Enter Your Username");
-            }
-            else if (password.Equals("") || password.Length < 8)
-            {
-                MessageBox.Show("Password is required and must be at least 8 characters long");
-            }
-            else if (email.Equals(""))
-            {
-                MessageBox.Show("Enter Your Email");
-            }
-            else if (gender.Equals("Select Gender"))
-            {
-                MessageBox.Show("Select Gender");
-            }
+            if (fullname.Equals("")) MessageBox.Show("Enter Your Full Name");           
+            else if (username.Equals("")) MessageBox.Show("Enter Your Username");        
+            else if (password.Equals("") || password.Length < 8) MessageBox.Show("Password is required and must be at least 8 characters long");
+            else if (email.Equals(""))  MessageBox.Show("Enter Your Email");
+            else if (gender.Equals("Select Gender")) MessageBox.Show("Select Gender");          
             else
             {
-
-                SqlCommand insertCommand = new SqlCommand("Insert into Users(Name,Username,Password,Email,Gender,IsAdmin,IsActive) values (@fullname, @username, @password, @email, @gender,0,1)");
-
-                insertCommand.Parameters.AddWithValue("@fullname", username);
-                insertCommand.Parameters.AddWithValue("@username", username);
-                insertCommand.Parameters.AddWithValue("@password", password);
-                insertCommand.Parameters.AddWithValue("@email", email);
-                insertCommand.Parameters.AddWithValue("@gender", gender);
-
-
                 //This method from DBAccess, execute the sql command
-                int row = ObjDBAccess.executeQuery(insertCommand);
+                int row = services.RegisterUser(fullname, username, password, email, gender);
 
                 if (row == 1)
                 {
-                    clearDataFields();
+                    services.ClearRegistrationFields(fnameregtxt, unameregtxt, passregtxt, emailregtxt, genderregtxt);
                     MessageBox.Show("Account Created Successfully");
 
                     this.Hide();
@@ -93,5 +69,16 @@ namespace BogsySystem.Forms
             Login login = new Login();
             login.Show();
         }
+
+        private void showpassbtn_Click(object sender, EventArgs e)
+        {
+            services.showPass(passregtxt, hidepassbtn);
+        }
+
+        private void hidepassbtn_Click(object sender, EventArgs e)
+        {
+          services.hidePass(passregtxt, showpassbtn);
+        }
+       
     }
 }

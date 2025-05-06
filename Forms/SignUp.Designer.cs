@@ -50,7 +50,7 @@
             // 
             // loginlogo
             // 
-            loginlogo.Image = Properties.Resources.logo;
+            loginlogo.Image = BogsySystem.Properties.Resources.logo;
             loginlogo.Location = new Point(126, 41);
             loginlogo.Name = "loginlogo";
             loginlogo.Size = new Size(198, 99);

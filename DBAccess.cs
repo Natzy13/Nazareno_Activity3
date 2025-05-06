@@ -14,7 +14,7 @@ namespace BogsySystem
         private static SqlConnection connection = new SqlConnection(); //Empty connection object to the database
         private static SqlCommand command = new SqlCommand();          //For sql query command
         private static SqlDataAdapter adapter = new SqlDataAdapter();  //Use to store data in the data table from database bridge connection.
-        
+
         //This is the connection to the sql server
         private static string strConnString = "Data Source=DESKTOP-ND2PEO8\\SQLEXPRESS;Initial Catalog=BogsyDb;Integrated Security=True;TrustServerCertificate=True";
 
@@ -41,7 +41,7 @@ namespace BogsySystem
             connection.Close();
         }
 
-       
+
         public void readDatathroughAdapter(string query, DataTable tblName) //Store data that comes from db to data table, for display
         {
             try
@@ -115,14 +115,14 @@ namespace BogsySystem
 
             if (connection.State == ConnectionState.Closed)
             {
-                createConn(); 
+                createConn();
             }
 
-            command.Connection = connection; 
+            command.Connection = connection;
 
             result = command.ExecuteScalar(); //Returns the single value in the first column of the first row of the query
 
-            closeConn(); 
+            closeConn();
             return result;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
@@ -16,7 +17,7 @@ namespace BogsySystem.UserForms
 {
     public partial class UserPayProperties : Form
     {
-        DBAccess ObjDBAccess = new DBAccess();
+        UserPayServices services = new UserPayServices();
         private int rentalID;
         public UserPayProperties()
         {
@@ -25,44 +26,19 @@ namespace BogsySystem.UserForms
 
         private void UserPay_Load(object sender, EventArgs e)
         {
-            componentHide();
+            services.componentHide(feetxt,feelbl,chargefeetxt,chargefeelbl,totalfeetxt,totalfeelbl,paytxt,paylbl,paybtn);
             int userID = Convert.ToInt32(Login.ID);
             try
             {
-                string payquery = @"
-SELECT
-    Rentals.RentalID,
-    MediaItems.Title,
-    MediaItems.Format,
-    MediaItems.Price AS PricePerPiece,
-    RentalHistory.Fee,
-    RentalHistory.ChargeFee,
-    RentalHistory.TotalFee,
-    RentalHistory.RentalDate,
-    RentalHistory.ReturnDate,
-    RentalHistory.QuantityReturned,
-    MediaItems.MaxRentalDays
-FROM RentalHistory 
-JOIN Rentals  ON RentalHistory.RentalID = Rentals.RentalID
-JOIN MediaItems ON RentalHistory.MediaID = MediaItems.MediaID
-WHERE RentalHistory.UserID = @userID
-  AND RentalHistory.IsPaid = 0
-  AND RentalHistory.IsReturned = 1
-ORDER BY RentalHistory.ReturnDate DESC;";
-
-                DataTable mediaDt = new DataTable();
-                ObjDBAccess.readDatathroughAdapter(payquery, mediaDt, userID);
-                ObjDBAccess.closeConn();
+                DataTable mediaDt = services.displayPay(userID);
 
                 if (mediaDt.Rows.Count > 0)
                 {
                     dataGridPay.DataSource = mediaDt;
-                    dataGridProperties();
+                    services.dataGridProperties(dataGridPay);
                 }
-                else
-                {
-                    MessageBox.Show("No returned media found, so there are no pending payments", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                else  MessageBox.Show("No returned media found, so there are no pending payments", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
             }
             catch (Exception ex)
             {
@@ -74,45 +50,74 @@ ORDER BY RentalHistory.ReturnDate DESC;";
         {                         
             decimal totalFee = Convert.ToDecimal(totalfeetxt.Text);
 
-            if (string.IsNullOrWhiteSpace(paytxt.Text))
-            {
-                MessageBox.Show("Please enter an amount to pay.");
-            }
+            if (string.IsNullOrWhiteSpace(paytxt.Text)) MessageBox.Show("Please enter an amount to pay.");           
             else
             {
                 decimal pay;
                 if (decimal.TryParse(paytxt.Text, out pay))
                 {
-                    if (pay == 0 || pay < totalFee)
-                    {
-                        MessageBox.Show("The amount paid is not enough.");
-                    }
+                    if (pay == 0 || pay < totalFee) MessageBox.Show("The amount paid is not enough.");
+                    
                     else
                     {
                         decimal change = pay - totalFee;
 
                         int userID = int.Parse(Login.ID);
-                        SqlCommand payRental = new SqlCommand("UPDATE RentalHistory SET IsPaid = 1 WHERE RentalID = @rentalID AND UserID = @userID;");
-                        payRental.Parameters.AddWithValue("@rentalID", rentalID);
-                        payRental.Parameters.AddWithValue("@userID", userID);
-                        int row = ObjDBAccess.executeQuery(payRental);
-                        ObjDBAccess.closeConn();
+                        int row = services.userPay(rentalID, userID);
 
                         if (row > 0)
                         {
                             MessageBox.Show($"Payment successful!\nChange: {change:F2}");
                             paytxt.Text = "";
                             dataGridPay.ClearSelection();
-                            componentHide();
-                            refreshDataGrid();
+                            services.componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
+                            services.refreshDataGrid(userID, dataGridPay);
                         }
                         else MessageBox.Show("There was an error with the rental.");
                         
                     }
                 }
-                else  MessageBox.Show("Please enter a valid number.");
-                
+                else  MessageBox.Show("Please enter a valid number.");                
             }
+        }
+
+        private void dataGridPay_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    dataGridPay.CurrentRow.Selected = true;
+                    services.componentShow(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
+
+                    // Retrieve the selected data into a variable
+                    rentalID = Convert.ToInt32(dataGridPay.Rows[e.RowIndex].Cells["RentalID"].Value);
+
+                    //Display to the textbox the selected cell
+                    feetxt.Text = dataGridPay.Rows[e.RowIndex].Cells["Fee"].Value.ToString();
+                    chargefeetxt.Text = dataGridPay.Rows[e.RowIndex].Cells["ChargeFee"].Value.ToString();
+                    totalfeetxt.Text = dataGridPay.Rows[e.RowIndex].Cells["TotalFee"].Value.ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private void dataGridPay_Click(object sender, EventArgs e)
+        {
+            dataGridPay.ClearSelection();
+            services.componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
+        }
+
+        private void dataGridPay_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridPay.ClearSelection();
+            services.componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
         }      
     }
 }

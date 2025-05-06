@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BogsySystem.Forms.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace BogsySystem.Forms
@@ -13,7 +15,7 @@ namespace BogsySystem.Forms
 
     public partial class Report : Form
     {
-        DBAccess ObjDBAccess = new DBAccess();
+        ReportServices services = new ReportServices();
         private int selectedUserID;
         public Report()
         {
@@ -24,19 +26,14 @@ namespace BogsySystem.Forms
         {
             try
             {
-                string queryReport = @"SELECT Title, AvailableCopies,(TotalCopies - AvailableCopies) AS RentedCopies FROM MediaItems ORDER BY Title ASC;";
-                DataTable mediaDt1 = new DataTable();
-                ObjDBAccess.readDatathroughAdapter(queryReport, mediaDt1);
+                DataTable mediaDt1 = services.GetMediaReport();
 
                 if (mediaDt1.Rows.Count > 0)
                 {
                     dataGridReport.DataSource = mediaDt1;
-                    dataGridProperties1();
+                    services.DataGridProperties1(dataGridReport);
                 }
-                else
-                {
-                    MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);                
             }
             catch (Exception ex)
             {
@@ -45,19 +42,14 @@ namespace BogsySystem.Forms
 
             try
             {
-                String queryUsers = "SELECT ID, Name, Username FROM Users WHERE IsAdmin = 0";
-                DataTable mediaDt2 = new DataTable();
-                ObjDBAccess.readDatathroughAdapter(queryUsers, mediaDt2);
+                DataTable mediaDt2 = services.GetUsers();
 
                 if (mediaDt2.Rows.Count > 0)
                 {
                     dataGridUsers.DataSource = mediaDt2;
-                    dataGridProperties2();
+                    services.DataGridProperties2(dataGridUsers);
                 }
-                else
-                {
-                    MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);               
             }
             catch (Exception ex)
             {
@@ -68,6 +60,56 @@ namespace BogsySystem.Forms
             dataGridUserRented.Visible = false;
         }
 
-        
+        private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    dataGridUsers.CurrentRow.Selected = true;
+
+                    // Retrieve the selected data into a variable
+                    selectedUserID = Convert.ToInt32(dataGridUsers.Rows[e.RowIndex].Cells["ID"].Value);
+                    UserActiveRent();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private void dataGridUsers_Click(object sender, EventArgs e)
+        {
+            dataGridUsers.ClearSelection();
+        }
+
+        public void UserActiveRent()
+        {
+            activerentlbl.Visible = true;
+            dataGridUserRented.Visible = true;
+
+            DataTable mediaDt3 = services.GetUsersActiveRentals(selectedUserID);
+          
+            if (mediaDt3.Rows.Count > 0)
+            { 
+                dataGridUserRented.DataSource = mediaDt3;
+                services.DataGridProperties3(dataGridUserRented);
+            }
+            else
+            {
+                activerentlbl.Visible = false;
+                dataGridUserRented.Visible = false;
+                dataGridUsers.ClearSelection();
+                MessageBox.Show("User have no active rent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+       
+
     }
+
 }
+

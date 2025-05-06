@@ -1,4 +1,5 @@
-﻿using BogsySystem.UserForms;
+﻿using BogsySystem.Forms.Properties;
+using BogsySystem.UserForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,7 @@ namespace BogsySystem.Forms
     {
         DBAccess ObjDBAccess = new DBAccess();
         public static string ID, username, password, name, email, gender;
+        LoginServices services = new LoginServices();
         public Login()
         {
             InitializeComponent();
@@ -37,21 +39,13 @@ namespace BogsySystem.Forms
             }
             else
             {
-                //Query to select if the email is in the database
-                string emailquery = "Select * from Users Where Username ='" + loginusername + "'";
 
-                //This will be the storage for the data fetch from database
-                DataTable usersDt = new DataTable();
-
-                // This function retrieves data from the database and fills it into the DataTable
-                ObjDBAccess.readDatathroughAdapter(emailquery, usersDt);
+                DataTable usersDt = services.searchUsername(loginusername);
 
                 if (usersDt.Rows.Count == 0) MessageBox.Show("Email is incorrect");
                 else
                 {
-                    string passquery = "Select * from Users Where Username ='" + loginusername + "' AND Password ='" + loginpass + "'";
-                    DataTable usersPass = new DataTable();
-                    ObjDBAccess.readDatathroughAdapter(passquery, usersPass);
+                    DataTable usersPass = services.searchUsernamePassword(loginpass,loginusername);
 
                     if (usersPass.Rows.Count == 1)
                     {
@@ -111,8 +105,14 @@ namespace BogsySystem.Forms
             signup.Show();
         }
 
-   
-            
-        
+       private void showpassbtn_Click(object sender, EventArgs e)
+        {
+            services.showPass(passlogintxt, hidepassbtn);
+        }
+
+        private void hidepassbtn_Click(object sender, EventArgs e)
+        {
+          services.hidePass(passlogintxt, showpassbtn);
+        }
     }
 }

@@ -44,12 +44,12 @@
             // 
             // loginlogo
             // 
-            loginlogo.Image = Properties.Resources.logo;
-            loginlogo.Location = new Point(72, 41);
+            loginlogo.Image = BogsySystem.Properties.Resources.logo;
+            loginlogo.Location = new Point(72, 49);
             loginlogo.Name = "loginlogo";
             loginlogo.Size = new Size(198, 99);
             loginlogo.SizeMode = PictureBoxSizeMode.Zoom;
-            loginlogo.TabIndex = 1;
+            loginlogo.TabIndex = 21;
             loginlogo.TabStop = false;
             // 
             // labeltop

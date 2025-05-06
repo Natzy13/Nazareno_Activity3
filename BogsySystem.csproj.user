@@ -7,24 +7,6 @@
     <Compile Update="Forms\DashboardMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Properties\DashboardMainProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\Properties\LoginProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\Properties\ReportProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\Properties\SignUpProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\Properties\UsersProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\Properties\VideoLibraryProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="Forms\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -40,7 +22,7 @@
     <Compile Update="Forms\VideoLibrary.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserForms\Properties\UserReturnProperties.cs">
+    <Compile Update="UserForms\Services\UserReturnProperties.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserForms\UserAccount.cs">
@@ -49,16 +31,7 @@
     <Compile Update="UserForms\UserDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserForms\Properties\UserAccountProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UserForms\Properties\UserPayProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UserForms\Properties\UserRentProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UserForms\Properties\UserReportProperties.cs">
+    <Compile Update="UserForms\Services\UserReportProperties.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserForms\UserPay.cs">
