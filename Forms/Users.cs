@@ -22,33 +22,9 @@ namespace BogsySystem.Forms
             InitializeComponent();
         }
 
-        private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                // Check if the clicked event was on a valid row
-                if (e.RowIndex >= 0)
-                {
-                    // Select the current row
-                    dataGridUsers.CurrentRow.Selected = true;
-                    componentShow();
-
-                    // Retrieve the selected data into a variable
-                    selectedUserID = Convert.ToInt32(dataGridUsers.Rows[e.RowIndex].Cells["ID"].Value);
-                    nametxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Name"].Value.ToString();
-                    emailtxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Email"].Value.ToString();
-                    gendertxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Gender"].Value.ToString();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
-        }
-
         private void Users_Load(object sender, EventArgs e)
         {
+            filter.SelectedIndex = 0;
             componentHide();
             try
             {
@@ -75,18 +51,6 @@ namespace BogsySystem.Forms
 
         }
 
-        private void dataGridUsers_Click(object sender, EventArgs e)
-        {
-            dataGridUsers.CurrentRow.Selected = false;
-            componentHide();
-        }
-
-        private void dataGridUsers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dataGridUsers.CurrentRow.Selected = false;
-            componentHide();
-        }
-
         private void deactbtn_Click(object sender, EventArgs e)
         {
             SqlCommand activateCommand = new SqlCommand("Update Users SET IsActive= 1 where ID = '" + selectedUserID + "'");
@@ -104,31 +68,7 @@ namespace BogsySystem.Forms
                 MessageBox.Show("There is an error deactivating");
             }
         }
-
-        void componentHide()
-        {
-            activatebtn.Visible = false;
-            editbtn.Visible = false;
-            nametxt.Visible = false;
-            emailtxt.Visible = false;
-            gendertxt.Visible = false;
-            namelbl.Visible = false;
-            emaillbl.Visible = false;
-            genderlbl.Visible = false;
-        }
-
-        void componentShow()
-        {
-            activatebtn.Visible = true;
-            editbtn.Visible = true;
-            nametxt.Visible = true;
-            emailtxt.Visible = true;
-            gendertxt.Visible = true;
-            namelbl.Visible = true;
-            emaillbl.Visible = true;
-            genderlbl.Visible = true;
-        }
-
+     
         private void editbtn_Click(object sender, EventArgs e)
         {
             string displayname = nametxt.Text;
@@ -149,35 +89,31 @@ namespace BogsySystem.Forms
             }
             else
             {
-                SqlCommand editCommand = new SqlCommand("Update Users SET Name= '" + @displayname + "',Email= '" + @displayemail + "',Gender= '" + @displaygender + "' where ID = '" + selectedUserID + "'");
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                editCommand.Parameters.AddWithValue("Name", @displayname);
-                editCommand.Parameters.AddWithValue("Email", @displayemail);
-                editCommand.Parameters.AddWithValue("Gender", @displaygender);
-
-                int row = ObjDBAccess.executeQuery(editCommand);
-
-                if (row == 1)
+                if (confirmResult == DialogResult.Yes)
                 {
-                    MessageBox.Show("User Updated Successfully");
-                    refreshDataGrid();
-                    componentHide();
-                }
+                    SqlCommand editCommand = new SqlCommand("Update Users SET Name= '" + @displayname + "',Email= '" + @displayemail + "',Gender= '" + @displaygender + "' where ID = '" + selectedUserID + "'");
 
-                else
-                {
-                    MessageBox.Show("There is an error updating");
+                    editCommand.Parameters.AddWithValue("Name", @displayname);
+                    editCommand.Parameters.AddWithValue("Email", @displayemail);
+                    editCommand.Parameters.AddWithValue("Gender", @displaygender);
+
+                    int row = ObjDBAccess.executeQuery(editCommand);
+
+                    if (row == 1)
+                    {
+                        MessageBox.Show("User Updated Successfully");
+                        refreshDataGrid();
+                        componentHide();
+                    }
+
+                    else
+                    {
+                        MessageBox.Show("There is an error updating");
+                    }
                 }
             }
-        }
-
-        void refreshDataGrid()
-        {
-
-            string tablequery = "SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0";
-            DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, usersDt);
-            dataGridUsers.DataSource = usersDt;
         }
 
         private void filter_SelectedIndexChanged(object sender, EventArgs e)
@@ -197,7 +133,6 @@ namespace BogsySystem.Forms
             {
                 ApplyFilter("Gender", selectedFilter);
             }
-
         }
 
         void ApplyFilter(string column, string value)
@@ -232,15 +167,6 @@ namespace BogsySystem.Forms
             {
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        void dataGridProperties()
-        {
-            dataGridUsers.Columns["ID"].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridUsers.Columns["Name"].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridUsers.Columns["Username"].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridUsers.Columns["Email"].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridUsers.Columns["Gender"].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
 }

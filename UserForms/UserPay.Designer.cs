@@ -1,6 +1,6 @@
 ﻿namespace BogsySystem.UserForms
 {
-    partial class UserPay
+    partial class UserPayProperties
     {
         /// <summary>
         /// Required designer variable.

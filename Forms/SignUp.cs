@@ -22,18 +22,6 @@ namespace BogsySystem.Forms
             InitializeComponent();
         }
 
-        private void exitbtn_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Login login = new Login();
-            login.Show();
-        }
-
         private void regbtn_Click(object sender, EventArgs e)
         {
             string fullname = fnameregtxt.Text;
@@ -89,40 +77,21 @@ namespace BogsySystem.Forms
                     login.Show();
                 }
 
-                else
-                {
-                    MessageBox.Show("Error");
-                }
-
-            }
-
-        }
-
-        private void showpassbtn_Click(object sender, EventArgs e)
-        {
-            if (passregtxt.PasswordChar == '*')
-            {
-                hidepassbtn.BringToFront();
-                passregtxt.PasswordChar = '\0';
+                else MessageBox.Show("Error");
+                
             }
         }
 
-        private void hidepassbtn_Click(object sender, EventArgs e)
+        private void exitbtn_Click(object sender, EventArgs e)
         {
-            if (passregtxt.PasswordChar == '\0')
-            {
-                showpassbtn.BringToFront();
-                passregtxt.PasswordChar = '*';
-            }
+            Application.Exit();
         }
 
-        void clearDataFields()
+        private void label1_Click(object sender, EventArgs e)
         {
-            fnameregtxt.Clear();
-            unameregtxt.Clear();
-            passregtxt.Clear();
-            emailregtxt.Clear();
-            genderregtxt.Text = "Select Gender";
+            this.Hide();
+            Login login = new Login();
+            login.Show();
         }
     }
 }

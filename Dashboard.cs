@@ -94,7 +94,6 @@ namespace BogsySystem
         }
 
 
-
         private void menubtn_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, color1);
@@ -120,6 +119,7 @@ namespace BogsySystem
             OpenChildForm(new Report());
         }
 
+       
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -127,14 +127,16 @@ namespace BogsySystem
 
         private void logoutbtn_Click(object sender, EventArgs e)
         {
-                DialogResult dialog = MessageBox.Show("Do you want to logout ?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dialog == DialogResult.Yes)
-                {
-                this.Close(); 
+            DialogResult dialog = MessageBox.Show("Do you want to logout ?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                this.Close();
 
                 Login login = new Login();
-                login.Show(); 
-                }           
+                login.Show();
+            }
         }
+
+        
     }
 }

@@ -22,18 +22,6 @@ namespace BogsySystem.Forms
             InitializeComponent();
         }
 
-        private void exitbtn_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            SignUp signup = new SignUp();
-            signup.Show();
-        }
-
         private void loginbtn_Click(object sender, EventArgs e)
         {
             string loginusername = unamelogintxt.Text;
@@ -84,7 +72,7 @@ namespace BogsySystem.Forms
                             unamelogintxt.Text = "";
                             passlogintxt.Text = "";
                             MessageBox.Show("Account is deactivated contact admin.");
-                           
+
                         }
                         else
                         {
@@ -111,22 +99,20 @@ namespace BogsySystem.Forms
             }
         }
 
-        private void hidepassbtn_Click(object sender, EventArgs e)
+        private void exitbtn_Click(object sender, EventArgs e)
         {
-            if (passlogintxt.PasswordChar == '\0')
-            {
-                showpassbtn.BringToFront();
-                passlogintxt.PasswordChar = '*';
-            }
+            Application.Exit();
         }
 
-        private void showpassbtn_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
-            if (passlogintxt.PasswordChar == '*')
-            {
-                hidepassbtn.BringToFront();
-                passlogintxt.PasswordChar = '\0';
-            }
+            this.Close();
+            SignUp signup = new SignUp();
+            signup.Show();
         }
+
+   
+            
+        
     }
 }

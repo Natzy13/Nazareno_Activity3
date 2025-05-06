@@ -275,7 +275,6 @@
         private DataGridView dataGridVid;
         private TextBox vidtitletxt;
         private Label label1;
-        private TextBox textBox1;
         private Label formatlbl;
         private ComboBox formatxt;
         private Label label2;

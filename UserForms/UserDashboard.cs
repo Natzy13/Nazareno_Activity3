@@ -123,7 +123,7 @@ namespace BogsySystem.UserForms
         private void paybtn_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, color3);
-            OpenChildForm(new UserPay());
+            OpenChildForm(new UserPayProperties());
         }
 
         private void accountbtn_Click(object sender, EventArgs e)

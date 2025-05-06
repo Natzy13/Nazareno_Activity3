@@ -127,23 +127,5 @@ namespace BogsySystem.UserForms
             }
 
         }
-
-        private void showpassbtn_Click(object sender, EventArgs e)
-        {
-            if (passtxt.PasswordChar == '*')
-            {
-                hidepassbtn.BringToFront();
-                passtxt.PasswordChar = '\0';
-            }
-        }
-
-        private void hidepassbtn_Click(object sender, EventArgs e)
-        {
-            if (passtxt.PasswordChar == '\0')
-            {
-                showpassbtn.BringToFront();
-                passtxt.PasswordChar = '*';
-            }
-        }
     }
 }

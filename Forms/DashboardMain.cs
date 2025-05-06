@@ -26,7 +26,7 @@ namespace BogsySystem.Forms
             totalmediatxt.Text = Convert.ToInt32(ObjDBAccess.executeScalar(totalMedia)).ToString();
 
             string queryTotalRentals = "SELECT COUNT(*) FROM Rentals";
-            SqlCommand totalRentals = new SqlCommand(queryTotalMedia);
+            SqlCommand totalRentals = new SqlCommand(queryTotalRentals);
             totalrentalstxt.Text = Convert.ToInt32(ObjDBAccess.executeScalar(totalRentals)).ToString();
 
             string queryTotalUsers = "SELECT COUNT(*) FROM Users WHERE IsAdmin = 0";
@@ -80,22 +80,6 @@ ORDER BY RH.ReturnDate DESC";
             }
         }
 
-        public void dataGridProperties()
-        {
-            dataGridHistory.Columns["RentalID"].Visible = false;
-
-            dataGridHistory.Columns["Name"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridHistory.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridHistory.Columns["Format"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridHistory.Columns["RentalDate"].HeaderText = "Rent Date";
-            dataGridHistory.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridHistory.Columns["ReturnDate"].HeaderText = "Return Date";
-            dataGridHistory.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;     
-        }
     }
     }
 

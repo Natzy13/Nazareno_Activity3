@@ -77,6 +77,8 @@ namespace BogsySystem.Forms
 
         private void VideoLibrary_Load(object sender, EventArgs e)
         {
+            filterbtn.SelectedIndex = 0;
+            editbtn.Visible = false;    
             try
             {
                 String tablequery = "SELECT * FROM MediaItems WHERE IsAvailable = 1";
@@ -129,117 +131,42 @@ namespace BogsySystem.Forms
             }
             else
             {
-                price = (displayformat == "VCD") ? 25 : 50;
-                SqlCommand editCommand = new SqlCommand("Update MediaItems SET Title= '" + @displaytitle + "',Format= '" + @displayformat + "',AvailableCopies= '" + displaynewavailablecopies + "',TotalCopies= '" + @displaynewtotalcopies + "',Price= '" + @price + "',MaxRentalDays= '" + @displaymaxRent + "' where MediaID = '" + mediaID + "'");
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?","Confirm Edit",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
 
-                editCommand.Parameters.AddWithValue("@title", @displaytitle);
-                editCommand.Parameters.AddWithValue("@format", @displayformat);
-                editCommand.Parameters.AddWithValue("@total", @displaynewtotalcopies);
-                editCommand.Parameters.AddWithValue("@price", @price);
-                editCommand.Parameters.AddWithValue("@maxRent", @displaymaxRent);
-
-                //This method from DBAccess, execute the sql command
-                int row = ObjDBAccess.executeQuery(editCommand);
-
-                if (row == 1)
+                if (confirmResult == DialogResult.Yes)
                 {
-                    MessageBox.Show("Account Updated Successfully");
-                    refreshDataGrid();
-                    clearDataFields();
-                }
+                    price = (displayformat == "VCD") ? 25 : 50;
 
-                else
-                {
-                    MessageBox.Show("There is an error updating");
+                    SqlCommand editCommand = new SqlCommand(
+                        "Update MediaItems SET Title = @title, Format = @format, AvailableCopies = @available, TotalCopies = @total, Price = @price, MaxRentalDays = @maxRent WHERE MediaID = @mediaID"
+                    );
+
+                    editCommand.Parameters.AddWithValue("@title", displaytitle);
+                    editCommand.Parameters.AddWithValue("@format", displayformat);
+                    editCommand.Parameters.AddWithValue("@available", displaynewavailablecopies);
+                    editCommand.Parameters.AddWithValue("@total", displaynewtotalcopies);
+                    editCommand.Parameters.AddWithValue("@price", price);
+                    editCommand.Parameters.AddWithValue("@maxRent", displaymaxRent);
+                    editCommand.Parameters.AddWithValue("@mediaID", mediaID);
+
+                    int row = ObjDBAccess.executeQuery(editCommand);
+
+                    if (row == 1)
+                    {
+                        MessageBox.Show("Media Updated Successfully");
+                        refreshDataGrid();
+                        clearDataFields();
+                    }
+                    else
+                    {
+                        MessageBox.Show("There is an error updating");
+                    }
                 }
             }
 
         }
 
-        private void dataGridVid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-            try
-            {
-                // Check if the clicked event was on a valid row
-                if (e.RowIndex >= 0)
-                {
-                    // Select the current row
-                    dataGridVid.CurrentRow.Selected = true;
-                    addbtn.Visible = false;
-                    // Retrieve and display data from the selected row
-                    mediaID = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["MediaID"].Value);
-                    vidtitletxt.Text = dataGridVid.Rows[e.RowIndex].Cells["Title"].Value.ToString();
-                    formatxt.Text = dataGridVid.Rows[e.RowIndex].Cells["Format"].Value.ToString();
-                    currentAvailablecopies = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["AvailableCopies"].Value); //Current available copies
-                    quantitytxt.Value = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["TotalCopies"].Value);
-                    currentTotalcopies = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["TotalCopies"].Value); //Current total copies
-                    maxrenttxt.Text = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["MaxRentalDays"].Value).ToString();
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
-        }
-
-        private void dataGridVid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            dataGridVid.ClearSelection();  // Deselect the row            
-            clearDataFields();
-            addbtn.Visible = true;
-
-        }
-
-        private void refreshDataGrid() //Method to refresh data grid
-        {
-            string tableQuery = "SELECT * FROM MediaItems WHERE IsAvailable = 1";
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tableQuery, mediaDt);
-            dataGridVid.DataSource = mediaDt;
-            dataGridProperties();
-        }
-
-        void clearDataFields()
-        {
-            vidtitletxt.Clear();
-            formatxt.Text = "Select";
-            maxrenttxt.Text = "0";
-            quantitytxt.Value = 1;
-        }
-
-        void dataGridProperties()
-        {
-            dataGridVid.Columns["MediaID"].HeaderText = "ID";
-            dataGridVid.Columns["MediaID"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["Format"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["AvailableCopies"].HeaderText = "Available";
-            dataGridVid.Columns["AvailableCopies"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["TotalCopies"].HeaderText = "Total Quantity";
-            dataGridVid.Columns["TotalCopies"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["Price"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["MaxRentalDays"].HeaderText = "Max Rent Days";
-            dataGridVid.Columns["MaxRentalDays"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridVid.Columns["IsAvailable"].Visible = false;
-        }
-
-        private void dataGridVid_Click(object sender, EventArgs e)
-        {
-            dataGridVid.ClearSelection();
-            clearDataFields();
-            addbtn.Visible = true;
-        }
-
+        
         private void removebtn_Click(object sender, EventArgs e)
         {
             activeRent = currentTotalcopies - currentAvailablecopies;
