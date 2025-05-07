@@ -1,5 +1,6 @@
 
 using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using FontAwesome.Sharp;
 using Microsoft.Data.SqlClient;
 
@@ -26,7 +27,7 @@ namespace BogsySystem
             leftBorderBtn.Size = new Size(5, 42); // This is the size of the vertical lign
             menuPanel.Controls.Add(leftBorderBtn);
 
-            MessageBox.Show($"Welcome {Login.name}");
+            MessageBox.Show($"Welcome {LoginServices.Name}");
             ActivateButton(menubtn, color1);//Activate the menu button in startup
             OpenChildForm(new DashboardMain()); //Activate the dashboard main windows
 

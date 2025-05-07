@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using System;
@@ -16,7 +17,7 @@ namespace BogsySystem.UserForms
     public partial class UserReport : Form
     {
         UserReportServices services = new UserReportServices();
-        private int loginID = int.Parse(Login.ID);
+        private int loginID = int.Parse(LoginServices.ID);
         public UserReport()
         {
             InitializeComponent();

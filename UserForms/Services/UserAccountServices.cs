@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BogsySystem.UserForms.Services
     {
         private DBAccess ObjDBAccess = new DBAccess();
         public int editUser(string editfname, string editusername, string editpass, string editemail, string editgender) {
-            SqlCommand updateCommand = new SqlCommand("Update Users SET Name= '" + @editfname + "',Username= '" + @editusername + "',Password= '" + @editpass + "',Email= '" + @editemail + "',Gender= '" + @editgender + "' where ID = '" + Login.ID + "'");
+            SqlCommand updateCommand = new SqlCommand("Update Users SET Name= '" + @editfname + "',Username= '" + @editusername + "',Password= '" + @editpass + "',Email= '" + @editemail + "',Gender= '" + @editgender + "' where ID = '" + LoginServices.ID + "'");
 
             updateCommand.Parameters.AddWithValue("@fullname", editfname);
             updateCommand.Parameters.AddWithValue("@username", editusername);

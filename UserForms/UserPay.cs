@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -27,7 +28,7 @@ namespace BogsySystem.UserForms
         private void UserPay_Load(object sender, EventArgs e)
         {
             services.componentHide(feetxt,feelbl,chargefeetxt,chargefeelbl,totalfeetxt,totalfeelbl,paytxt,paylbl,paybtn);
-            int userID = Convert.ToInt32(Login.ID);
+            int userID = Convert.ToInt32(LoginServices.ID);
             try
             {
                 DataTable mediaDt = services.displayPay(userID);
@@ -62,7 +63,7 @@ namespace BogsySystem.UserForms
                     {
                         decimal change = pay - totalFee;
 
-                        int userID = int.Parse(Login.ID);
+                        int userID = int.Parse(LoginServices.ID);
                         int row = services.userPay(rentalID, userID, pay, change);
 
                         if (row > 0)

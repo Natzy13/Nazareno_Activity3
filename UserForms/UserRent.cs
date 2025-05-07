@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using System;
@@ -50,7 +51,7 @@ namespace BogsySystem.UserForms
         private void rentbtn_Click(object sender, EventArgs e)
         {
             int quantity = (int)quantitytxt.Value;
-            int userID = int.Parse(Login.ID);
+            int userID = int.Parse(LoginServices.ID);
 
             if (quantity > availableCopies) MessageBox.Show("Not enough copies available!");
             else

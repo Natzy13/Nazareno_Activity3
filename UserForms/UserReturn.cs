@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualBasic.ApplicationServices;
@@ -18,7 +19,7 @@ namespace BogsySystem.UserForms
     {
         UserReturnServices services = new UserReturnServices();
         private int mediaID, rentalID,quantityRent;
-        private int loginID = int.Parse(Login.ID);
+        private int loginID = int.Parse(LoginServices.ID);
         private string title;
         public UserReturn()
         {

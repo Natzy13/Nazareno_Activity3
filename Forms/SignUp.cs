@@ -25,37 +25,7 @@ namespace BogsySystem.Forms
 
         private void regbtn_Click(object sender, EventArgs e)
         {
-            string fullname = fnameregtxt.Text;
-            string username = unameregtxt.Text;
-            string password = passregtxt.Text;
-            string email = emailregtxt.Text;
-            string gender = genderregtxt.Text;
-
-            if (fullname.Equals("")) MessageBox.Show("Enter Your Full Name");           
-            else if (username.Equals("")) MessageBox.Show("Enter Your Username");        
-            else if (password.Equals("") || password.Length < 8) MessageBox.Show("Password is required and must be at least 8 characters long");
-            else if (email.Equals(""))  MessageBox.Show("Enter Your Email");
-            else if (gender.Equals("Select Gender")) MessageBox.Show("Select Gender");          
-            else
-            {
-                //This method from DBAccess, execute the sql command
-                int row = services.RegisterUser(fullname, username, password, email, gender);
-
-                if (row == 1)
-                {
-                    services.ClearRegistrationFields(fnameregtxt, unameregtxt, passregtxt, emailregtxt, genderregtxt);
-                    MessageBox.Show("Account Created Successfully");
-
-                    this.Hide();
-
-                    //Transfer to this new form
-                    Login login = new Login();
-                    login.Show();
-                }
-
-                else MessageBox.Show("Error");
-                
-            }
+            services.registerButtonFunction(fnameregtxt,unameregtxt, passregtxt, emailregtxt, genderregtxt, this);
         }
 
         private void exitbtn_Click(object sender, EventArgs e)
@@ -65,9 +35,7 @@ namespace BogsySystem.Forms
 
         private void label1_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            Login login = new Login();
-            login.Show();
+            services.labelLogin(this);
         }
 
         private void showpassbtn_Click(object sender, EventArgs e)
@@ -77,7 +45,7 @@ namespace BogsySystem.Forms
 
         private void hidepassbtn_Click(object sender, EventArgs e)
         {
-          services.hidePass(passregtxt, showpassbtn);
+            services.hidePass(passregtxt, showpassbtn);
         }
        
     }

@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using System;
@@ -21,7 +22,7 @@ namespace BogsySystem.UserForms
 
         DBAccess ObjDBAccess = new DBAccess();
         UserAccountServices services = new UserAccountServices();
-        private string origpass = Login.password;
+        private string origpass = LoginServices.Password;
         public UserAccount()
         {
             InitializeComponent();
@@ -29,12 +30,12 @@ namespace BogsySystem.UserForms
 
         private void UserAccount_Load(object sender, EventArgs e)
         {
-            idtxt.Text = Login.ID;
-            fnametxt.Text = Login.name;
-            usernametxt.Text = Login.username;
-            passtxt.Text = Login.password;
-            emailtxt.Text = Login.email;
-            gendertxt.Text = Login.gender;
+            idtxt.Text = LoginServices.ID;
+            fnametxt.Text = LoginServices.Name;
+            usernametxt.Text = LoginServices.Username;
+            passtxt.Text = LoginServices.Password;
+            emailtxt.Text = LoginServices.Email;
+            gendertxt.Text = LoginServices.Gender;
         }
 
         private void editbtn_Click(object sender, EventArgs e)
@@ -77,7 +78,7 @@ namespace BogsySystem.UserForms
             DialogResult dialog = MessageBox.Show("Do you want to deactivate account ?", "Deactivate Account", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialog == DialogResult.Yes)
             {
-                int row = services.deactUser(Login.ID);
+                int row = services.deactUser(LoginServices.ID);
 
                 if (row == 1)
                 {

@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
 using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace BogsySystem.UserForms
             ActivateButton(rentbtn, color1); //Activate the menu button in startup
             OpenChildForm(new UserRent()); //Activate the dashboard main windows
 
-            MessageBox.Show($"Welcome {Login.name}");
+            MessageBox.Show($"Welcome {LoginServices.Name}");
         }
 
         private void ActivateButton(object senderBtn, Color color)

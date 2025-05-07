@@ -16,7 +16,7 @@ namespace BogsySystem.Forms
     public partial class Report : Form
     {
         ReportServices services = new ReportServices();
-        private int selectedUserID;
+       
         public Report()
         {
             InitializeComponent();
@@ -24,61 +24,12 @@ namespace BogsySystem.Forms
 
         private void Report_Load(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable mediaDt1 = services.GetMediaReport();
-
-                if (mediaDt1.Rows.Count > 0)
-                {
-                    dataGridReport.DataSource = mediaDt1;
-                    services.DataGridProperties1(dataGridReport);
-                }
-                else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            try
-            {
-                DataTable mediaDt2 = services.GetUsers();
-
-                if (mediaDt2.Rows.Count > 0)
-                {
-                    dataGridUsers.DataSource = mediaDt2;
-                    services.DataGridProperties2(dataGridUsers);
-                }
-                else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            activerentlbl.Visible = false;
-            dataGridUserRented.Visible = false;
+            services.reportLoadFunction(dataGridReport, dataGridUsers, dataGridUserRented, activerentlbl);
         }
 
         private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                // Check if the clicked event was on a valid row
-                if (e.RowIndex >= 0)
-                {
-                    // Select the current row
-                    dataGridUsers.CurrentRow.Selected = true;
-
-                    // Retrieve the selected data into a variable
-                    selectedUserID = Convert.ToInt32(dataGridUsers.Rows[e.RowIndex].Cells["ID"].Value);
-                    UserActiveRent();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            services.userGridFunction(e,dataGridUsers,activerentlbl,dataGridUserRented);
         }
 
         private void dataGridUsers_Click(object sender, EventArgs e)
@@ -88,23 +39,7 @@ namespace BogsySystem.Forms
 
         public void UserActiveRent()
         {
-            activerentlbl.Visible = true;
-            dataGridUserRented.Visible = true;
-
-            DataTable mediaDt3 = services.GetUsersActiveRentals(selectedUserID);
-
-            if (mediaDt3.Rows.Count > 0)
-            {
-                dataGridUserRented.DataSource = mediaDt3;
-                services.DataGridProperties3(dataGridUserRented);
-            }
-            else
-            {
-                activerentlbl.Visible = false;
-                dataGridUserRented.Visible = false;
-                dataGridUsers.ClearSelection();
-                MessageBox.Show("User have no active rent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+           services.UserActiveRent(activerentlbl,dataGridUserRented);
         }
 
         private void searchbtn_Click(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,88 @@ namespace BogsySystem.Forms.Properties
     public class ReportServices
     {
         private DBAccess ObjDBAccess = new DBAccess();
+
+        public static int selectedUserID { get; private set; }
+
+        public void reportLoadFunction(DataGridView gridReport, DataGridView gridUsers, DataGridView activeRent, Label active)
+        {
+            try
+            {
+                DataTable media = GetMediaReport();
+
+                if (media.Rows.Count > 0)
+                {
+                    gridReport.DataSource = media;
+                    DataGridProperties1(gridReport);
+                }
+                else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            try
+            {
+                DataTable users = GetUsers();
+
+                if (users.Rows.Count > 0)
+                {
+                    gridUsers.DataSource = users;
+                    DataGridProperties2(gridUsers);
+                }
+                else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            active.Visible = false;
+            activeRent.Visible = false;
+        }
+
+        public void userGridFunction(DataGridViewCellEventArgs e, DataGridView gridUsers, Label activerentlbl, DataGridView activeRent)
+        {
+            try
+            {
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    gridUsers.CurrentRow.Selected = true;
+
+                    // Retrieve the selected data into a variable
+                    selectedUserID = Convert.ToInt32(gridUsers.Rows[e.RowIndex].Cells["ID"].Value);
+                    UserActiveRent(activerentlbl, activeRent);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        public void UserActiveRent(Label activerentlbl, DataGridView activeRent)
+        {
+            activerentlbl.Visible = true;
+            activeRent.Visible = true;
+
+            DataTable rentMedia = GetUsersActiveRentals(selectedUserID);
+
+            if (rentMedia.Rows.Count > 0)
+            {
+                activeRent.DataSource = rentMedia;
+                DataGridProperties3(activeRent);
+            }
+            else
+            {
+                activerentlbl.Visible = false;
+                activeRent.Visible = false;
+                activeRent.ClearSelection();
+                MessageBox.Show("User have no active rent", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
         public DataTable GetMediaReport()
         {           

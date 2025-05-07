@@ -26,7 +26,8 @@ namespace BogsySystem.UserForms.Services
         {
             string queryTotalQuantity = $"SELECT SUM(Quantity) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
             SqlCommand totalQuantity = new SqlCommand(queryTotalQuantity);
-            int TotalQuantity = Convert.ToInt32(ObjDBAccess.executeScalar(totalQuantity));
+            object result = ObjDBAccess.executeScalar(totalQuantity);
+            int TotalQuantity = result != DBNull.Value ? Convert.ToInt32(result) : 0;
             return TotalQuantity;
         }
 
