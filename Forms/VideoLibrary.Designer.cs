@@ -43,6 +43,9 @@
             removebtn = new FontAwesome.Sharp.IconButton();
             addbtn = new FontAwesome.Sharp.IconButton();
             filterbtn = new ComboBox();
+            searchbtn = new FontAwesome.Sharp.IconButton();
+            searchtxt = new TextBox();
+            searchfilter = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridVid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)quantitytxt).BeginInit();
             SuspendLayout();
@@ -128,7 +131,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(333, 360);
+            label2.Location = new Point(347, 360);
             label2.Name = "label2";
             label2.Size = new Size(70, 18);
             label2.TabIndex = 7;
@@ -137,7 +140,7 @@
             // quantitytxt
             // 
             quantitytxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            quantitytxt.Location = new Point(409, 356);
+            quantitytxt.Location = new Point(423, 356);
             quantitytxt.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             quantitytxt.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             quantitytxt.Name = "quantitytxt";
@@ -220,7 +223,7 @@
             addbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             addbtn.IconSize = 19;
             addbtn.ImageAlign = ContentAlignment.MiddleRight;
-            addbtn.Location = new Point(333, 311);
+            addbtn.Location = new Point(347, 311);
             addbtn.Name = "addbtn";
             addbtn.Size = new Size(110, 26);
             addbtn.TabIndex = 16;
@@ -234,18 +237,59 @@
             filterbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             filterbtn.FormattingEnabled = true;
             filterbtn.Items.AddRange(new object[] { "All", "VCD", "DVD", "Max Rent 1 day", "Max Rent 2 days", "Max Rent 3 days" });
-            filterbtn.Location = new Point(449, 26);
+            filterbtn.Location = new Point(27, 26);
             filterbtn.Name = "filterbtn";
             filterbtn.Size = new Size(135, 25);
             filterbtn.TabIndex = 24;
             filterbtn.Text = "Filter";
             filterbtn.SelectedIndexChanged += filterbtn_SelectedIndexChanged;
             // 
+            // searchbtn
+            // 
+            searchbtn.BackColor = Color.Black;
+            searchbtn.FlatAppearance.BorderSize = 0;
+            searchbtn.FlatStyle = FlatStyle.Flat;
+            searchbtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            searchbtn.ForeColor = Color.White;
+            searchbtn.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlassPlus;
+            searchbtn.IconColor = Color.White;
+            searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            searchbtn.IconSize = 19;
+            searchbtn.Location = new Point(555, 26);
+            searchbtn.Name = "searchbtn";
+            searchbtn.Size = new Size(30, 26);
+            searchbtn.TabIndex = 28;
+            searchbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            searchbtn.UseVisualStyleBackColor = false;
+            searchbtn.Click += searchbtn_Click;
+            // 
+            // searchtxt
+            // 
+            searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchtxt.Location = new Point(419, 26);
+            searchtxt.Name = "searchtxt";
+            searchtxt.Size = new Size(130, 26);
+            searchtxt.TabIndex = 27;
+            // 
+            // searchfilter
+            // 
+            searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchfilter.FormattingEnabled = true;
+            searchfilter.Items.AddRange(new object[] { "ID", "Title" });
+            searchfilter.Location = new Point(348, 26);
+            searchfilter.Name = "searchfilter";
+            searchfilter.Size = new Size(65, 25);
+            searchfilter.TabIndex = 29;
+            searchfilter.Text = "Filter";
+            // 
             // VideoLibrary
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(612, 401);
+            Controls.Add(searchfilter);
+            Controls.Add(searchbtn);
+            Controls.Add(searchtxt);
             Controls.Add(filterbtn);
             Controls.Add(addbtn);
             Controls.Add(removebtn);
@@ -285,5 +329,8 @@
         private FontAwesome.Sharp.IconButton removebtn;
         private FontAwesome.Sharp.IconButton addbtn;
         private ComboBox filterbtn;
+        private FontAwesome.Sharp.IconButton searchbtn;
+        private TextBox searchtxt;
+        private ComboBox searchfilter;
     }
 }

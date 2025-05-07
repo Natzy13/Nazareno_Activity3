@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace BogsySystem.Forms.Properties
@@ -70,6 +71,84 @@ namespace BogsySystem.Forms.Properties
             return mediaDt;
         }
 
+        public void ApplyFilter(string column, string value, DataGridView grid)
+        {
+            try
+            {
+                DataTable mediaDt = Filter(column, value);
+
+                if (mediaDt.Rows.Count > 0)
+                {
+                    grid.DataSource = mediaDt;
+                    dataGridProperties(grid);
+                }
+                else
+                {
+                    string message = column == "Format"
+                    ? $"No {value} media found."
+                    : $"No media found with a {value}-day maximum rental period.";
+
+                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public DataTable FilterSearch(string column, string value)
+        {
+            string condition = column == "MediaID"
+                ? $"{column} = '{value}'"
+                : $"{column} LIKE '%{value}%'";
+         
+            String tablequery = $"SELECT * FROM MediaItems WHERE IsAvailable = 1 AND {condition}";
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
+        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt) 
+        {
+            string filterColumn = searchfilter.SelectedItem?.ToString();
+            string filterValue = searchtxt.Text.Trim();
+
+            if (filterColumn == "ID")
+            {
+                if (!int.TryParse(filterValue, out _))
+                {
+                    MessageBox.Show("Please enter a valid numeric ID.");
+                    return;
+                }
+
+                filterColumn = "MediaID";
+            }
+
+            if (string.IsNullOrEmpty(filterColumn) || string.IsNullOrEmpty(filterValue))
+            {
+                MessageBox.Show("Please select a filter and enter a value.");
+                return;
+            }
+
+            try
+            {
+                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                if (filteredUsers.Rows.Count > 0)
+                {
+                    grid.DataSource = filteredUsers;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No matching media found.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
         public void refreshDataGrid(DataGridView grid)
         {
             string tableQuery = "SELECT * FROM MediaItems WHERE IsAvailable = 1";
@@ -78,6 +157,37 @@ namespace BogsySystem.Forms.Properties
             grid.DataSource = mediaDt;
             dataGridProperties(grid);
         }
+
+        public void clearDataFields(TextBox vidtitletxt, ComboBox formatxt, ComboBox maxrenttxt, NumericUpDown quantitytxt)
+        {
+            vidtitletxt.Clear();
+            formatxt.Text = "Select";
+            maxrenttxt.Text = "0";
+            quantitytxt.Value = 1;
+        }
+
+        public void componentProperties(Button addbtn, Button editbtn, Button removebtn)
+        {
+            addbtn.Visible = true;
+            editbtn.Visible = false;
+            removebtn.Visible = false;
+        }
+
+        public void componentProperties2(Button addbtn, Button editbtn, Button removebtn)
+        {
+            addbtn.Visible = false;
+            editbtn.Visible = true;
+            removebtn.Visible = true;
+        }
+
+        public void componentProperties3(ComboBox filterbtn,Button editbtn, Button removebtn)
+        {
+
+            filterbtn.SelectedIndex = 0;
+            editbtn.Visible = false;
+            removebtn.Visible = false;
+        }
+     
 
         public void dataGridProperties(DataGridView grid)
         {

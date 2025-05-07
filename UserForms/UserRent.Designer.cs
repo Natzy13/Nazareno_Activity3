@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             dataGridRent = new DataGridView();
             rentbtn = new FontAwesome.Sharp.IconButton();
             quantitytxt = new NumericUpDown();
             quantitylbl = new Label();
             filterbtn = new ComboBox();
+            searchbtn = new FontAwesome.Sharp.IconButton();
+            searchtxt = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridRent).BeginInit();
             ((System.ComponentModel.ISupportInitialize)quantitytxt).BeginInit();
             SuspendLayout();
@@ -48,23 +50,23 @@
             dataGridRent.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridRent.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridRent.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridRent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridRent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridRent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(192, 192, 255);
-            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridRent.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(192, 192, 255);
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridRent.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridRent.EnableHeadersVisualStyles = false;
             dataGridRent.Location = new Point(27, 57);
             dataGridRent.Name = "dataGridRent";
@@ -124,18 +126,48 @@
             filterbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             filterbtn.FormattingEnabled = true;
             filterbtn.Items.AddRange(new object[] { "All", "VCD", "DVD", "Max Rent 1 day", "Max Rent 2 days", "Max Rent 3 days" });
-            filterbtn.Location = new Point(449, 26);
+            filterbtn.Location = new Point(27, 26);
             filterbtn.Name = "filterbtn";
             filterbtn.Size = new Size(135, 25);
             filterbtn.TabIndex = 25;
             filterbtn.Text = "Filter";
             filterbtn.SelectedIndexChanged += filterbtn_SelectedIndexChanged;
             // 
+            // searchbtn
+            // 
+            searchbtn.BackColor = Color.Black;
+            searchbtn.FlatAppearance.BorderSize = 0;
+            searchbtn.FlatStyle = FlatStyle.Flat;
+            searchbtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            searchbtn.ForeColor = Color.White;
+            searchbtn.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlassPlus;
+            searchbtn.IconColor = Color.White;
+            searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            searchbtn.IconSize = 19;
+            searchbtn.Location = new Point(555, 26);
+            searchbtn.Name = "searchbtn";
+            searchbtn.Size = new Size(30, 26);
+            searchbtn.TabIndex = 31;
+            searchbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            searchbtn.UseVisualStyleBackColor = false;
+            searchbtn.Click += searchbtn_Click;
+            // 
+            // searchtxt
+            // 
+            searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchtxt.Location = new Point(333, 26);
+            searchtxt.Name = "searchtxt";
+            searchtxt.PlaceholderText = "Search Title";
+            searchtxt.Size = new Size(216, 26);
+            searchtxt.TabIndex = 30;
+            // 
             // UserRent
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(612, 401);
+            Controls.Add(searchbtn);
+            Controls.Add(searchtxt);
             Controls.Add(filterbtn);
             Controls.Add(quantitylbl);
             Controls.Add(quantitytxt);
@@ -159,5 +191,7 @@
         private NumericUpDown quantitytxt;
         private Label quantitylbl;
         private ComboBox filterbtn;
+        private FontAwesome.Sharp.IconButton searchbtn;
+        private TextBox searchtxt;
     }
 }

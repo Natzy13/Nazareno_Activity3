@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using BogsySystem.Forms.Strings;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,40 +15,35 @@ namespace BogsySystem.Forms.Properties
 
         public int queryTotalMedia()
         {
-            string queryTotalMedia = "SELECT COUNT(*) FROM MediaItems WHERE IsAvailable = 1";
-            SqlCommand totalMedia = new SqlCommand(queryTotalMedia);
+            SqlCommand totalMedia = new SqlCommand(DashboardMainStrings.queryTotalMedia);
             int TotalMedia = Convert.ToInt32(ObjDBAccess.executeScalar(totalMedia));
             return TotalMedia;
         }
 
         public int queryTotalRentals()
         {
-            string queryTotalRentals = "SELECT COUNT(*) FROM Rentals";
-            SqlCommand totalRentals = new SqlCommand(queryTotalRentals);
+            SqlCommand totalRentals = new SqlCommand(DashboardMainStrings.queryTotalRentals);
             int TotalRentals = Convert.ToInt32(ObjDBAccess.executeScalar(totalRentals));
             return TotalRentals;
         }
 
         public int queryTotalRegistered()
         {
-            string queryTotalRegistered = "SELECT COUNT(*) FROM Users WHERE IsAdmin = 0";
-            SqlCommand totalRegistered = new SqlCommand(queryTotalRegistered);
+            SqlCommand totalRegistered = new SqlCommand(DashboardMainStrings.queryTotalRegistered);
             int TotalRegistered = Convert.ToInt32(ObjDBAccess.executeScalar(totalRegistered));
             return TotalRegistered;
         }
 
         public int queryActiveRentals()
-        {
-            string queryActiveRentals = "SELECT COUNT(*) FROM RentalHistory WHERE IsReturned = 0";
-            SqlCommand activeRentals = new SqlCommand(queryActiveRentals);
+        {          
+            SqlCommand activeRentals = new SqlCommand(DashboardMainStrings.queryActiveRentals);
             int ActiveRentals = Convert.ToInt32(ObjDBAccess.executeScalar(activeRentals));
             return ActiveRentals;
         }
 
         public decimal queryTotalRevenue()
-        {
-            string queryTotalRevenue = "SELECT SUM(TotalFee) FROM RentalHistory WHERE IsPaid = 1";
-            SqlCommand totalRevenue = new SqlCommand(queryTotalRevenue);
+        {            
+            SqlCommand totalRevenue = new SqlCommand(DashboardMainStrings.queryTotalRevenue);
             object result = ObjDBAccess.executeScalar(totalRevenue);
             decimal TotalRevenue = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
             return TotalRevenue;
@@ -55,33 +51,21 @@ namespace BogsySystem.Forms.Properties
 
         public int queryOverdueRent()
         {
-            string queryOverdueRent = "SELECT COUNT(*) FROM Rentals INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID WHERE DATEDIFF(DAY, Rentals.RentalDate, GETDATE()) > MediaItems.MaxRentalDays;";
-            SqlCommand overdueRent = new SqlCommand(queryOverdueRent);
+           
+            SqlCommand overdueRent = new SqlCommand(DashboardMainStrings.queryOverdueRent);
             int OverdueRent = Convert.ToInt32(ObjDBAccess.executeScalar(overdueRent));
             return OverdueRent;
         }
 
         public DataTable GetRentalHistory()
         {
-            string historyQuery = @"
-        SELECT 
-            RH.RentalID,
-            U.Name,
-            M.Title,
-            M.Format,
-            RH.RentalDate,
-            RH.ReturnDate 
-        FROM RentalHistory RH
-        JOIN MediaItems M ON RH.MediaID = M.MediaID
-        JOIN Users U ON RH.UserID = U.ID
-        WHERE RH.IsPaid = 1
-        ORDER BY RH.ReturnDate DESC";
+            
 
             DataTable mediaDt = new DataTable();
 
             try
             {
-                ObjDBAccess.readDatathroughAdapter(historyQuery, mediaDt);
+                ObjDBAccess.readDatathroughAdapter(DashboardMainStrings.historyQuery, mediaDt);
                 ObjDBAccess.closeConn();
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.UserForms.Services;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace BogsySystem.UserForms
 {
     public partial class UserReport : Form
     {
-        DBAccess ObjDBAccess = new DBAccess();
+        UserReportServices services = new UserReportServices();
+        private int loginID = int.Parse(Login.ID);
         public UserReport()
         {
             InitializeComponent();
@@ -22,46 +24,29 @@ namespace BogsySystem.UserForms
 
         private void UserReport_Load(object sender, EventArgs e)
         {
-            queryTotalRent();
-            queryTotalQuantity();
-            queryTotalFee();
-            queryTotalCharge();
-            queryTotalAmount();
-  
+
+            totalrenttxt.Text = services.queryTotalRent(loginID).ToString();
+            totalqtytxt.Text = services.queryTotalQuantity(loginID).ToString();
+            totalfeetxt.Text = services.queryTotalFee(loginID).ToString();
+            totalchargetxt.Text = services.queryTotalCharge(loginID).ToString();
+            totalamttxt.Text = services.queryTotalAmount(loginID).ToString();
+      
             try
             {
-                String tablequery = @"SELECT 
-    MI.Title,
-    MI.Format,
-    RH.RentalDate,
-    RH.ReturnDate,
-    R.Quantity,
-    RH.Fee,
-    RH.ChargeFee,
-    RH.TotalFee
-FROM RentalHistory RH
-JOIN MediaItems MI ON RH.MediaID = MI.MediaID
-JOIN Rentals R ON RH.RentalID = R.RentalID
-WHERE RH.UserID = '"+Login.ID+"' AND RH.IsPaid = 1 ORDER BY RH.RentalDate DESC;";
-                DataTable mediaDt = new DataTable();
-                ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
-                ObjDBAccess.closeConn();
+                DataTable mediaDt = services.userHistory(loginID);
 
                 if (mediaDt.Rows.Count > 0)
                 {
                     dataGridHistory.DataSource = mediaDt;
-                    dataGridProperties();
+                    services.dataGridProperties(dataGridHistory);
                 }
-                else
-                {
-                    MessageBox.Show("No History Found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                else MessageBox.Show("No History Found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
+        }      
     }
 }

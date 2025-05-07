@@ -33,7 +33,7 @@ namespace BogsySystem.Forms
                     dataGridReport.DataSource = mediaDt1;
                     services.DataGridProperties1(dataGridReport);
                 }
-                else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);                
+                else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace BogsySystem.Forms
                     dataGridUsers.DataSource = mediaDt2;
                     services.DataGridProperties2(dataGridUsers);
                 }
-                else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);               
+                else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -92,9 +92,9 @@ namespace BogsySystem.Forms
             dataGridUserRented.Visible = true;
 
             DataTable mediaDt3 = services.GetUsersActiveRentals(selectedUserID);
-          
+
             if (mediaDt3.Rows.Count > 0)
-            { 
+            {
                 dataGridUserRented.DataSource = mediaDt3;
                 services.DataGridProperties3(dataGridUserRented);
             }
@@ -107,8 +107,10 @@ namespace BogsySystem.Forms
             }
         }
 
-       
-
+        private void searchbtn_Click(object sender, EventArgs e)
+        {
+            services.searchFunction(dataGridUsers, searchfilter, searchtxt);
+        }
     }
 
 }

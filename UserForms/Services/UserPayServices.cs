@@ -44,9 +44,22 @@ ORDER BY RentalHistory.ReturnDate DESC;";
             return mediaDt;
         }
 
-        public int userPay(int rentalID, int userID) 
+        public int userPay(int rentalID, int userID,decimal pay,decimal changeAmount) 
         {
-            SqlCommand payRental = new SqlCommand("UPDATE RentalHistory SET IsPaid = 1 WHERE RentalID = @rentalID AND UserID = @userID;");
+            SqlCommand payRental = new SqlCommand(@"
+    UPDATE RentalHistory 
+    SET 
+        IsPaid = 1,
+        PaidDate = @paidDate,
+        Cash = @cash,
+        Change = @change
+    WHERE 
+        RentalID = @rentalID AND 
+        UserID = @userID;
+");
+            payRental.Parameters.AddWithValue("@paidDate", DateTime.Now);
+            payRental.Parameters.AddWithValue("@cash", pay);
+            payRental.Parameters.AddWithValue("@change", changeAmount);
             payRental.Parameters.AddWithValue("@rentalID", rentalID);
             payRental.Parameters.AddWithValue("@userID", userID);
             int row = ObjDBAccess.executeQuery(payRental);
@@ -82,7 +95,7 @@ WHERE RentalHistory.UserID = @userID
             ObjDBAccess.readDatathroughAdapter(payquery, mediaDt, userID);
             ObjDBAccess.closeConn();
             grid.DataSource = mediaDt;
-         
+            dataGridProperties(grid);
         }
 
         public void componentHide(

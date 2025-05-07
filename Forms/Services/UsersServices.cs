@@ -49,6 +49,86 @@ namespace BogsySystem.Forms.Properties
             return mediaDt;
         }
 
+        public DataTable FilterSearch(string column, string value)
+        {
+            string condition = column == "ID"
+                ? $"{column} = '{value}'"
+                : $"{column} LIKE '%{value}%'";
+
+            string tablequery = $"SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0 AND {condition}";
+
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
+        public void ApplyFilter(string column, string value, DataGridView grid)
+        {
+            try
+            {
+                DataTable mediaDt = Filter(column, value);
+                if (mediaDt.Rows.Count > 0)
+                {
+                    grid.DataSource = mediaDt;
+                    dataGridProperties(grid);
+                }
+                else
+                {
+                    string statusText = (column == "IsActive" && value == "1") ? "Activated" :
+                    (column == "IsActive" && value == "0") ? "Deactivated" :
+                    value;
+
+                    string message = column == "IsActive"
+                        ? $"No {statusText} user found."
+                        : $"No {value} user found.";
+
+                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
+        {
+            string filterColumn = searchfilter.SelectedItem?.ToString();
+            string filterValue = searchtxt.Text.Trim();
+
+            if (string.IsNullOrEmpty(filterColumn) || string.IsNullOrEmpty(filterValue))
+            {
+                MessageBox.Show("Please select a filter and enter a value.");
+                return;
+            }
+
+            if (filterColumn == "ID")
+            {
+                if (!int.TryParse(filterValue, out _))
+                {
+                    MessageBox.Show("Please enter a valid numeric ID.");
+                    return;
+                }
+            }
+
+            try
+            {
+                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                if (filteredUsers.Rows.Count > 0)
+                {
+                    grid.DataSource = filteredUsers;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No matching users found.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
         public void refreshDataGrid(DataGridView grid)
         {
             string tablequery = "SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0";

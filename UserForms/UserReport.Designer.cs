@@ -102,7 +102,7 @@
             dataGridHistory.AllowUserToResizeColumns = false;
             dataGridHistory.AllowUserToResizeRows = false;
             dataGridHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             dataGridHistory.BackgroundColor = SystemColors.ActiveBorder;
             dataGridHistory.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -123,12 +123,12 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridHistory.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridHistory.EnableHeadersVisualStyles = false;
-            dataGridHistory.Location = new Point(27, 189);
+            dataGridHistory.Location = new Point(12, 196);
             dataGridHistory.Name = "dataGridHistory";
             dataGridHistory.ReadOnly = true;
             dataGridHistory.RowHeadersVisible = false;
             dataGridHistory.ScrollBars = ScrollBars.Vertical;
-            dataGridHistory.Size = new Size(558, 183);
+            dataGridHistory.Size = new Size(588, 193);
             dataGridHistory.TabIndex = 16;
             // 
             // totalrenttxt

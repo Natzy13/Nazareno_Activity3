@@ -1,4 +1,5 @@
-﻿using BogsySystem.UserForms;
+﻿using BogsySystem.Forms.Strings;
+using BogsySystem.UserForms;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,15 @@ namespace BogsySystem.Forms.Properties
         private DBAccess ObjDBAccess = new DBAccess();
 
         public DataTable searchUsername(string loginusername)
-        {
-            string query = $"SELECT * FROM Users WHERE Username = '{loginusername}'";
+        {       
             DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(query, usersDt);
+            ObjDBAccess.readDatathroughAdapter(LoginStrings.searchUsername(loginusername), usersDt);
             return usersDt;
         }
         public DataTable searchUsernamePassword(string loginpassword, string loginusername) 
         {
-            string passquery = $"Select * from Users Where Username ='{loginusername}' AND Password ='{loginpassword}'";
             DataTable usersPass = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(passquery, usersPass);
+            ObjDBAccess.readDatathroughAdapter(LoginStrings.searchUsernamePassword(loginusername,loginpassword), usersPass);
             return usersPass;
         }
 

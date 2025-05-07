@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BogsySystem.Forms.Strings;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,42 +13,69 @@ namespace BogsySystem.Forms.Properties
         private DBAccess ObjDBAccess = new DBAccess();
 
         public DataTable GetMediaReport()
-        {
-            string queryReport = @"
-        SELECT 
-            Title, 
-            AvailableCopies, 
-            (TotalCopies - AvailableCopies) AS RentedCopies 
-        FROM MediaItems 
-        ORDER BY Title ASC;";
-
+        {           
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(queryReport, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryReport, mediaDt);
             return mediaDt;
         }
 
         public DataTable GetUsers() 
-        {
-            String queryUsers = "SELECT ID, Name, Username FROM Users WHERE IsAdmin = 0";
+        {           
             DataTable mediaDt2 = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(queryUsers, mediaDt2);
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryUsers, mediaDt2);
             return mediaDt2;
         }
 
         public DataTable GetUsersActiveRentals(int selectedUser)
-        {
-            string tablequery = $@"
-SELECT 
-    MediaItems.Title,
-    Rentals.Quantity,
-    Rentals.RentalDate    
-FROM Rentals
-INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID
-LEFT JOIN RentalHistory ON Rentals.RentalID = RentalHistory.RentalID
-WHERE Rentals.UserID = '{selectedUser}' AND RentalHistory.IsReturned = 0;";
+        {        
             DataTable mediaDt3 = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt3);
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.getUsersActiveRentals(selectedUser), mediaDt3);
             return mediaDt3;
+        }
+
+        public DataTable FilterSearch(string column, string value)
+        {           
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(column,value), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
+        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
+        {
+            string filterColumn = searchfilter.SelectedItem?.ToString();
+            string filterValue = searchtxt.Text.Trim();
+
+            if (filterColumn == "ID")
+            {
+                if (!int.TryParse(filterValue, out _))
+                {
+                    MessageBox.Show("Please enter a valid numeric ID.");
+                    return;
+                }
+            }
+
+            if (string.IsNullOrEmpty(filterColumn) || string.IsNullOrEmpty(filterValue))
+            {
+                MessageBox.Show("Please select a filter and enter a value.");
+                return;
+            }
+
+            try
+            {
+                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                if (filteredUsers.Rows.Count > 0)
+                {
+                    grid.DataSource = filteredUsers;
+                    DataGridProperties2(grid);
+                }
+                else MessageBox.Show("No matching media found.");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         public void DataGridProperties1(DataGridView grid)

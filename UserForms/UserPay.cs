@@ -63,7 +63,7 @@ namespace BogsySystem.UserForms
                         decimal change = pay - totalFee;
 
                         int userID = int.Parse(Login.ID);
-                        int row = services.userPay(rentalID, userID);
+                        int row = services.userPay(rentalID, userID, pay, change);
 
                         if (row > 0)
                         {
@@ -73,8 +73,7 @@ namespace BogsySystem.UserForms
                             services.componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
                             services.refreshDataGrid(userID, dataGridPay);
                         }
-                        else MessageBox.Show("There was an error with the rental.");
-                        
+                        else MessageBox.Show("There was an error with the rental.");                     
                     }
                 }
                 else  MessageBox.Show("Please enter a valid number.");                

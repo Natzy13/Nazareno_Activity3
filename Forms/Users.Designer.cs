@@ -40,6 +40,9 @@
             genderlbl = new Label();
             editbtn = new FontAwesome.Sharp.IconButton();
             filter = new ComboBox();
+            searchtxt = new TextBox();
+            searchbtn = new FontAwesome.Sharp.IconButton();
+            searchfilter = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridUsers).BeginInit();
             SuspendLayout();
             // 
@@ -183,18 +186,59 @@
             filter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             filter.FormattingEnabled = true;
             filter.Items.AddRange(new object[] { "All", "Activated", "Deactivated", "Male", "Female" });
-            filter.Location = new Point(479, 26);
+            filter.Location = new Point(30, 26);
             filter.Name = "filter";
             filter.Size = new Size(109, 25);
             filter.TabIndex = 23;
             filter.Text = "Filter";
             filter.SelectedIndexChanged += filter_SelectedIndexChanged;
             // 
+            // searchtxt
+            // 
+            searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchtxt.Location = new Point(422, 26);
+            searchtxt.Name = "searchtxt";
+            searchtxt.Size = new Size(130, 26);
+            searchtxt.TabIndex = 24;
+            // 
+            // searchbtn
+            // 
+            searchbtn.BackColor = Color.Black;
+            searchbtn.FlatAppearance.BorderSize = 0;
+            searchbtn.FlatStyle = FlatStyle.Flat;
+            searchbtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            searchbtn.ForeColor = Color.White;
+            searchbtn.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlassPlus;
+            searchbtn.IconColor = Color.White;
+            searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            searchbtn.IconSize = 19;
+            searchbtn.Location = new Point(558, 26);
+            searchbtn.Name = "searchbtn";
+            searchbtn.Size = new Size(30, 26);
+            searchbtn.TabIndex = 25;
+            searchbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            searchbtn.UseVisualStyleBackColor = false;
+            searchbtn.Click += searchbtn_Click;
+            // 
+            // searchfilter
+            // 
+            searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchfilter.FormattingEnabled = true;
+            searchfilter.Items.AddRange(new object[] { "ID", "Name" });
+            searchfilter.Location = new Point(351, 26);
+            searchfilter.Name = "searchfilter";
+            searchfilter.Size = new Size(65, 25);
+            searchfilter.TabIndex = 26;
+            searchfilter.Text = "Filter";
+            // 
             // Users
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(612, 401);
+            Controls.Add(searchfilter);
+            Controls.Add(searchbtn);
+            Controls.Add(searchtxt);
             Controls.Add(filter);
             Controls.Add(editbtn);
             Controls.Add(gendertxt);
@@ -226,5 +270,8 @@
         private Label genderlbl;
         private FontAwesome.Sharp.IconButton editbtn;
         private ComboBox filter;
+        private TextBox searchtxt;
+        private FontAwesome.Sharp.IconButton searchbtn;
+        private ComboBox searchfilter;
     }
 }

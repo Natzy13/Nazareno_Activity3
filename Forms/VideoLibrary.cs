@@ -36,9 +36,9 @@ namespace BogsySystem.Forms
             int total = (int)quantitytxt.Value;
             int available = total;
 
-            if (title.Equals("")) MessageBox.Show("Enter Title");            
-            else if (format.Equals("Select"))  MessageBox.Show("Select media format");            
-            else if (maxRent == 0) MessageBox.Show("Select max rent");           
+            if (title.Equals("")) MessageBox.Show("Enter Title");
+            else if (format.Equals("Select")) MessageBox.Show("Select media format");
+            else if (maxRent == 0) MessageBox.Show("Select max rent");
             else
             {
                 int row = services.addMedia(title, format, available, total, price, maxRent);
@@ -46,16 +46,15 @@ namespace BogsySystem.Forms
                 {
                     MessageBox.Show("Media Created Successfully");
                     services.refreshDataGrid(dataGridVid);
-                    clearDataFields();
+                    services.clearDataFields(vidtitletxt, formatxt, maxrenttxt, quantitytxt);
                 }
-                else MessageBox.Show("Error creating media");               
+                else MessageBox.Show("Error creating media");
             }
         }
 
         private void VideoLibrary_Load(object sender, EventArgs e)
         {
-            filterbtn.SelectedIndex = 0;
-            editbtn.Visible = false;    
+            services.componentProperties3(filterbtn,editbtn,removebtn);
             try
             {
                 DataTable mediaDt = services.displayMedia();
@@ -64,7 +63,7 @@ namespace BogsySystem.Forms
                     dataGridVid.DataSource = mediaDt;
                     services.refreshDataGrid(dataGridVid);
                 }
-                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);               
+                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -83,36 +82,33 @@ namespace BogsySystem.Forms
             int addedCopies = displaynewtotalcopies - currentTotalcopies; //New copies to be added
             int displaynewavailablecopies = currentAvailablecopies + addedCopies; //This will be added to the database for new available copies
 
-            if (displaytitle.Equals("")) MessageBox.Show("Enter Title");           
-            else if (displayformat.Equals("Select")) MessageBox.Show("Select media format");          
-            else if (displaymaxRent == 0) MessageBox.Show("Select max rent");           
-            else if (displaynewavailablecopies < 0 || displaynewtotalcopies < activeRent) MessageBox.Show("You can't reduce below rented copies");      
+            if (displaytitle.Equals("")) MessageBox.Show("Enter Title");
+            else if (displayformat.Equals("Select")) MessageBox.Show("Select media format");
+            else if (displaymaxRent == 0) MessageBox.Show("Select max rent");
+            else if (displaynewavailablecopies < 0 || displaynewtotalcopies < activeRent) MessageBox.Show("You can't reduce below rented copies");
             else
             {
-                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?","Confirm Edit",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    int row = services.editMedia(displaytitle, displayformat, displaynewavailablecopies,displaynewtotalcopies,price, displaymaxRent,mediaID);
+                    int row = services.editMedia(displaytitle, displayformat, displaynewavailablecopies, displaynewtotalcopies, price, displaymaxRent, mediaID);
                     if (row == 1)
                     {
                         MessageBox.Show("Media Updated Successfully");
-                        services.refreshDataGrid(dataGridVid); 
-                        clearDataFields();
+                        services.refreshDataGrid(dataGridVid);
+                        services.clearDataFields(vidtitletxt, formatxt, maxrenttxt, quantitytxt);
                     }
-                    else MessageBox.Show("There is an error updating");                   
+                    else MessageBox.Show("There is an error updating");
                 }
             }
 
         }
-        
+
         private void removebtn_Click(object sender, EventArgs e)
         {
             activeRent = currentTotalcopies - currentAvailablecopies;
-            if (currentAvailablecopies != currentTotalcopies)
-            {
-                MessageBox.Show("Media cannot be removed since there are " + activeRent + " active rentals");
-            }
+            if (currentAvailablecopies != currentTotalcopies) MessageBox.Show("Media cannot be removed since there are " + activeRent + " active rentals");            
             else
             {
                 DialogResult dialog = MessageBox.Show("Do you want to remove this media", "Remove Media", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -122,10 +118,10 @@ namespace BogsySystem.Forms
                     if (row == 1)
                     {
                         MessageBox.Show("Media Remove Successfully");
-                        clearDataFields();
+                        services.clearDataFields(vidtitletxt, formatxt, maxrenttxt, quantitytxt);
                         services.refreshDataGrid(dataGridVid);
                     }
-                    else MessageBox.Show("Deletion Error");                  
+                    else MessageBox.Show("Deletion Error");
                 }
             }
         }
@@ -139,8 +135,8 @@ namespace BogsySystem.Forms
                 services.refreshDataGrid(dataGridVid);
             }
             else if (selectedFilter == "VCD" || selectedFilter == "DVD")
-            {    
-                ApplyFilter("Format", selectedFilter);
+            {
+                services.ApplyFilter("Format", selectedFilter, dataGridVid);
             }
             else if (selectedFilter.StartsWith("Max Rent"))
             {
@@ -149,40 +145,13 @@ namespace BogsySystem.Forms
                 if (match.Success)
                 {
                     string days = match.Value;
-                    ApplyFilter("MaxRentalDays", days);
+                    services.ApplyFilter("MaxRentalDays", days, dataGridVid);
                 }
-            }
-        }
-
-        void ApplyFilter(string column, string value)
-        {
-            try
-            {
-                DataTable mediaDt = services.Filter(column, value);
-
-                if (mediaDt.Rows.Count > 0)
-                {
-                    dataGridVid.DataSource = mediaDt;
-                    services.dataGridProperties(dataGridVid);
-                }
-                else
-                {
-                    string message = column == "Format"
-                    ? $"No {value} media found."
-                    : $"No media found with a {value}-day maximum rental period.";
-
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void dataGridVid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            editbtn.Visible = true;
+        {      
             try
             {
                 // Check if the clicked event was on a valid row
@@ -190,7 +159,7 @@ namespace BogsySystem.Forms
                 {
                     // Select the current row
                     dataGridVid.CurrentRow.Selected = true;
-                    addbtn.Visible = false;
+                    services.componentProperties2(addbtn, editbtn,removebtn);
                     // Retrieve and display data from the selected row
                     mediaID = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["MediaID"].Value);
                     vidtitletxt.Text = dataGridVid.Rows[e.RowIndex].Cells["Title"].Value.ToString();
@@ -199,9 +168,7 @@ namespace BogsySystem.Forms
                     quantitytxt.Value = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["TotalCopies"].Value);
                     currentTotalcopies = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["TotalCopies"].Value); //Current total copies
                     maxrenttxt.Text = Convert.ToInt32(dataGridVid.Rows[e.RowIndex].Cells["MaxRentalDays"].Value).ToString();
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -211,26 +178,21 @@ namespace BogsySystem.Forms
 
         private void dataGridVid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            dataGridVid.ClearSelection();  // Deselect the row            
-            clearDataFields();
-            addbtn.Visible = true;
-            editbtn.Visible = false;
-        }
-
-        void clearDataFields()
-        {
-            vidtitletxt.Clear();
-            formatxt.Text = "Select";
-            maxrenttxt.Text = "0";
-            quantitytxt.Value = 1;
+            dataGridVid.ClearSelection();           
+            services.clearDataFields(vidtitletxt,formatxt,maxrenttxt,quantitytxt);
+            services.componentProperties(addbtn, editbtn,removebtn);
         }
 
         private void dataGridVid_Click(object sender, EventArgs e)
         {
             dataGridVid.ClearSelection();
-            clearDataFields();
-            addbtn.Visible = true;
-            editbtn.Visible = false;
+            services.clearDataFields(vidtitletxt, formatxt, maxrenttxt, quantitytxt);
+            services.componentProperties(addbtn, editbtn, removebtn);
+        }
+
+        private void searchbtn_Click(object sender, EventArgs e)
+        {
+            services.searchFunction(dataGridVid, searchfilter, searchtxt);
         }
     }
 }

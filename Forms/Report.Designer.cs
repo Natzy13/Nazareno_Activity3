@@ -37,9 +37,11 @@
             dataGridReport = new DataGridView();
             dataGridUsers = new DataGridView();
             dataGridUserRented = new DataGridView();
-            rentsummarylbl = new Label();
             activerentlbl = new Label();
             backlbl = new Label();
+            searchfilter = new ComboBox();
+            searchbtn = new FontAwesome.Sharp.IconButton();
+            searchtxt = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridReport).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridUserRented).BeginInit();
@@ -77,7 +79,7 @@
             dataGridReport.ReadOnly = true;
             dataGridReport.RowHeadersVisible = false;
             dataGridReport.ScrollBars = ScrollBars.Vertical;
-            dataGridReport.Size = new Size(558, 191);
+            dataGridReport.Size = new Size(558, 179);
             dataGridReport.TabIndex = 2;
             // 
             // dataGridUsers
@@ -144,29 +146,19 @@
             dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
             dataGridUserRented.DefaultCellStyle = dataGridViewCellStyle6;
             dataGridUserRented.EnableHeadersVisualStyles = false;
-            dataGridUserRented.Location = new Point(310, 254);
+            dataGridUserRented.Location = new Point(310, 243);
             dataGridUserRented.Name = "dataGridUserRented";
             dataGridUserRented.ReadOnly = true;
             dataGridUserRented.RowHeadersVisible = false;
             dataGridUserRented.ScrollBars = ScrollBars.Vertical;
-            dataGridUserRented.Size = new Size(275, 125);
+            dataGridUserRented.Size = new Size(275, 136);
             dataGridUserRented.TabIndex = 4;
-            // 
-            // rentsummarylbl
-            // 
-            rentsummarylbl.AutoSize = true;
-            rentsummarylbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            rentsummarylbl.Location = new Point(27, 233);
-            rentsummarylbl.Name = "rentsummarylbl";
-            rentsummarylbl.Size = new Size(99, 18);
-            rentsummarylbl.TabIndex = 12;
-            rentsummarylbl.Text = "Active Users";
             // 
             // activerentlbl
             // 
             activerentlbl.AutoSize = true;
             activerentlbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            activerentlbl.Location = new Point(310, 233);
+            activerentlbl.Location = new Point(310, 222);
             activerentlbl.Name = "activerentlbl";
             activerentlbl.Size = new Size(201, 18);
             activerentlbl.TabIndex = 13;
@@ -182,13 +174,53 @@
             backlbl.TabIndex = 22;
             backlbl.Text = "Select a user to display ";
             // 
+            // searchfilter
+            // 
+            searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchfilter.FormattingEnabled = true;
+            searchfilter.Items.AddRange(new object[] { "ID", "Name" });
+            searchfilter.Location = new Point(27, 222);
+            searchfilter.Name = "searchfilter";
+            searchfilter.Size = new Size(65, 25);
+            searchfilter.TabIndex = 32;
+            searchfilter.Text = "Filter";
+            // 
+            // searchbtn
+            // 
+            searchbtn.BackColor = Color.Black;
+            searchbtn.FlatAppearance.BorderSize = 0;
+            searchbtn.FlatStyle = FlatStyle.Flat;
+            searchbtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            searchbtn.ForeColor = Color.White;
+            searchbtn.IconChar = FontAwesome.Sharp.IconChar.MagnifyingGlassPlus;
+            searchbtn.IconColor = Color.White;
+            searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            searchbtn.IconSize = 19;
+            searchbtn.Location = new Point(271, 222);
+            searchbtn.Name = "searchbtn";
+            searchbtn.Size = new Size(30, 26);
+            searchbtn.TabIndex = 31;
+            searchbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            searchbtn.UseVisualStyleBackColor = false;
+            searchbtn.Click += searchbtn_Click;
+            // 
+            // searchtxt
+            // 
+            searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchtxt.Location = new Point(98, 222);
+            searchtxt.Name = "searchtxt";
+            searchtxt.Size = new Size(167, 26);
+            searchtxt.TabIndex = 30;
+            // 
             // Report
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(612, 401);
+            Controls.Add(searchfilter);
+            Controls.Add(searchbtn);
+            Controls.Add(searchtxt);
             Controls.Add(activerentlbl);
-            Controls.Add(rentsummarylbl);
             Controls.Add(dataGridUserRented);
             Controls.Add(dataGridUsers);
             Controls.Add(dataGridReport);
@@ -209,8 +241,10 @@
         private DataGridView dataGridReport;
         private DataGridView dataGridUsers;
         private DataGridView dataGridUserRented;
-        private Label rentsummarylbl;
         private Label activerentlbl;
         private Label backlbl;
+        private ComboBox searchfilter;
+        private FontAwesome.Sharp.IconButton searchbtn;
+        private TextBox searchtxt;
     }
 }

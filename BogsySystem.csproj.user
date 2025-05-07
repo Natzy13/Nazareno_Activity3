@@ -22,16 +22,10 @@
     <Compile Update="Forms\VideoLibrary.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserForms\Services\UserReturnProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="UserForms\UserAccount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserForms\UserDashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UserForms\Services\UserReportProperties.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UserForms\UserPay.cs">

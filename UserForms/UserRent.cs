@@ -39,7 +39,7 @@ namespace BogsySystem.UserForms
                     services.dataGridProperties(dataGridRent);
                 }
                 else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace BogsySystem.UserForms
                     dataGridRent.ClearSelection();
                     services.refreshDataGrid(dataGridRent);
                 }
-                else MessageBox.Show("There was an error with the rental.");              
+                else MessageBox.Show("There was an error with the rental.");
             }
         }
 
@@ -78,7 +78,7 @@ namespace BogsySystem.UserForms
             }
             else if (selectedFilter == "VCD" || selectedFilter == "DVD")
             {
-                ApplyFilter("Format", selectedFilter);
+                services.ApplyFilter("Format", selectedFilter, dataGridRent);
             }
             else if (selectedFilter.StartsWith("Max Rent"))
             {
@@ -87,36 +87,12 @@ namespace BogsySystem.UserForms
                 if (match.Success)
                 {
                     string days = match.Value;
-                    ApplyFilter("MaxRentalDays", days);
+                    services.ApplyFilter("MaxRentalDays", days,dataGridRent);
                 }
             }
         }
 
-        void ApplyFilter(string column, string value)
-        {
-            try
-            {
-            DataTable mediaDt = services.Filter(column,value);
-
-                if (mediaDt.Rows.Count > 0)
-                {
-                    dataGridRent.DataSource = mediaDt;
-                    services.dataGridProperties(dataGridRent);
-                }
-                else
-                {
-                    string message = column == "Format"
-                        ? $"No {value} media found."
-                        : $"No media found with a {value}-day maximum rental period.";
-
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        
 
         private void dataGridRent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -144,13 +120,18 @@ namespace BogsySystem.UserForms
         private void dataGridRent_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             dataGridRent.ClearSelection();
-            services.componentHide(quantitylbl,quantitytxt,rentbtn);
+            services.componentHide(quantitylbl, quantitytxt, rentbtn);
         }
 
         private void dataGridRent_Click(object sender, EventArgs e)
         {
             dataGridRent.ClearSelection();
             services.componentHide(quantitylbl, quantitytxt, rentbtn);
+        }
+
+        private void searchbtn_Click(object sender, EventArgs e)
+        {
+            services.searchFunction(dataGridRent,searchtxt);
         }
     }
 }
