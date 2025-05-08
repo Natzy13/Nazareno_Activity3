@@ -18,117 +18,38 @@ namespace BogsySystem.Forms
     public partial class Users : Form
     {
         UsersServices services = new UsersServices();
-        private int selectedUserID;
         public Users()
         {
             InitializeComponent();
         }
 
-        private void Users_Load(object sender, EventArgs e)
+        private void Users_Load(object sender, EventArgs e) //vidLoadFunction
         {
-            filter.SelectedIndex = 0;
-            services.componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
-            try
-            {
-                DataTable usersDt = services.GetUsers();
-
-                if (usersDt.Rows.Count > 0)
-                {
-                    dataGridUsers.DataSource = usersDt;
-                    services.dataGridProperties(dataGridUsers);
-                }
-                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            services.userLoadFunction(filter, activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl,
+                genderlbl, dataGridUsers);
 
         }
 
         private void deactbtn_Click(object sender, EventArgs e)
         {
-            int row = services.deactUser(selectedUserID);
-            if (row == 1)
-            {
-                MessageBox.Show("Account Activated");
-                services.refreshDataGrid(dataGridUsers);
-            }
-
-            else MessageBox.Show("There is an error deactivating");
+            services.ActivateButtonFunction(dataGridUsers);
         }
 
         private void editbtn_Click(object sender, EventArgs e)
         {
-            string displayname = nametxt.Text;
-            string displayemail = emailtxt.Text;
-            string displaygender = gendertxt.Text;
-
-            if (displayname.Equals("")) MessageBox.Show("Enter Name");
-            else if (displayemail.Equals("")) MessageBox.Show("Enter Email");
-            else if (displaygender.Equals("Select Gender")) MessageBox.Show("Select Gender");
-            else
-            {
-                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (confirmResult == DialogResult.Yes)
-                {
-                    int row = services.editUser(displayname, displayemail, displaygender, selectedUserID);
-
-                    if (row == 1)
-                    {
-                        MessageBox.Show("User Updated Successfully");
-                        services.refreshDataGrid(dataGridUsers);
-                        services.componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
-                    }
-
-                    else
-                    {
-                        MessageBox.Show("There is an error updating");
-                    }
-                }
-            }
+            services.EditButtonFunction(nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl, activatebtn, 
+                editbtn, dataGridUsers);
         }
 
         private void filter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedFilter = filter.SelectedItem.ToString();
-
-            if (selectedFilter == "All") services.refreshDataGrid(dataGridUsers);
-            else if (selectedFilter == "Activated" || selectedFilter == "Deactivated")
-            {
-                string bitValue = selectedFilter == "Activated" ? "1" : "0";
-                services.ApplyFilter("IsActive", bitValue, dataGridUsers);
-            }
-            else if (selectedFilter == "Male" || selectedFilter == "Female")
-            { 
-                services.ApplyFilter("Gender", selectedFilter, dataGridUsers); 
-            }
+           services.filterComboboxFunction(filter, dataGridUsers);
         }
-        private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
+
+        private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e) //cellClickFunction
         {
-            try
-            {
-                // Check if the clicked event was on a valid row
-                if (e.RowIndex >= 0)
-                {
-                    // Select the current row
-                    dataGridUsers.CurrentRow.Selected = true;
-                    services.componentShow(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
-
-                    // Retrieve the selected data into a variable
-                    selectedUserID = Convert.ToInt32(dataGridUsers.Rows[e.RowIndex].Cells["ID"].Value);
-                    nametxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Name"].Value.ToString();
-                    emailtxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Email"].Value.ToString();
-                    gendertxt.Text = dataGridUsers.Rows[e.RowIndex].Cells["Gender"].Value.ToString();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            services.cellClickFunction(e,dataGridUsers,activatebtn,editbtn, nametxt, emailtxt,gendertxt,namelbl, 
+               emaillbl, genderlbl);
         }
 
         private void dataGridUsers_Click(object sender, EventArgs e)
@@ -145,7 +66,7 @@ namespace BogsySystem.Forms
 
         private void searchbtn_Click(object sender, EventArgs e)
         {
-            services.searchFunction(dataGridUsers,searchfilter, searchtxt);
+            services.searchButtonFunction(dataGridUsers,searchfilter, searchtxt);
         }
     }
 }

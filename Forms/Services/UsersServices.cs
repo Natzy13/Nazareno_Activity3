@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using BogsySystem.Forms.Strings;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,27 +13,92 @@ namespace BogsySystem.Forms.Properties
     public class UsersServices
     {
         private DBAccess ObjDBAccess = new DBAccess();
+        private int selectedUserID { get; set; }
 
-        public DataTable GetUsers()
+        public void userLoadFunction(ComboBox filter, Button activatebtn, Button editbtn, TextBox nametxt, TextBox emailtxt,
+            ComboBox gendertxt, Label namelbl, Label emaillbl, Label genderlbl, DataGridView grid)
         {
-            string tablequery = "SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0";
+            filter.SelectedIndex = 0;
+            componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
+            try
+            {
+                DataTable usersDt = GetUsersQuery();
+
+                if (usersDt.Rows.Count > 0)
+                {
+                    grid.DataSource = usersDt;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public DataTable GetUsersQuery()
+        {
             DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, usersDt);
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, usersDt);
             ObjDBAccess.closeConn();
             return usersDt;
         }
 
-        public int deactUser(int selectedUser)
+        public void ActivateButtonFunction(DataGridView grid)
         {
-            SqlCommand activateCommand = new SqlCommand($"Update Users SET IsActive= 1 where ID = '{selectedUser}'");
+            int row = activateUserQuery(selectedUserID);
+            if (row == 1)
+            {
+                MessageBox.Show("Account Activated");
+                refreshDataGrid(grid);
+            }
+
+            else MessageBox.Show("There is an error deactivating");
+        }
+
+        public int activateUserQuery(int selectedUser)
+        {
+            SqlCommand activateCommand = new SqlCommand(UsersStrings.activateUserQuery(selectedUser));
             int row = ObjDBAccess.executeQuery(activateCommand);
             ObjDBAccess.closeConn();
             return row;
         }
 
-        public int editUser(string name, string email, string gender, int selectedUser) 
+        public void EditButtonFunction(TextBox nametxt, TextBox emailtxt, ComboBox gendertxt, Label namelbl, Label emaillbl,
+            Label genderlbl, Button activatebtn, Button editbtn ,DataGridView grid)
         {
-            SqlCommand editCommand = new SqlCommand($"Update Users SET Name= '{name}',Email= '{email}',Gender= '{gender}' where ID = '{selectedUser}'");
+            string displayname = nametxt.Text;
+            string displayemail = emailtxt.Text;
+            string displaygender = gendertxt.Text;
+
+            if (displayname.Equals("")) MessageBox.Show("Enter Name");
+            else if (displayemail.Equals("")) MessageBox.Show("Enter Email");
+            else if (displaygender.Equals("Select Gender")) MessageBox.Show("Select Gender");
+            else
+            {
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    int row = editUserQuery(displayname, displayemail, displaygender, selectedUserID);
+
+                    if (row == 1)
+                    {
+                        MessageBox.Show("User Updated Successfully");
+                        refreshDataGrid(grid);
+                        componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
+                    }
+
+                    else MessageBox.Show("There is an error updating");                    
+                }
+            }
+        }
+
+        public int editUserQuery(string name, string email, string gender, int selectedUser) 
+        {
+            SqlCommand editCommand = new SqlCommand(UsersStrings.editUserQuery(name, email, gender, selectedUser));
             editCommand.Parameters.AddWithValue("Name", name);
             editCommand.Parameters.AddWithValue("Email", email);
             editCommand.Parameters.AddWithValue("Gender", gender);
@@ -40,50 +106,57 @@ namespace BogsySystem.Forms.Properties
             return row;
         }
 
-        public DataTable Filter(string column, string value) 
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button activatebtn, Button editbtn,
+            TextBox nametxt, TextBox emailtxt, ComboBox gendertxt, Label namelbl, Label emaillbl, Label genderlbl)
         {
-            string tablequery = $"SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0 AND {column} = '{value}'";
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
+            try
+            {               
+                if (e.RowIndex >= 0)
+                {           
+                    grid.CurrentRow.Selected = true;
+                    componentShow(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
+                    DataGridViewRow row = grid.Rows[e.RowIndex];
+                    selectedUserID = Convert.ToInt32(grid.Rows[e.RowIndex].Cells["ID"].Value);
+                    nametxt.Text = row.Cells["Name"].Value.ToString();
+                    emailtxt.Text = row.Cells["Email"].Value.ToString();
+                    gendertxt.Text = row.Cells["Gender"].Value.ToString();                   
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
 
-        public DataTable FilterSearch(string column, string value)
+        public void filterComboboxFunction(ComboBox filter, DataGridView grid)
         {
-            string condition = column == "ID"
-                ? $"{column} = '{value}'"
-                : $"{column} LIKE '%{value}%'";
+            string selectedFilter = filter.SelectedItem.ToString();
 
-            string tablequery = $"SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0 AND {condition}";
-
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
+            if (selectedFilter == "All") refreshDataGrid(grid);
+            else if (selectedFilter == "Activated" || selectedFilter == "Deactivated")
+            {                
+                comboboxApplyFilter("IsActive", UsersStrings.bitValueFilter(selectedFilter), grid);
+            }
+            else if (selectedFilter == "Male" || selectedFilter == "Female")
+            {
+                comboboxApplyFilter("Gender", selectedFilter, grid);
+            }
         }
 
-        public void ApplyFilter(string column, string value, DataGridView grid)
+        public void comboboxApplyFilter(string column, string value, DataGridView grid)
         {
             try
             {
-                DataTable mediaDt = Filter(column, value);
+                DataTable mediaDt = comboBoxFilterQuery(column, value);
                 if (mediaDt.Rows.Count > 0)
                 {
                     grid.DataSource = mediaDt;
                     dataGridProperties(grid);
                 }
                 else
-                {
-                    string statusText = (column == "IsActive" && value == "1") ? "Activated" :
-                    (column == "IsActive" && value == "0") ? "Deactivated" :
-                    value;
-
-                    string message = column == "IsActive"
-                        ? $"No {statusText} user found."
-                        : $"No {value} user found.";
-
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {                  
+                    MessageBox.Show(UsersStrings.comboFilterMesage(column,value), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -92,7 +165,15 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
-        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
+        public DataTable comboBoxFilterQuery(string column, string value)
+        {           
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.comboFilterQuery(column,value), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
+        public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
         {
             string filterColumn = searchfilter.SelectedItem?.ToString();
             string filterValue = searchtxt.Text.Trim();
@@ -114,7 +195,7 @@ namespace BogsySystem.Forms.Properties
 
             try
             {
-                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                DataTable filteredUsers = searchButtonQuery(filterColumn, filterValue);
                 if (filteredUsers.Rows.Count > 0)
                 {
                     grid.DataSource = filteredUsers;
@@ -129,11 +210,18 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
+        public DataTable searchButtonQuery(string column, string value)
+        {          
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.searchFilterQuery(column,value), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
         public void refreshDataGrid(DataGridView grid)
         {
-            string tablequery = "SELECT ID, Name, Username, Email, Gender FROM Users WHERE IsAdmin = 0";
             DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, usersDt);
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, usersDt);
             ObjDBAccess.closeConn();
             grid.DataSource = usersDt;           
         }

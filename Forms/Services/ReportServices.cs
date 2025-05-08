@@ -116,14 +116,6 @@ namespace BogsySystem.Forms.Properties
             return mediaDt3;
         }
 
-        public DataTable FilterSearch(string column, string value)
-        {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(column,value), mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
-        }
-
         public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
         {
             string filterColumn = searchfilter.SelectedItem?.ToString();
@@ -146,7 +138,7 @@ namespace BogsySystem.Forms.Properties
 
             try
             {
-                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                DataTable filteredUsers = searchButtonQuery(filterColumn, filterValue);
                 if (filteredUsers.Rows.Count > 0)
                 {
                     grid.DataSource = filteredUsers;
@@ -159,6 +151,14 @@ namespace BogsySystem.Forms.Properties
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        public DataTable searchButtonQuery(string column, string value)
+        {
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(column, value), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
         }
 
         public void DataGridProperties1(DataGridView grid)
