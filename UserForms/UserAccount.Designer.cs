@@ -165,6 +165,7 @@
             // 
             gendertxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             gendertxt.FormattingEnabled = true;
+            gendertxt.Items.AddRange(new object[] { "Male", "Female ", "Other" });
             gendertxt.Location = new Point(320, 132);
             gendertxt.Name = "gendertxt";
             gendertxt.Size = new Size(252, 28);

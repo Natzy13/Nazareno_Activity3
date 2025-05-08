@@ -19,10 +19,9 @@ namespace BogsySystem.UserForms
 {
     public partial class UserAccount : Form
     {
-
-        DBAccess ObjDBAccess = new DBAccess();
+        
         UserAccountServices services = new UserAccountServices();
-        private string origpass = LoginServices.Password;
+  
         public UserAccount()
         {
             InitializeComponent();
@@ -30,66 +29,17 @@ namespace BogsySystem.UserForms
 
         private void UserAccount_Load(object sender, EventArgs e)
         {
-            idtxt.Text = LoginServices.ID;
-            fnametxt.Text = LoginServices.Name;
-            usernametxt.Text = LoginServices.Username;
-            passtxt.Text = LoginServices.Password;
-            emailtxt.Text = LoginServices.Email;
-            gendertxt.Text = LoginServices.Gender;
+            services.userAccountLoad(idtxt,fnametxt,usernametxt,passtxt,emailtxt,gendertxt);
         }
 
         private void editbtn_Click(object sender, EventArgs e)
         {
-            string editfname = fnametxt.Text;
-            string editusername = usernametxt.Text;
-            string editpass = passtxt.Text;
-            string editemail = emailtxt.Text;
-            string editgender = gendertxt.Text;
-
-            if (editfname.Equals("")) MessageBox.Show("Enter Your Name");       
-            else if (editusername.Equals("")) MessageBox.Show("Enter Your Username");  
-            else if (editpass.Equals("") || editpass.Length < 8) MessageBox.Show("Password is required and must be at least 8 characters long");          
-            else if (editemail.Equals("")) MessageBox.Show("Enter Your Email");           
-            else if (editemail.Equals("Select Gender")) MessageBox.Show("Select Gender");           
-            else
-            {
-                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (confirmResult == DialogResult.Yes)
-                {
-                    int row = services.editUser(editfname, editusername, editpass, editemail, editgender);
-                    if (row == 1) MessageBox.Show("Account Updated Successfully");
-                    if (editpass != origpass)
-                    {
-                        MessageBox.Show("Password changed. Please log in again.");
-                        MessageBox.Show($"Edit: {editpass} | Original: {origpass}");
-
-                        ParentForm.Close();
-
-                        Login login = new Login();
-                        login.Show();
-                    }                   
-                }              
-            }
+            services.editButtonFunction(fnametxt,usernametxt,passtxt,emailtxt,gendertxt, this.ParentForm);
         }
 
         private void deactbtn_Click(object sender, EventArgs e)
         {
-            DialogResult dialog = MessageBox.Show("Do you want to deactivate account ?", "Deactivate Account", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dialog == DialogResult.Yes)
-            {
-                int row = services.deactUser(LoginServices.ID);
-
-                if (row == 1)
-                {
-                    MessageBox.Show("Account Deactivated, contact admin for activation");
-                    ParentForm.Close();
-
-                    Login login = new Login();
-                    login.Show();
-                }
-               else MessageBox.Show("There is an error deactivating");               
-            }
+            services.deactButtonFunction(this.ParentForm);
         }
 
         private void showpassbtn_Click(object sender, EventArgs e)
