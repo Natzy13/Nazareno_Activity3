@@ -44,7 +44,7 @@ namespace BogsySystem.Forms
 
         private void searchbtn_Click(object sender, EventArgs e)
         {
-            services.searchFunction(dataGridUsers, searchfilter, searchtxt);
+            services.searchButtonFunction(dataGridUsers, searchfilter, searchtxt);
         }
     }
 

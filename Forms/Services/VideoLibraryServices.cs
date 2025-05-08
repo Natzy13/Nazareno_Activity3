@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using BogsySystem.Forms.Strings;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,24 +10,89 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace BogsySystem.Forms.Properties
 {
     public class VideoLibraryServices
     {
         private DBAccess ObjDBAccess = new DBAccess();
+
+        private int MediaID { get; set; }
+        private string Title { get;  set; }
+        private string Format { get; set; }
+        private int MaxRent { get; set; }
+        private int Total { get; set; }
+
+        private decimal price;
+        private int currentAvailablecopies, currentTotalcopies, activeRent;
         public DataTable displayMedia()
-        {
-            String tablequery = "SELECT * FROM MediaItems WHERE IsAvailable = 1";
+        {           
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, mediaDt);
             return mediaDt;
         }
 
-        public int addMedia(string title,string format, int available, int total, decimal price, int maxRent)
+        public void vidLoadFunction(ComboBox filter, Button edit, Button remove, DataGridView grid)
         {
+            componentProperties3(filter, edit, remove);
+            try
+            {
+                DataTable mediaDt = displayMedia();
+                if (mediaDt.Rows.Count > 0)
+                {
+                    grid.DataSource = mediaDt;
+                    refreshDataGrid(grid);
+                }
+                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void AddButtonFunction(TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total, DataGridView grid)
+        {           
+            Title = vidtitle.Text;
+            Format = format.Text;
+            MaxRent = int.Parse(maxrent.Text);
+            Total = (int)total.Value;
+            int available = Total;
+
+            if (string.IsNullOrEmpty(Title))
+            {
+                MessageBox.Show("Title is required");
+                return;
+            }
+            if (Format.Equals("Select"))
+            {
+                MessageBox.Show("Format is required");
+                return;
+            }
+            if (MaxRent.Equals(0))
+            {
+                MessageBox.Show("Select max rent");
+                return;
+            }
+
+            else
+            {
+                int row = addMediaQuery(Title, Format, available, Total, price, MaxRent);
+                if (row == 1)
+                {
+                    MessageBox.Show("Media Created Successfully");
+                    refreshDataGrid(grid);
+                    clearDataFields(vidtitle, format, maxrent, total);
+                }
+                else MessageBox.Show("Error creating media");
+            }
+        }
+
+        public int addMediaQuery(string title,string format, int available, int total, decimal price, int maxRent)
+        {         
             price = (format == "VCD") ? 25 : 50;
-            SqlCommand insertMedia = new SqlCommand("Insert into MediaItems(Title, Format, AvailableCopies, TotalCopies, Price, MaxRentalDays) Values (@title, @format, @available, @total, @price, @maxRent)");
+            SqlCommand insertMedia = new SqlCommand(VideoLibraryStrings.addMedia);
             insertMedia.Parameters.AddWithValue("@title", title);
             insertMedia.Parameters.AddWithValue("@format", format);
             insertMedia.Parameters.AddWithValue("@available", available);
@@ -37,13 +103,61 @@ namespace BogsySystem.Forms.Properties
             return row;
         }
 
-        public int editMedia(string displaytitle, string displayformat, int displaynewavailablecopies, int displaynewtotalcopies, decimal price, int displaymaxRent, int mediaID)
+        public void EditButtonFunction(TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total, DataGridView grid)
+        {
+            string displayTitle = vidtitle.Text;
+            string displayFormat = format.Text;
+            int displayMaxRent = int.Parse(maxrent.Text);
+            int newTotal = (int)total.Value;
+
+            activeRent = currentTotalcopies - currentAvailablecopies; //Check for how many copies rented
+            int addedCopies = newTotal - currentTotalcopies; //New copies to be added
+            int displaynewavailablecopies = currentAvailablecopies + addedCopies; //This will be added to the database for new available copies
+            
+            if (string.IsNullOrEmpty(displayTitle))
+            {
+                MessageBox.Show("Title is required");
+                return;
+            }
+            if (displayFormat.Equals("Select"))
+            {
+                MessageBox.Show("Format is required");
+                return;
+            }
+            if (displayMaxRent.Equals(0))
+            {
+                MessageBox.Show("Max Rent is required");
+                return;
+            }
+            if (displaynewavailablecopies < 0 || newTotal < activeRent)
+            {
+                MessageBox.Show("You can't reduce below rented copies");
+                return;
+            }
+
+            else
+            {
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmResult == DialogResult.Yes)
+                {
+                    int row = editMediaQuery(displayTitle, displayFormat, displaynewavailablecopies, newTotal, price, displayMaxRent, MediaID);
+                    if (row == 1)
+                    {
+                        MessageBox.Show("Media Updated Successfully");
+                        refreshDataGrid(grid);
+                        clearDataFields(vidtitle, format, maxrent, total);
+                    }
+                    else MessageBox.Show("There is an error updating");
+                }
+            }
+        }
+
+        public int editMediaQuery(string displaytitle, string displayformat, int displaynewavailablecopies, int displaynewtotalcopies, decimal price, int displaymaxRent, int mediaID)
         {
             price = (displayformat == "VCD") ? 25 : 50;
 
-            SqlCommand editCommand = new SqlCommand(
-                "Update MediaItems SET Title = @title, Format = @format, AvailableCopies = @available, TotalCopies = @total, Price = @price, MaxRentalDays = @maxRent WHERE MediaID = @mediaID"
-            );
+            SqlCommand editCommand = new SqlCommand(VideoLibraryStrings.editMedia);
             editCommand.Parameters.AddWithValue("@title", displaytitle);
             editCommand.Parameters.AddWithValue("@format", displayformat);
             editCommand.Parameters.AddWithValue("@available", displaynewavailablecopies);
@@ -55,27 +169,92 @@ namespace BogsySystem.Forms.Properties
             return row;
         }
 
-        public int removeMedia(int mediaID)
+        public void RemoveButtonFunction(DataGridView grid, TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total)
         {
-            SqlCommand deleteMedia = new SqlCommand("UPDATE MediaItems SET IsAvailable = 0 WHERE MediaID = '" + mediaID + "' ");
+            activeRent = currentTotalcopies - currentAvailablecopies;
+            if (currentAvailablecopies != currentTotalcopies) MessageBox.Show("Media cannot be removed since there are " + activeRent + " active rentals");
+            else
+            {
+                DialogResult dialog = MessageBox.Show("Do you want to remove this media", "Remove Media", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dialog == DialogResult.Yes)
+                {
+                    int row = removeMediaQuery(MediaID);
+                    if (row == 1)
+                    {
+                        MessageBox.Show("Media Remove Successfully");
+                       clearDataFields(vidtitle, format, maxrent, total);
+                       refreshDataGrid(grid);
+                    }
+                    else MessageBox.Show("Deletion Error");
+                }
+            }
+        }
+
+        public int removeMediaQuery(int mediaID)
+        {
+            SqlCommand deleteMedia = new SqlCommand(VideoLibraryStrings.removeMedia(mediaID));
             int row = ObjDBAccess.executeQuery(deleteMedia);
             return row;
         }
 
-        public DataTable Filter(string column, string value)
-        {
-            String tablequery = $"SELECT * FROM MediaItems WHERE IsAvailable = 1 AND {column} = '{value}'";
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
-        }
-
-        public void ApplyFilter(string column, string value, DataGridView grid)
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button addbtn, 
+            Button editbtn, Button removebtn, TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total)
         {
             try
             {
-                DataTable mediaDt = Filter(column, value);
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    grid.CurrentRow.Selected = true;
+                    componentProperties2(addbtn, editbtn, removebtn);
+                    // Retrieve and display data from the selected row
+                    DataGridViewRow row = grid.Rows[e.RowIndex];
+
+                    MediaID = Convert.ToInt32(row.Cells["MediaID"].Value);
+                    vidtitle.Text = row.Cells["Title"].Value.ToString();
+                    format.Text = row.Cells["Format"].Value.ToString();
+                    currentAvailablecopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
+                    total.Value = Convert.ToInt32(row.Cells["TotalCopies"].Value);
+                    currentTotalcopies = Convert.ToInt32(row.Cells["TotalCopies"].Value);
+                    maxrent.Text = Convert.ToInt32(row.Cells["MaxRentalDays"].Value).ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        public void filterComboboxFunction(ComboBox filterbtn, DataGridView grid)
+        {
+            string selectedFilter = filterbtn.SelectedItem.ToString();
+
+            if (selectedFilter == "All")
+            {
+               refreshDataGrid(grid);
+            }
+            else if (selectedFilter == "VCD" || selectedFilter == "DVD")
+            {
+                comboboxApplyFilter("Format", selectedFilter, grid);
+            }
+            else if (selectedFilter.StartsWith("Max Rent"))
+            {
+                // Extract the number of days from the filter text
+                var match = Regex.Match(selectedFilter, @"\d+");
+                if (match.Success)
+                {
+                    string days = match.Value;
+                    comboboxApplyFilter("MaxRentalDays", days, grid);
+                }
+            }
+        }
+
+        public void comboboxApplyFilter(string column, string value, DataGridView grid)
+        {
+            try
+            {
+                DataTable mediaDt = comboBoxFilterQuery(column, value);
 
                 if (mediaDt.Rows.Count > 0)
                 {
@@ -84,11 +263,7 @@ namespace BogsySystem.Forms.Properties
                 }
                 else
                 {
-                    string message = column == "Format"
-                    ? $"No {value} media found."
-                    : $"No media found with a {value}-day maximum rental period.";
-
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(VideoLibraryStrings.comboFilterMessage(column, value), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -97,20 +272,15 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
-        public DataTable FilterSearch(string column, string value)
+        public DataTable comboBoxFilterQuery(string column, string value)
         {
-            string condition = column == "MediaID"
-                ? $"{column} = '{value}'"
-                : $"{column} LIKE '%{value}%'";
-         
-            String tablequery = $"SELECT * FROM MediaItems WHERE IsAvailable = 1 AND {condition}";
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.comboFilterQuery(column, value), mediaDt);
             ObjDBAccess.closeConn();
             return mediaDt;
         }
-
-        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt) 
+    
+        public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt) 
         {
             string filterColumn = searchfilter.SelectedItem?.ToString();
             string filterValue = searchtxt.Text.Trim();
@@ -134,7 +304,7 @@ namespace BogsySystem.Forms.Properties
 
             try
             {
-                DataTable filteredUsers = FilterSearch(filterColumn, filterValue);
+                DataTable filteredUsers = searchButtonQuery(filterColumn, filterValue);
                 if (filteredUsers.Rows.Count > 0)
                 {
                     grid.DataSource = filteredUsers;
@@ -149,11 +319,17 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
-        public void refreshDataGrid(DataGridView grid)
+        public DataTable searchButtonQuery(string column, string value)
         {
-            string tableQuery = "SELECT * FROM MediaItems WHERE IsAvailable = 1";
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tableQuery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.filterSearch(), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+        public void refreshDataGrid(DataGridView grid)
+        {            
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, mediaDt);
             grid.DataSource = mediaDt;
             dataGridProperties(grid);
         }
@@ -210,8 +386,6 @@ namespace BogsySystem.Forms.Properties
             grid.Columns["MaxRentalDays"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["IsAvailable"].Visible = false;
-        }
-
-      
+        }      
     }
 }

@@ -124,7 +124,7 @@ namespace BogsySystem.Forms.Properties
             return mediaDt;
         }
 
-        public void searchFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
+        public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
         {
             string filterColumn = searchfilter.SelectedItem?.ToString();
             string filterValue = searchtxt.Text.Trim();

@@ -11,8 +11,7 @@ namespace BogsySystem.Forms.Properties
     public class SignUpServices
     {
     private DBAccess ObjDBAccess = new DBAccess();
-
-        public static string ID { get; private set; }
+   
         public static string Name { get; private set; }
         public static string Email { get; private set; }
         public static string Password { get; private set; }
