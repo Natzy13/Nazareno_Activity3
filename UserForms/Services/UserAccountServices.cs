@@ -1,5 +1,6 @@
 ﻿using BogsySystem.Forms;
 using BogsySystem.Forms.Properties;
+using BogsySystem.UserForms.Strings;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,10 @@ namespace BogsySystem.UserForms.Services
     public class UserAccountServices
     {
         private DBAccess ObjDBAccess = new DBAccess();
-        public int editUser(string editfname, string editusername, string editpass, string editemail, string editgender) {
-            SqlCommand updateCommand = new SqlCommand("Update Users SET Name= '" + @editfname + "',Username= '" + @editusername + "',Password= '" + @editpass + "',Email= '" + @editemail + "',Gender= '" + @editgender + "' where ID = '" + LoginServices.ID + "'");
+        public int editUser(string editfname, string editusername, string editpass, string editemail, string editgender) 
+        {
+            SqlCommand updateCommand = new SqlCommand(UserAccountStrings.editUserQuery(editfname, editusername, editpass,
+                editemail, editgender, LoginServices.ID));
 
             updateCommand.Parameters.AddWithValue("@fullname", editfname);
             updateCommand.Parameters.AddWithValue("@username", editusername);
@@ -28,7 +31,7 @@ namespace BogsySystem.UserForms.Services
 
         public int deactUser(string loginID)
         {
-            SqlCommand deactCommand = new SqlCommand($"Update Users SET IsActive= 0 where ID = '{loginID}'");
+            SqlCommand deactCommand = new SqlCommand(UserAccountStrings.deactUserQuery(loginID));
             int row = ObjDBAccess.executeQuery(deactCommand);
             ObjDBAccess.closeConn();
             return row;
