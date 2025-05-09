@@ -18,9 +18,6 @@ namespace BogsySystem.UserForms.Services
         private string Title { get; set; }
         private int MediaID { get; set; }
         private int AvailableCopies { get; set; }
- 
-
-       
 
         public DataTable displayMedia()
         {          

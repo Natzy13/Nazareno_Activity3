@@ -1,4 +1,6 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
+using BogsySystem.UserForms.Strings;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -12,70 +14,81 @@ namespace BogsySystem.UserForms.Services
     public class UserReportServices
     {
         DBAccess ObjDBAccess = new DBAccess();
+        private int loginID { get; set; }
+        
 
- 
-        public int queryTotalRent(int loginID)
+        public void userReportLoad(Label totalrenttxt, Label totalqtytxt, Label totalfeetxt, Label totalchargetxt,
+            Label totalamttxt, DataGridView grid) 
         {
-            string queryTotalRent = $"SELECT COUNT(*) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
-            SqlCommand totalRent = new SqlCommand(queryTotalRent);
+            loginID = int.Parse(LoginServices.ID);
+
+            totalrenttxt.Text = queryTotalRent(loginID).ToString();
+            totalqtytxt.Text = queryTotalQuantity(loginID).ToString();
+            totalfeetxt.Text = queryTotalFee(loginID).ToString();
+            totalchargetxt.Text = queryTotalCharge(loginID).ToString();
+            totalamttxt.Text = queryTotalAmount(loginID).ToString();
+
+            try
+            {
+                DataTable mediaDt = userHistory(loginID);
+
+                if (mediaDt.Rows.Count > 0)
+                {
+                    grid.DataSource = mediaDt;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No History Found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public int queryTotalRent(int loginID)
+        {        
+            SqlCommand totalRent = new SqlCommand(UserReportStrings.queryTotalRent(loginID));
             int TotalRent = Convert.ToInt32(ObjDBAccess.executeScalar(totalRent));
             return TotalRent;
         }
 
         public int queryTotalQuantity(int loginID)
-        {
-            string queryTotalQuantity = $"SELECT SUM(Quantity) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
-            SqlCommand totalQuantity = new SqlCommand(queryTotalQuantity);
+        {          
+            SqlCommand totalQuantity = new SqlCommand(UserReportStrings.queryTotalQuantity(loginID));
             object result = ObjDBAccess.executeScalar(totalQuantity);
             int TotalQuantity = result != DBNull.Value ? Convert.ToInt32(result) : 0;
             return TotalQuantity;
         }
 
         public decimal queryTotalFee(int loginID)
-        {
-            string queryTotalFee = $"SELECT SUM(Fee) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
-            SqlCommand totalFee = new SqlCommand(queryTotalFee);
+        {          
+            SqlCommand totalFee = new SqlCommand(UserReportStrings.queryTotalFee(loginID));
             object result = ObjDBAccess.executeScalar(totalFee);
             decimal TotalFee = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;        
             return TotalFee;         
         }
 
         public decimal queryTotalCharge(int loginID) 
-        {
-            string queryTotalCharge = $"SELECT SUM(ChargeFee) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
-            SqlCommand totalCharge = new SqlCommand(queryTotalCharge);
+        {           
+            SqlCommand totalCharge = new SqlCommand(UserReportStrings.queryTotalCharge(loginID));
             object result = ObjDBAccess.executeScalar(totalCharge);
             decimal TotalCharge = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
             return TotalCharge;
         }
 
         public decimal queryTotalAmount(int loginID) 
-        {
-            string queryTotalAmount = $"SELECT SUM(TotalFee) FROM RentalHistory WHERE UserID = '{loginID}' AND IsPaid = 1";
-            SqlCommand totalAmount = new SqlCommand(queryTotalAmount);
+        {           
+            SqlCommand totalAmount = new SqlCommand(UserReportStrings.queryTotalAmount(loginID));
             object result = ObjDBAccess.executeScalar(totalAmount);
             decimal TotalAmount = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
             return TotalAmount;
         }
 
         public DataTable userHistory(int loginID)
-        {
-            String tablequery = $@"SELECT 
-    MI.Title,
-    RH.RentalDate,
-    RH.ReturnDate,
-    R.Quantity,
-    RH.Fee,
-    RH.ChargeFee,
-    RH.TotalFee,
-    RH.Cash,
-    RH.PaidDate    
-FROM RentalHistory RH
-JOIN MediaItems MI ON RH.MediaID = MI.MediaID
-JOIN Rentals R ON RH.RentalID = R.RentalID
-WHERE RH.UserID = '{loginID}' AND RH.IsPaid = 1 ORDER BY RH.RentalDate DESC;";
+        {          
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(UserReportStrings.queryUserHistory(loginID), mediaDt);
             ObjDBAccess.closeConn();
             return mediaDt;
         }
