@@ -1,10 +1,13 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using BogsySystem.Forms.Properties;
+using BogsySystem.UserForms.Strings;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BogsySystem.UserForms.Services
@@ -12,43 +15,66 @@ namespace BogsySystem.UserForms.Services
     public class UserRentServices
     {
         DBAccess ObjDBAccess = new DBAccess();
+        private string Title { get; set; }
+        private int MediaID { get; set; }
+        private int AvailableCopies { get; set; }
+ 
+
+       
 
         public DataTable displayMedia()
-        {
-            String tablequery = "SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
+        {          
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, mediaDt);
             ObjDBAccess.closeConn();
             return mediaDt;
         }
 
-        public int userRent(int userID, int mediaID, int quantity)
+        public void userRentLoad(Label quantitylbl, NumericUpDown quantitytxt, Button rentbtn, DataGridView grid)
         {
-            SqlCommand combinedCommand = new SqlCommand(@"
-DECLARE @newRentalID INT;
-DECLARE @pricePerMedia DECIMAL(10, 2);
+            componentHide(quantitylbl, quantitytxt, rentbtn);
+            try
+            {
+                DataTable displayRent = displayMedia();
 
--- Get the media price per piece
-SELECT @pricePerMedia = Price FROM MediaItems WHERE MediaID = @mediaID;
+                if (displayRent.Rows.Count > 0)
+                {
+                    grid.DataSource = displayRent;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
--- Insert into Rentals with calculated fee and capture RentalID
-INSERT INTO Rentals (UserID, MediaID, RentalDate, Quantity, Fee)
-VALUES (@userID, @mediaID, @rentalDate, @quantity, @pricePerMedia * @quantity);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-SET @newRentalID = SCOPE_IDENTITY();
+        public void rentButtonFunction(NumericUpDown quantitytxt, DataGridView grid)
+        {
+            int quantity = (int)quantitytxt.Value;
+            int userID = int.Parse(LoginServices.ID);
 
--- Input the format in Rental History
-DECLARE @format NVARCHAR(50);
-SELECT @format = Format FROM MediaItems WHERE MediaID = @mediaID;
+            if (quantity > AvailableCopies) MessageBox.Show("Not enough copies available!");
+            else
+            {
+                int row = userRentQuery(userID, MediaID, quantity);
 
--- Insert into RentalHistory
-INSERT INTO RentalHistory (RentalID, UserID, MediaID, Format, RentalDate, ReturnDate,IsReturned, Quantity, QuantityReturned , Fee , ChargeFee , TotalFee,IsPaid, PaidDate, Cash, Change)
-VALUES (@newRentalID, @userID, @mediaID, @format,  @rentalDate, NULL, 0, @quantity, 0 , 0 , 0 , 0, 0, NULL, 0 , 0);
+                if (row > 0)
+                {
+                    MessageBox.Show($"Successfully rented {quantity} copies of " + Title);
+                    quantitytxt.Value = 1;
+                    grid.ClearSelection();
+                    refreshDataGrid(grid);
+                }
+                else MessageBox.Show("There was an error with the rental.");
+            }
+        }
 
--- Update AvailableCopies
-UPDATE MediaItems 
-SET AvailableCopies = AvailableCopies - @quantity 
-WHERE MediaID = @mediaID;");
+        public int userRentQuery(int userID, int mediaID, int quantity)
+        {
+            SqlCommand combinedCommand = new SqlCommand(UserRentStrings.userRentQuery);
 
             combinedCommand.Parameters.AddWithValue("@userID", userID);
             combinedCommand.Parameters.AddWithValue("@mediaID", mediaID);
@@ -61,25 +87,60 @@ WHERE MediaID = @mediaID;");
             return row;
         }
 
-        public DataTable Filter(string column, string value) 
-        {
-            string tablequery = $@"
-            SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
-            FROM MediaItems 
-            WHERE AvailableCopies > 0 AND {column} = '{value}'";
-
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
-            ObjDBAccess.closeConn();
-
-            return mediaDt;
-        }
-
-        public void ApplyFilter(string column, string value, DataGridView grid)
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Label quantitylbl, 
+            NumericUpDown quantitytxt, Button rentbtn)
         {
             try
             {
-                DataTable mediaDt = Filter(column, value);
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    grid.CurrentRow.Selected = true;
+                    componentShow(quantitylbl, quantitytxt, rentbtn);
+
+                    DataGridViewRow row = grid.Rows[e.RowIndex];
+                    // Retrieve the selected data into a variable
+                    MediaID = Convert.ToInt32(row.Cells["MediaID"].Value);
+                    Title = row.Cells["Title"].Value.ToString();
+                    AvailableCopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        public void filterComboboxFunction(ComboBox filterbtn, DataGridView grid)
+        {
+            string selectedFilter = filterbtn.SelectedItem.ToString();
+
+            if (selectedFilter == "All")
+            {
+                refreshDataGrid(grid);
+            }
+            else if (selectedFilter == "VCD" || selectedFilter == "DVD")
+            {
+                comboboxApplyFilter("Format", selectedFilter, grid);
+            }
+            else if (selectedFilter.StartsWith("Max Rent"))
+            {
+                // Extract the number of days from the filter text
+                var match = Regex.Match(selectedFilter, @"\d+");
+                if (match.Success)
+                {
+                    string days = match.Value;
+                    comboboxApplyFilter("MaxRentalDays", days, grid);
+                }
+            }
+        }
+
+        public void comboboxApplyFilter(string column, string value, DataGridView grid)
+        {
+            try
+            {
+                DataTable mediaDt = comboboxFilterQuery(column, value);
 
                 if (mediaDt.Rows.Count > 0)
                 {
@@ -88,11 +149,8 @@ WHERE MediaID = @mediaID;");
                 }
                 else
                 {
-                    string message = column == "Format"
-                        ? $"No {value} media found."
-                        : $"No media found with a {value}-day maximum rental period.";
-
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    MessageBox.Show(UserRentStrings.comboFilterMessage(column,value), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -101,25 +159,22 @@ WHERE MediaID = @mediaID;");
             }
         }
 
-        public DataTable FilterSearch(string value)
+        public DataTable comboboxFilterQuery(string column, string value)
         {
-            string tablequery = $@"
-            SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
-            FROM MediaItems 
-            WHERE AvailableCopies > 0 AND TITLE LIKE '%{value}%'";
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.comboFilterQuery(column, value), mediaDt);
             ObjDBAccess.closeConn();
+
             return mediaDt;
         }
 
-        public void searchFunction(DataGridView grid,TextBox searchtxt)
+        public void searchButtonFunction(DataGridView grid, TextBox searchtxt)
         {
             string filterValue = searchtxt.Text.Trim();
 
             try
             {
-                DataTable filteredMedia = FilterSearch(filterValue);
+                DataTable filteredMedia = searchButtonQuery(filterValue);
                 if (filteredMedia.Rows.Count > 0)
                 {
                     grid.DataSource = filteredMedia;
@@ -134,11 +189,18 @@ WHERE MediaID = @mediaID;");
             }
         }
 
-        public void refreshDataGrid(DataGridView grid)
-        {
-            String tableQuery = "SELECT MediaID, Title, Format, AvailableCopies, Price, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
+        public DataTable searchButtonQuery(string value)
+        {           
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tableQuery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.filterSearch(value), mediaDt);
+            ObjDBAccess.closeConn();
+            return mediaDt;
+        }
+
+        public void refreshDataGrid(DataGridView grid)
+        {           
+            DataTable mediaDt = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, mediaDt);
             ObjDBAccess.closeConn();
             grid.DataSource = mediaDt;
             dataGridProperties(grid);
@@ -173,9 +235,6 @@ WHERE MediaID = @mediaID;");
 
             grid.Columns["MaxRentalDays"].HeaderText = "Max Rent Days";
             grid.Columns["MaxRentalDays"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
         }
-
-
     }
 }

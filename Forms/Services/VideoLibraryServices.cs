@@ -23,9 +23,11 @@ namespace BogsySystem.Forms.Properties
         private string Format { get; set; }
         private int MaxRent { get; set; }
         private int Total { get; set; }
+        private decimal Price { get; set; }
+        private int CurrentAvailablecopies { get; set; }
+        private int CurrentTotalcopies { get; set; }
+        private int ActiveRent { get; set; }
 
-        private decimal price;
-        private int currentAvailablecopies, currentTotalcopies, activeRent;
         public DataTable displayMedia()
         {           
             DataTable mediaDt = new DataTable();
@@ -78,7 +80,7 @@ namespace BogsySystem.Forms.Properties
 
             else
             {
-                int row = addMediaQuery(Title, Format, available, Total, price, MaxRent);
+                int row = addMediaQuery(Title, Format, available, Total, Price, MaxRent);
                 if (row == 1)
                 {
                     MessageBox.Show("Media Created Successfully");
@@ -110,9 +112,9 @@ namespace BogsySystem.Forms.Properties
             int displayMaxRent = int.Parse(maxrent.Text);
             int newTotal = (int)total.Value;
 
-            activeRent = currentTotalcopies - currentAvailablecopies; //Check for how many copies rented
-            int addedCopies = newTotal - currentTotalcopies; //New copies to be added
-            int displaynewavailablecopies = currentAvailablecopies + addedCopies; //This will be added to the database for new available copies
+            ActiveRent = CurrentTotalcopies - CurrentAvailablecopies; //Check for how many copies rented
+            int addedCopies = newTotal - CurrentTotalcopies; //New copies to be added
+            int displaynewavailablecopies = CurrentAvailablecopies + addedCopies; //This will be added to the database for new available copies
             
             if (string.IsNullOrEmpty(displayTitle))
             {
@@ -129,7 +131,7 @@ namespace BogsySystem.Forms.Properties
                 MessageBox.Show("Max Rent is required");
                 return;
             }
-            if (displaynewavailablecopies < 0 || newTotal < activeRent)
+            if (displaynewavailablecopies < 0 || newTotal < ActiveRent)
             {
                 MessageBox.Show("You can't reduce below rented copies");
                 return;
@@ -141,7 +143,7 @@ namespace BogsySystem.Forms.Properties
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    int row = editMediaQuery(displayTitle, displayFormat, displaynewavailablecopies, newTotal, price, displayMaxRent, MediaID);
+                    int row = editMediaQuery(displayTitle, displayFormat, displaynewavailablecopies, newTotal, Price, displayMaxRent, MediaID);
                     if (row == 1)
                     {
                         MessageBox.Show("Media Updated Successfully");
@@ -171,8 +173,8 @@ namespace BogsySystem.Forms.Properties
 
         public void RemoveButtonFunction(DataGridView grid, TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total)
         {
-            activeRent = currentTotalcopies - currentAvailablecopies;
-            if (currentAvailablecopies != currentTotalcopies) MessageBox.Show("Media cannot be removed since there are " + activeRent + " active rentals");
+            ActiveRent = CurrentTotalcopies - CurrentAvailablecopies;
+            if (CurrentAvailablecopies != CurrentTotalcopies) MessageBox.Show("Media cannot be removed since there are " + ActiveRent + " active rentals");
             else
             {
                 DialogResult dialog = MessageBox.Show("Do you want to remove this media", "Remove Media", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -214,9 +216,9 @@ namespace BogsySystem.Forms.Properties
                     MediaID = Convert.ToInt32(row.Cells["MediaID"].Value);
                     vidtitle.Text = row.Cells["Title"].Value.ToString();
                     format.Text = row.Cells["Format"].Value.ToString();
-                    currentAvailablecopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
+                    CurrentAvailablecopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
                     total.Value = Convert.ToInt32(row.Cells["TotalCopies"].Value);
-                    currentTotalcopies = Convert.ToInt32(row.Cells["TotalCopies"].Value);
+                    CurrentTotalcopies = Convert.ToInt32(row.Cells["TotalCopies"].Value);
                     maxrent.Text = Convert.ToInt32(row.Cells["MaxRentalDays"].Value).ToString();
                 }
             }
