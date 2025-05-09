@@ -92,9 +92,9 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable searchUsernameQuery(string loginusername)
         {       
-            DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(LoginStrings.searchUsername(loginusername), usersDt);
-            return usersDt;
+            DataTable usersUsername = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(LoginStrings.searchUsername(loginusername), usersUsername);
+            return usersUsername;
         }
         public DataTable searchUsernamePasswordQuery(string loginpassword, string loginusername) 
         {

@@ -28,22 +28,15 @@ namespace BogsySystem.Forms.Properties
         private int CurrentTotalcopies { get; set; }
         private int ActiveRent { get; set; }
 
-        public DataTable displayMedia()
-        {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, mediaDt);
-            return mediaDt;
-        }
-
         public void vidLoadFunction(ComboBox filter, Button edit, Button remove, DataGridView grid)
         {
             componentProperties3(filter, edit, remove);
             try
             {
-                DataTable mediaDt = displayMedia();
-                if (mediaDt.Rows.Count > 0)
+                DataTable mediaDisplay = displayMediaQuery();
+                if (mediaDisplay.Rows.Count > 0)
                 {
-                    grid.DataSource = mediaDt;
+                    grid.DataSource = mediaDisplay;
                     refreshDataGrid(grid);
                 }
                 else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -54,7 +47,15 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
-        public void AddButtonFunction(TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total, DataGridView grid)
+        public DataTable displayMediaQuery()
+        {
+            DataTable displayMediaQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, displayMediaQuery);
+            return displayMediaQuery;
+        }
+
+        public void AddButtonFunction(TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total, 
+            DataGridView grid)
         {           
             Title = vidtitle.Text;
             Format = format.Text;
@@ -80,8 +81,8 @@ namespace BogsySystem.Forms.Properties
 
             else
             {
-                int row = addMediaQuery(Title, Format, available, Total, Price, MaxRent);
-                if (row == 1)
+                int rowAddMedia = addMediaQuery(Title, Format, available, Total, Price, MaxRent);
+                if (rowAddMedia == 1)
                 {
                     MessageBox.Show("Media Created Successfully");
                     refreshDataGrid(grid);
@@ -101,8 +102,8 @@ namespace BogsySystem.Forms.Properties
             insertMedia.Parameters.AddWithValue("@total", total);
             insertMedia.Parameters.AddWithValue("@price", price);
             insertMedia.Parameters.AddWithValue("@maxRent", maxRent);
-            int row = ObjDBAccess.executeQuery(insertMedia);
-            return row;
+            int addMediaQuery = ObjDBAccess.executeQuery(insertMedia);
+            return addMediaQuery;
         }
 
         public void EditButtonFunction(TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total, DataGridView grid)
@@ -143,8 +144,9 @@ namespace BogsySystem.Forms.Properties
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    int row = editMediaQuery(displayTitle, displayFormat, displaynewavailablecopies, newTotal, Price, displayMaxRent, MediaID);
-                    if (row == 1)
+                    int rowEditMedia = editMediaQuery(displayTitle, displayFormat, displaynewavailablecopies, 
+                        newTotal, Price, displayMaxRent, MediaID);
+                    if (rowEditMedia == 1)
                     {
                         MessageBox.Show("Media Updated Successfully");
                         refreshDataGrid(grid);
@@ -167,8 +169,8 @@ namespace BogsySystem.Forms.Properties
             editCommand.Parameters.AddWithValue("@price", price);
             editCommand.Parameters.AddWithValue("@maxRent", displaymaxRent);
             editCommand.Parameters.AddWithValue("@mediaID", mediaID);
-            int row = ObjDBAccess.executeQuery(editCommand);
-            return row;
+            int editMediaQuery = ObjDBAccess.executeQuery(editCommand);
+            return editMediaQuery;
         }
 
         public void RemoveButtonFunction(DataGridView grid, TextBox vidtitle, ComboBox format, ComboBox maxrent, NumericUpDown total)
@@ -180,8 +182,8 @@ namespace BogsySystem.Forms.Properties
                 DialogResult dialog = MessageBox.Show("Do you want to remove this media", "Remove Media", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dialog == DialogResult.Yes)
                 {
-                    int row = removeMediaQuery(MediaID);
-                    if (row == 1)
+                    int rowRemoveMedia = removeMediaQuery(MediaID);
+                    if (rowRemoveMedia == 1)
                     {
                         MessageBox.Show("Media Remove Successfully");
                        clearDataFields(vidtitle, format, maxrent, total);
@@ -195,8 +197,8 @@ namespace BogsySystem.Forms.Properties
         public int removeMediaQuery(int mediaID)
         {
             SqlCommand deleteMedia = new SqlCommand(VideoLibraryStrings.removeMedia(mediaID));
-            int row = ObjDBAccess.executeQuery(deleteMedia);
-            return row;
+            int removeMediaQuery = ObjDBAccess.executeQuery(deleteMedia);
+            return removeMediaQuery;
         }
 
         public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button addbtn, 
@@ -256,11 +258,11 @@ namespace BogsySystem.Forms.Properties
         {
             try
             {
-                DataTable mediaDt = comboBoxFilterQuery(column, value);
+                DataTable comboboxFilter = comboBoxFilterQuery(column, value);
 
-                if (mediaDt.Rows.Count > 0)
+                if (comboboxFilter.Rows.Count > 0)
                 {
-                    grid.DataSource = mediaDt;
+                    grid.DataSource = comboboxFilter;
                     dataGridProperties(grid);
                 }
                 else
@@ -276,10 +278,10 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable comboBoxFilterQuery(string column, string value)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.comboFilterQuery(column, value), mediaDt);
+            DataTable comboBoxFilterQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.comboFilterQuery(column, value), comboBoxFilterQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return comboBoxFilterQuery;
         }
     
         public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt) 
@@ -323,17 +325,17 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable searchButtonQuery(string column, string value)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.filterSearch(), mediaDt);
+            DataTable searchButtonQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.filterSearch(), searchButtonQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return searchButtonQuery;
         }
 
         public void refreshDataGrid(DataGridView grid)
         {            
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, mediaDt);
-            grid.DataSource = mediaDt;
+            DataTable refreshDataGrid = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, refreshDataGrid);
+            grid.DataSource = refreshDataGrid;
             dataGridProperties(grid);
         }
 

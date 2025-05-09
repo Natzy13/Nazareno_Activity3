@@ -58,9 +58,9 @@ namespace BogsySystem.Forms.Properties
             else
             {
                 //This method from DBAccess, execute the sql command
-                int row = registerUserQuery(Name, Username, Password, Email, Gender);
+                int rowRegistered = registerUserQuery(Name, Username, Password, Email, Gender);
 
-                if (row == 1)
+                if (rowRegistered == 1)
                 {
                     ClearRegistrationFields(name, uname, pass, email, gender);
                     MessageBox.Show("Account Created Successfully");

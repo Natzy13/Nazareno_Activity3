@@ -22,11 +22,11 @@ namespace BogsySystem.Forms.Properties
             componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
             try
             {
-                DataTable usersDt = GetUsersQuery();
+                DataTable usersDisplay = GetUsersQuery();
 
-                if (usersDt.Rows.Count > 0)
+                if (usersDisplay.Rows.Count > 0)
                 {
-                    grid.DataSource = usersDt;
+                    grid.DataSource = usersDisplay;
                     dataGridProperties(grid);
                 }
                 else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -40,16 +40,16 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable GetUsersQuery()
         {
-            DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, usersDt);
+            DataTable GetUsersQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, GetUsersQuery);
             ObjDBAccess.closeConn();
-            return usersDt;
+            return GetUsersQuery;
         }
 
         public void ActivateButtonFunction(DataGridView grid)
         {
-            int row = activateUserQuery(selectedUserID);
-            if (row == 1)
+            int rowActiveUser = activateUserQuery(selectedUserID);
+            if (rowActiveUser == 1)
             {
                 MessageBox.Show("Account Activated");
                 refreshDataGrid(grid);
@@ -61,9 +61,9 @@ namespace BogsySystem.Forms.Properties
         public int activateUserQuery(int selectedUser)
         {
             SqlCommand activateCommand = new SqlCommand(UsersStrings.activateUserQuery(selectedUser));
-            int row = ObjDBAccess.executeQuery(activateCommand);
+            int activateUserQuery = ObjDBAccess.executeQuery(activateCommand);
             ObjDBAccess.closeConn();
-            return row;
+            return activateUserQuery;
         }
 
         public void EditButtonFunction(TextBox nametxt, TextBox emailtxt, ComboBox gendertxt, Label namelbl, Label emaillbl,
@@ -82,9 +82,9 @@ namespace BogsySystem.Forms.Properties
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    int row = editUserQuery(displayname, displayemail, displaygender, selectedUserID);
+                    int rowEditUser = editUserQuery(displayname, displayemail, displaygender, selectedUserID);
 
-                    if (row == 1)
+                    if (rowEditUser == 1)
                     {
                         MessageBox.Show("User Updated Successfully");
                         refreshDataGrid(grid);
@@ -102,8 +102,8 @@ namespace BogsySystem.Forms.Properties
             editCommand.Parameters.AddWithValue("Name", name);
             editCommand.Parameters.AddWithValue("Email", email);
             editCommand.Parameters.AddWithValue("Gender", gender);
-            int row = ObjDBAccess.executeQuery(editCommand);
-            return row;
+            int editUserQuery = ObjDBAccess.executeQuery(editCommand);
+            return editUserQuery;
         }
 
         public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button activatebtn, Button editbtn,
@@ -148,10 +148,10 @@ namespace BogsySystem.Forms.Properties
         {
             try
             {
-                DataTable mediaDt = comboBoxFilterQuery(column, value);
-                if (mediaDt.Rows.Count > 0)
+                DataTable comboboxFilter = comboBoxFilterQuery(column, value);
+                if (comboboxFilter.Rows.Count > 0)
                 {
-                    grid.DataSource = mediaDt;
+                    grid.DataSource = comboboxFilter;
                     dataGridProperties(grid);
                 }
                 else
@@ -167,10 +167,10 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable comboBoxFilterQuery(string column, string value)
         {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UsersStrings.comboFilterQuery(column,value), mediaDt);
+            DataTable comboBoxFilterQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.comboFilterQuery(column,value), comboBoxFilterQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return comboBoxFilterQuery;
         }
 
         public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
@@ -212,18 +212,18 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable searchButtonQuery(string column, string value)
         {          
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UsersStrings.searchFilterQuery(column,value), mediaDt);
+            DataTable searchButtonQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.searchFilterQuery(column,value), searchButtonQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return searchButtonQuery;
         }
 
         public void refreshDataGrid(DataGridView grid)
         {
-            DataTable usersDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, usersDt);
+            DataTable refreshDataGrid = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, refreshDataGrid);
             ObjDBAccess.closeConn();
-            grid.DataSource = usersDt;           
+            grid.DataSource = refreshDataGrid;           
         }
 
         public void componentHide(

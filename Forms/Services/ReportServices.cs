@@ -19,11 +19,11 @@ namespace BogsySystem.Forms.Properties
         {
             try
             {
-                DataTable media = GetMediaReport();
+                DataTable mediaReport = GetMediaReportQuery();
 
-                if (media.Rows.Count > 0)
+                if (mediaReport.Rows.Count > 0)
                 {
-                    gridReport.DataSource = media;
+                    gridReport.DataSource = mediaReport;
                     DataGridProperties1(gridReport);
                 }
                 else MessageBox.Show("No media found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -35,11 +35,11 @@ namespace BogsySystem.Forms.Properties
 
             try
             {
-                DataTable users = GetUsers();
+                DataTable usersDisplay = GetUsersQuery();
 
-                if (users.Rows.Count > 0)
+                if (usersDisplay.Rows.Count > 0)
                 {
-                    gridUsers.DataSource = users;
+                    gridUsers.DataSource = usersDisplay;
                     DataGridProperties2(gridUsers);
                 }
                 else MessageBox.Show("No active users found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -53,7 +53,7 @@ namespace BogsySystem.Forms.Properties
             activeRent.Visible = false;
         }
 
-        public void userGridFunction(DataGridViewCellEventArgs e, DataGridView gridUsers, Label activerentlbl, DataGridView activeRent)
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView gridUsers, Label activerentlbl, DataGridView activeRent)
         {
             try
             {
@@ -79,11 +79,11 @@ namespace BogsySystem.Forms.Properties
             activerentlbl.Visible = true;
             activeRent.Visible = true;
 
-            DataTable rentMedia = GetUsersActiveRentals(selectedUserID);
+            DataTable usersActiveRent = GetUsersActiveRentalsQuery(selectedUserID);
 
-            if (rentMedia.Rows.Count > 0)
+            if (usersActiveRent.Rows.Count > 0)
             {
-                activeRent.DataSource = rentMedia;
+                activeRent.DataSource = usersActiveRent;
                 DataGridProperties3(activeRent);
             }
             else
@@ -95,25 +95,25 @@ namespace BogsySystem.Forms.Properties
             }
         }
 
-        public DataTable GetMediaReport()
+        public DataTable GetMediaReportQuery()
         {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryReport, mediaDt);
-            return mediaDt;
+            DataTable mediaReport = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryReport, mediaReport);
+            return mediaReport;
         }
 
-        public DataTable GetUsers() 
+        public DataTable GetUsersQuery() 
         {           
-            DataTable mediaDt2 = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryUsers, mediaDt2);
-            return mediaDt2;
+            DataTable usersDisplay = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.queryUsers, usersDisplay);
+            return usersDisplay;
         }
 
-        public DataTable GetUsersActiveRentals(int selectedUser)
+        public DataTable GetUsersActiveRentalsQuery(int selectedUser)
         {        
-            DataTable mediaDt3 = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(ReportStrings.getUsersActiveRentals(selectedUser), mediaDt3);
-            return mediaDt3;
+            DataTable usersActiveRent = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.getUsersActiveRentals(selectedUser), usersActiveRent);
+            return usersActiveRent;
         }
 
         public void searchButtonFunction(DataGridView grid, ComboBox searchfilter, TextBox searchtxt)
@@ -155,10 +155,10 @@ namespace BogsySystem.Forms.Properties
 
         public DataTable searchButtonQuery(string column, string value)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(column, value), mediaDt);
+            DataTable searchQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(column, value), searchQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return searchQuery;
         }
 
         public void DataGridProperties1(DataGridView grid)
