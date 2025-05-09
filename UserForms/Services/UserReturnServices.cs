@@ -1,4 +1,6 @@
 ﻿using BogsySystem.Forms;
+using BogsySystem.Forms.Properties;
+using BogsySystem.UserForms.Strings;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -13,74 +15,63 @@ namespace BogsySystem.UserForms.Services
     {
         private DBAccess ObjDBAccess = new DBAccess();
 
+        private int MediaID {  get; set; }
+        private int RentalID { get; set; }
+        private int QuantityRent { get; set; }
+        private int LoginID { get; set; }
+        private string Title { get; set; }
+
         public DataTable displayReturn (int loginID)
-        {
-            String tablequery = $@"SELECT 
-                              Rentals.RentalID, 
-                              Rentals.MediaID, 
-                              MediaItems.Title,
-                              MediaItems.Format,
-                              MediaItems.Price,
-                              Rentals.RentalDate,
-                              Rentals.Quantity,
-                              MediaItems.MaxRentalDays                                                        
-                          FROM Rentals
-                          INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID
-                          INNER JOIN RentalHistory ON RentalHistory.RentalID = Rentals.RentalID
-                          WHERE Rentals.UserID = {loginID} AND RentalHistory.IsReturned = 0 ORDER BY Rentals.RentalDate DESC;";
+        {           
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);
+            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), mediaDt);
             ObjDBAccess.closeConn();
             return mediaDt;
         }
 
-        public int userReturn(int rentalID, int quantityRent) 
+        public void userReturnLoad(Button returnbtn, DataGridView grid)
+        {
+            LoginID = int.Parse(LoginServices.ID);
+            componentHide(returnbtn); ;
+
+            try
+            {
+                DataTable returnMedia = displayReturn(LoginID);
+
+                if (returnMedia.Rows.Count > 0)
+                {
+                    grid.DataSource = returnMedia;
+                    dataGridProperties(grid);
+                }
+                else MessageBox.Show("No rented media found, so there are no media for return.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void returnButtonFunction(DataGridView grid)
+        {
+            LoginID = int.Parse(LoginServices.ID);
+            int rows = userReturnQuery(RentalID, QuantityRent);
+            if (rows > 0)
+            {
+                MessageBox.Show($"Successfully returned {QuantityRent} copies of " + Title); ;
+                refreshDataGrid(LoginID, grid);
+            }
+            else
+            {
+                MessageBox.Show("Error occurred while returning the media");
+            }
+        }
+
+        public int userReturnQuery(int rentalID, int quantityRent) 
         {
             decimal overdueChargePerDay = 5;
 
-            string tablequery = @"
-DECLARE @maxRentalDays INT;
-DECLARE @pricePerMedia DECIMAL(10, 2);
-DECLARE @mediaID INT;
-
--- Get MediaID from Rentals table
-SELECT @mediaID = MediaID FROM Rentals WHERE RentalID = @rentalID;
-
--- Get the price per media and max rental days from MediaItems table
-SELECT 
-    @pricePerMedia = Price, 
-    @maxRentalDays = MaxRentalDays
-FROM MediaItems
-WHERE MediaID = @mediaID;
-
--- Calculate the Fee (price * quantity)
-DECLARE @baseRentalFee DECIMAL(10, 2);
-SET @baseRentalFee = @pricePerMedia * @quantityRent;
-
--- Calculate the overdue fee if applicable
-DECLARE @overdueFee DECIMAL(10, 2) = 0;
-IF DATEDIFF(DAY, (SELECT RentalDate FROM Rentals WHERE RentalID = @rentalID), GETDATE()) > @maxRentalDays
-BEGIN
-    SET @overdueFee = (DATEDIFF(DAY, (SELECT RentalDate FROM Rentals WHERE RentalID = @rentalID), GETDATE()) - @maxRentalDays) * @overdueChargePerDay * @quantityRent;
-END
-
--- Update RentalHistory table 
-UPDATE RentalHistory
-SET 
-    ReturnDate = GETDATE(),
-    IsReturned = 1,
-    QuantityReturned = @quantityRent,
-    Fee = @baseRentalFee,
-    ChargeFee = @overdueFee,
-    TotalFee = @baseRentalFee + @overdueFee
-WHERE RentalID = @rentalID;
-
--- Update AvailableCopies in MediaItems
-UPDATE MediaItems
-SET AvailableCopies = AvailableCopies + @quantityRent
-WHERE MediaID = @mediaID;";
-
-            SqlCommand cmdReturn = new SqlCommand(tablequery);
+            SqlCommand cmdReturn = new SqlCommand(UserReturnStrings.userReturnQuery);
 
             // Add parameters to the SqlCommand
             cmdReturn.Parameters.AddWithValue("@rentalID", rentalID);
@@ -93,23 +84,36 @@ WHERE MediaID = @mediaID;";
             return rows;
         }
 
-        public DataTable refreshDataGrid(int loginID, DataGridView grid)
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button returnbtn)
         {
-            String tablequery = $@"SELECT 
-                              Rentals.RentalID, 
-                              Rentals.MediaID, 
-                              MediaItems.Title,
-                              MediaItems.Format,
-                              MediaItems.Price,
-                              Rentals.RentalDate,
-                              Rentals.Quantity,
-                              MediaItems.MaxRentalDays                                                        
-                          FROM Rentals
-                          INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID
-                          INNER JOIN RentalHistory ON RentalHistory.RentalID = Rentals.RentalID
-                          WHERE Rentals.UserID = {loginID} AND RentalHistory.IsReturned = 0 ORDER BY Rentals.RentalDate DESC;";
+            try
+            {
+                // Check if the clicked event was on a valid row
+                if (e.RowIndex >= 0)
+                {
+                    // Select the current row
+                    grid.CurrentRow.Selected = true;
+                    componentShow(returnbtn);
+
+                    DataGridViewRow row = grid.Rows[e.RowIndex];
+         
+                    // Retrieve the selected data into a variable
+                    RentalID = Convert.ToInt32(row.Cells["RentalID"].Value);
+                    MediaID = Convert.ToInt32(row.Cells["MediaID"].Value);
+                    Title = row.Cells["Title"].Value.ToString();
+                    QuantityRent = Convert.ToInt32(row.Cells["Quantity"].Value); //Assign to variable
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        public DataTable refreshDataGrid(int loginID, DataGridView grid)
+        {        
             DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(tablequery, mediaDt);           
+            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), mediaDt);           
             ObjDBAccess.closeConn();
             grid.DataSource = mediaDt;
             dataGridProperties(grid);
