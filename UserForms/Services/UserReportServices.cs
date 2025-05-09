@@ -14,27 +14,26 @@ namespace BogsySystem.UserForms.Services
     public class UserReportServices
     {
         DBAccess ObjDBAccess = new DBAccess();
-        private int loginID { get; set; }
+        private int LoginID { get; set; }
         
-
         public void userReportLoad(Label totalrenttxt, Label totalqtytxt, Label totalfeetxt, Label totalchargetxt,
             Label totalamttxt, DataGridView grid) 
         {
-            loginID = int.Parse(LoginServices.ID);
+            LoginID = int.Parse(LoginServices.ID);
 
-            totalrenttxt.Text = queryTotalRent(loginID).ToString();
-            totalqtytxt.Text = queryTotalQuantity(loginID).ToString();
-            totalfeetxt.Text = queryTotalFee(loginID).ToString();
-            totalchargetxt.Text = queryTotalCharge(loginID).ToString();
-            totalamttxt.Text = queryTotalAmount(loginID).ToString();
+            totalrenttxt.Text = queryTotalRent(LoginID).ToString();
+            totalqtytxt.Text = queryTotalQuantity(LoginID).ToString();
+            totalfeetxt.Text = queryTotalFee(LoginID).ToString();
+            totalchargetxt.Text = queryTotalCharge(LoginID).ToString();
+            totalamttxt.Text = queryTotalAmount(LoginID).ToString();
 
             try
             {
-                DataTable mediaDt = userHistory(loginID);
+                DataTable userMediaHistory = userHistory(LoginID);
 
-                if (mediaDt.Rows.Count > 0)
+                if (userMediaHistory.Rows.Count > 0)
                 {
-                    grid.DataSource = mediaDt;
+                    grid.DataSource = userMediaHistory;
                     dataGridProperties(grid);
                 }
                 else MessageBox.Show("No History Found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -49,48 +48,48 @@ namespace BogsySystem.UserForms.Services
         public int queryTotalRent(int loginID)
         {        
             SqlCommand totalRent = new SqlCommand(UserReportStrings.queryTotalRent(loginID));
-            int TotalRent = Convert.ToInt32(ObjDBAccess.executeScalar(totalRent));
-            return TotalRent;
+            int queryTotalRent = Convert.ToInt32(ObjDBAccess.executeScalar(totalRent));
+            return queryTotalRent;
         }
 
         public int queryTotalQuantity(int loginID)
         {          
             SqlCommand totalQuantity = new SqlCommand(UserReportStrings.queryTotalQuantity(loginID));
             object result = ObjDBAccess.executeScalar(totalQuantity);
-            int TotalQuantity = result != DBNull.Value ? Convert.ToInt32(result) : 0;
-            return TotalQuantity;
+            int queryTotalQuantity = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+            return queryTotalQuantity;
         }
 
         public decimal queryTotalFee(int loginID)
         {          
             SqlCommand totalFee = new SqlCommand(UserReportStrings.queryTotalFee(loginID));
             object result = ObjDBAccess.executeScalar(totalFee);
-            decimal TotalFee = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;        
-            return TotalFee;         
+            decimal queryTotalFee = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;        
+            return queryTotalFee;         
         }
 
         public decimal queryTotalCharge(int loginID) 
         {           
             SqlCommand totalCharge = new SqlCommand(UserReportStrings.queryTotalCharge(loginID));
             object result = ObjDBAccess.executeScalar(totalCharge);
-            decimal TotalCharge = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
-            return TotalCharge;
+            decimal queryTotalCharge = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
+            return queryTotalCharge;
         }
 
         public decimal queryTotalAmount(int loginID) 
         {           
             SqlCommand totalAmount = new SqlCommand(UserReportStrings.queryTotalAmount(loginID));
             object result = ObjDBAccess.executeScalar(totalAmount);
-            decimal TotalAmount = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
-            return TotalAmount;
+            decimal queryTotalAmount = result != DBNull.Value ? Convert.ToDecimal(result) : 0m;
+            return queryTotalAmount;
         }
 
         public DataTable userHistory(int loginID)
         {          
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserReportStrings.queryUserHistory(loginID), mediaDt);
+            DataTable userHistory = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserReportStrings.queryUserHistory(loginID), userHistory);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return userHistory;
         }
 
         public void dataGridProperties(DataGridView grid)

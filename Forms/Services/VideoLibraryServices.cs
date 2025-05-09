@@ -37,7 +37,7 @@ namespace BogsySystem.Forms.Properties
                 if (mediaDisplay.Rows.Count > 0)
                 {
                     grid.DataSource = mediaDisplay;
-                    refreshDataGrid(grid);
+                    refreshDataGridQuery(grid);
                 }
                 else MessageBox.Show("No records found", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -85,7 +85,7 @@ namespace BogsySystem.Forms.Properties
                 if (rowAddMedia == 1)
                 {
                     MessageBox.Show("Media Created Successfully");
-                    refreshDataGrid(grid);
+                    refreshDataGridQuery(grid);
                     clearDataFields(vidtitle, format, maxrent, total);
                 }
                 else MessageBox.Show("Error creating media");
@@ -149,7 +149,7 @@ namespace BogsySystem.Forms.Properties
                     if (rowEditMedia == 1)
                     {
                         MessageBox.Show("Media Updated Successfully");
-                        refreshDataGrid(grid);
+                        refreshDataGridQuery(grid);
                         clearDataFields(vidtitle, format, maxrent, total);
                     }
                     else MessageBox.Show("There is an error updating");
@@ -187,7 +187,7 @@ namespace BogsySystem.Forms.Properties
                     {
                         MessageBox.Show("Media Remove Successfully");
                        clearDataFields(vidtitle, format, maxrent, total);
-                       refreshDataGrid(grid);
+                       refreshDataGridQuery(grid);
                     }
                     else MessageBox.Show("Deletion Error");
                 }
@@ -236,7 +236,7 @@ namespace BogsySystem.Forms.Properties
 
             if (selectedFilter == "All")
             {
-               refreshDataGrid(grid);
+               refreshDataGridQuery(grid);
             }
             else if (selectedFilter == "VCD" || selectedFilter == "DVD")
             {
@@ -331,7 +331,7 @@ namespace BogsySystem.Forms.Properties
             return searchButtonQuery;
         }
 
-        public void refreshDataGrid(DataGridView grid)
+        public void refreshDataGridQuery(DataGridView grid)
         {            
             DataTable refreshDataGrid = new DataTable();
             ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.displayMedia, refreshDataGrid);

@@ -42,11 +42,11 @@ namespace BogsySystem.UserForms.Services
 
         public DataTable displayPayQuery(int userID)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, mediaDt, userID);
+            DataTable displayPayQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, displayPayQuery, userID);
             ObjDBAccess.closeConn();
 
-            return mediaDt;
+            return displayPayQuery;
         }
 
         public void payButtonFunction(TextBox feetxt, Label feelbl, TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt,
@@ -67,16 +67,16 @@ namespace BogsySystem.UserForms.Services
                         decimal change = pay - totalFee;
 
                         int userID = int.Parse(LoginServices.ID);
-                        int row = userPayQuery(rentalID, userID, pay, change);
+                        int rowUserPay = userPayQuery(rentalID, userID, pay, change);
 
-                        if (row > 0)
+                        if (rowUserPay > 0)
                         {
                             MessageBox.Show($"Payment successful!\nChange: {change:F2}");
                             paytxt.Text = "";
                             grid.ClearSelection();
                             componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, 
                                 paylbl, paybtn);
-                            refreshDataGrid(userID, grid);
+                            refreshDataGridQuery(userID, grid);
                         }
                         else MessageBox.Show("There was an error with the rental.");
                     }
@@ -93,10 +93,9 @@ namespace BogsySystem.UserForms.Services
             payRental.Parameters.AddWithValue("@change", changeAmount);
             payRental.Parameters.AddWithValue("@rentalID", rentalID);
             payRental.Parameters.AddWithValue("@userID", userID);
-            int row = ObjDBAccess.executeQuery(payRental);
+            int userPayQuery = ObjDBAccess.executeQuery(payRental);
             ObjDBAccess.closeConn();
-
-            return row;
+            return userPayQuery;
         }
 
         public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, TextBox feetxt, Label feelbl, 
@@ -128,12 +127,12 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
-        public void refreshDataGrid(int userID, DataGridView grid)
+        public void refreshDataGridQuery(int userID, DataGridView grid)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, mediaDt, userID);
+            DataTable refreshDataGrid = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, refreshDataGrid, userID);
             ObjDBAccess.closeConn();
-            grid.DataSource = mediaDt;
+            grid.DataSource = refreshDataGrid;
             dataGridProperties(grid);
         }
 

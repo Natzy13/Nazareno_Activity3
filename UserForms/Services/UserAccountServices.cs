@@ -12,9 +12,8 @@ namespace BogsySystem.UserForms.Services
 {
     public class UserAccountServices
     {
-        private DBAccess ObjDBAccess = new DBAccess();
-
-        private string origpass = LoginServices.Password;
+        private DBAccess ObjDBAccess = new DBAccess();       
+        private string OrigPass { get; set; }
 
         public void userAccountLoad(Label idtxt, TextBox fnametxt, TextBox usernametxt, TextBox passtxt, TextBox emailtxt,
             ComboBox gendertxt)
@@ -30,6 +29,7 @@ namespace BogsySystem.UserForms.Services
         public void editButtonFunction(TextBox fnametxt, TextBox usernametxt, TextBox passtxt, TextBox emailtxt, 
             ComboBox gendertxt, Form parentForm)
         {
+            OrigPass = LoginServices.Password;
 
             string editfname = fnametxt.Text;
             string editusername = usernametxt.Text;
@@ -72,9 +72,9 @@ namespace BogsySystem.UserForms.Services
 
                 if (confirmResult == DialogResult.Yes)
                 {
-                    int row = editUserQuery(editfname, editusername, editpass, editemail, editgender);
-                    if (row == 1) MessageBox.Show("Account Updated Successfully");
-                    if (editpass != origpass)
+                    int rowEditUser = editUserQuery(editfname, editusername, editpass, editemail, editgender);
+                    if (rowEditUser == 1) MessageBox.Show("Account Updated Successfully");
+                    if (editpass != OrigPass)
                     {
                         MessageBox.Show("Password changed. Please log in again.");
                       
@@ -97,10 +97,9 @@ namespace BogsySystem.UserForms.Services
             updateCommand.Parameters.AddWithValue("@password", editpass);
             updateCommand.Parameters.AddWithValue("@email", editemail);
             updateCommand.Parameters.AddWithValue("@gender", editgender);
-            int row = ObjDBAccess.executeQuery(updateCommand);
+            int editUserQuery = ObjDBAccess.executeQuery(updateCommand);
             ObjDBAccess.closeConn();
-
-            return row;
+            return editUserQuery;
         }
 
         public void deactButtonFunction(Form parentForm)
@@ -108,9 +107,9 @@ namespace BogsySystem.UserForms.Services
             DialogResult dialog = MessageBox.Show("Do you want to deactivate account ?", "Deactivate Account", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialog == DialogResult.Yes)
             {
-                int row = deactUserQuery(LoginServices.ID);
+                int rowDeactUser = deactUserQuery(LoginServices.ID);
 
-                if (row == 1)
+                if (rowDeactUser == 1)
                 {
                     MessageBox.Show("Account Deactivated, contact admin for activation");
                     parentForm.Close();
@@ -125,9 +124,9 @@ namespace BogsySystem.UserForms.Services
         public int deactUserQuery(string loginID)
         {
             SqlCommand deactCommand = new SqlCommand(UserAccountStrings.deactUserQuery(loginID));
-            int row = ObjDBAccess.executeQuery(deactCommand);
+            int deactUserQuery = ObjDBAccess.executeQuery(deactCommand);
             ObjDBAccess.closeConn();
-            return row;
+            return deactUserQuery;
         }
 
         public void showPass(TextBox passwordShow, Button passwordHide)

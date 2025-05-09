@@ -19,20 +19,12 @@ namespace BogsySystem.UserForms.Services
         private int MediaID { get; set; }
         private int AvailableCopies { get; set; }
 
-        public DataTable displayMedia()
-        {          
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
-        }
-
         public void userRentLoad(Label quantitylbl, NumericUpDown quantitytxt, Button rentbtn, DataGridView grid)
         {
             componentHide(quantitylbl, quantitytxt, rentbtn);
             try
             {
-                DataTable displayRent = displayMedia();
+                DataTable displayRent = displayMediaQuery();
 
                 if (displayRent.Rows.Count > 0)
                 {
@@ -48,6 +40,14 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
+        public DataTable displayMediaQuery()
+        {
+            DataTable displayMediaQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, displayMediaQuery);
+            ObjDBAccess.closeConn();
+            return displayMediaQuery;
+        }
+
         public void rentButtonFunction(NumericUpDown quantitytxt, DataGridView grid)
         {
             int quantity = (int)quantitytxt.Value;
@@ -56,14 +56,14 @@ namespace BogsySystem.UserForms.Services
             if (quantity > AvailableCopies) MessageBox.Show("Not enough copies available!");
             else
             {
-                int row = userRentQuery(userID, MediaID, quantity);
+                int rowUserRent = userRentQuery(userID, MediaID, quantity);
 
-                if (row > 0)
+                if (rowUserRent > 0)
                 {
                     MessageBox.Show($"Successfully rented {quantity} copies of " + Title);
                     quantitytxt.Value = 1;
                     grid.ClearSelection();
-                    refreshDataGrid(grid);
+                    refreshDataGridQuery(grid);
                 }
                 else MessageBox.Show("There was an error with the rental.");
             }
@@ -72,16 +72,13 @@ namespace BogsySystem.UserForms.Services
         public int userRentQuery(int userID, int mediaID, int quantity)
         {
             SqlCommand combinedCommand = new SqlCommand(UserRentStrings.userRentQuery);
-
             combinedCommand.Parameters.AddWithValue("@userID", userID);
             combinedCommand.Parameters.AddWithValue("@mediaID", mediaID);
             combinedCommand.Parameters.AddWithValue("@rentalDate", DateTime.Now);
             combinedCommand.Parameters.AddWithValue("@quantity", quantity);
-
-            int row = ObjDBAccess.executeQuery(combinedCommand);
+            int userRentQuery = ObjDBAccess.executeQuery(combinedCommand);
             ObjDBAccess.closeConn();
-
-            return row;
+            return userRentQuery;
         }
 
         public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Label quantitylbl, 
@@ -115,7 +112,7 @@ namespace BogsySystem.UserForms.Services
 
             if (selectedFilter == "All")
             {
-                refreshDataGrid(grid);
+                refreshDataGridQuery(grid);
             }
             else if (selectedFilter == "VCD" || selectedFilter == "DVD")
             {
@@ -137,11 +134,11 @@ namespace BogsySystem.UserForms.Services
         {
             try
             {
-                DataTable mediaDt = comboboxFilterQuery(column, value);
+                DataTable comboboxFilter = comboboxFilterQuery(column, value);
 
-                if (mediaDt.Rows.Count > 0)
+                if (comboboxFilter.Rows.Count > 0)
                 {
-                    grid.DataSource = mediaDt;
+                    grid.DataSource = comboboxFilter;
                     dataGridProperties(grid);
                 }
                 else
@@ -158,11 +155,10 @@ namespace BogsySystem.UserForms.Services
 
         public DataTable comboboxFilterQuery(string column, string value)
         {
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserRentStrings.comboFilterQuery(column, value), mediaDt);
+            DataTable comboboxFilterQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.comboFilterQuery(column, value), comboboxFilterQuery);
             ObjDBAccess.closeConn();
-
-            return mediaDt;
+            return comboboxFilterQuery;
         }
 
         public void searchButtonFunction(DataGridView grid, TextBox searchtxt)
@@ -188,18 +184,18 @@ namespace BogsySystem.UserForms.Services
 
         public DataTable searchButtonQuery(string value)
         {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserRentStrings.filterSearch(value), mediaDt);
+            DataTable searchButtonQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.filterSearch(value), searchButtonQuery);
             ObjDBAccess.closeConn();
-            return mediaDt;
+            return searchButtonQuery;
         }
 
-        public void refreshDataGrid(DataGridView grid)
+        public void refreshDataGridQuery(DataGridView grid)
         {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, mediaDt);
+            DataTable refreshDataGrid = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserRentStrings.displayMediaQuery, refreshDataGrid);
             ObjDBAccess.closeConn();
-            grid.DataSource = mediaDt;
+            grid.DataSource = refreshDataGrid;
             dataGridProperties(grid);
         }
 

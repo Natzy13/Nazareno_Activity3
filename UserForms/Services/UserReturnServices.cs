@@ -20,15 +20,7 @@ namespace BogsySystem.UserForms.Services
         private int QuantityRent { get; set; }
         private int LoginID { get; set; }
         private string Title { get; set; }
-
-        public DataTable displayReturn (int loginID)
-        {           
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), mediaDt);
-            ObjDBAccess.closeConn();
-            return mediaDt;
-        }
-
+     
         public void userReturnLoad(Button returnbtn, DataGridView grid)
         {
             LoginID = int.Parse(LoginServices.ID);
@@ -36,14 +28,15 @@ namespace BogsySystem.UserForms.Services
 
             try
             {
-                DataTable returnMedia = displayReturn(LoginID);
+                DataTable returnMedia = displayReturnQuery(LoginID);
 
                 if (returnMedia.Rows.Count > 0)
                 {
                     grid.DataSource = returnMedia;
                     dataGridProperties(grid);
                 }
-                else MessageBox.Show("No rented media found, so there are no media for return.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("No rented media found, so there are no media for return.", "Information", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (Exception ex)
@@ -52,36 +45,37 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
+        public DataTable displayReturnQuery(int loginID)
+        {
+            DataTable displayReturnQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), displayReturnQuery);
+            ObjDBAccess.closeConn();
+            return displayReturnQuery;
+        }
+
         public void returnButtonFunction(DataGridView grid)
         {
             LoginID = int.Parse(LoginServices.ID);
-            int rows = userReturnQuery(RentalID, QuantityRent);
-            if (rows > 0)
+            int rowsUserReturn = userReturnQuery(RentalID, QuantityRent);
+            if (rowsUserReturn > 0)
             {
                 MessageBox.Show($"Successfully returned {QuantityRent} copies of " + Title); ;
-                refreshDataGrid(LoginID, grid);
+                refreshDataGridQuery(LoginID, grid);
             }
-            else
-            {
-                MessageBox.Show("Error occurred while returning the media");
-            }
+            else MessageBox.Show("Error occurred while returning the media");        
         }
 
         public int userReturnQuery(int rentalID, int quantityRent) 
         {
             decimal overdueChargePerDay = 5;
-
             SqlCommand cmdReturn = new SqlCommand(UserReturnStrings.userReturnQuery);
-
             // Add parameters to the SqlCommand
             cmdReturn.Parameters.AddWithValue("@rentalID", rentalID);
             cmdReturn.Parameters.AddWithValue("@quantityRent", quantityRent);
             cmdReturn.Parameters.AddWithValue("@overdueChargePerDay", overdueChargePerDay);
-
-            int rows = ObjDBAccess.executeQuery(cmdReturn);
+            int userReturnQuery = ObjDBAccess.executeQuery(cmdReturn);
             ObjDBAccess.closeConn();
-
-            return rows;
+            return userReturnQuery;
         }
 
         public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, Button returnbtn)
@@ -91,17 +85,13 @@ namespace BogsySystem.UserForms.Services
                 // Check if the clicked event was on a valid row
                 if (e.RowIndex >= 0)
                 {
-                    // Select the current row
                     grid.CurrentRow.Selected = true;
                     componentShow(returnbtn);
-
-                    DataGridViewRow row = grid.Rows[e.RowIndex];
-         
-                    // Retrieve the selected data into a variable
+                    DataGridViewRow row = grid.Rows[e.RowIndex];         
                     RentalID = Convert.ToInt32(row.Cells["RentalID"].Value);
                     MediaID = Convert.ToInt32(row.Cells["MediaID"].Value);
                     Title = row.Cells["Title"].Value.ToString();
-                    QuantityRent = Convert.ToInt32(row.Cells["Quantity"].Value); //Assign to variable
+                    QuantityRent = Convert.ToInt32(row.Cells["Quantity"].Value);
                 }
             }
             catch (Exception ex)
@@ -110,14 +100,14 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
-        public DataTable refreshDataGrid(int loginID, DataGridView grid)
+        public DataTable refreshDataGridQuery(int loginID, DataGridView grid)
         {        
-            DataTable mediaDt = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), mediaDt);           
+            DataTable refreshDataGridQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), refreshDataGridQuery);           
             ObjDBAccess.closeConn();
-            grid.DataSource = mediaDt;
+            grid.DataSource = refreshDataGridQuery;
             dataGridProperties(grid);
-            return mediaDt;
+            return refreshDataGridQuery;
         }
 
         public void componentHide(Button returnbtn)

@@ -52,7 +52,7 @@ namespace BogsySystem.Forms.Properties
             if (rowActiveUser == 1)
             {
                 MessageBox.Show("Account Activated");
-                refreshDataGrid(grid);
+                refreshDataGridQuery(grid);
             }
 
             else MessageBox.Show("There is an error deactivating");
@@ -78,7 +78,8 @@ namespace BogsySystem.Forms.Properties
             else if (displaygender.Equals("Select Gender")) MessageBox.Show("Select Gender");
             else
             {
-                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to save these changes?", 
+                    "Confirm Edit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (confirmResult == DialogResult.Yes)
                 {
@@ -87,7 +88,7 @@ namespace BogsySystem.Forms.Properties
                     if (rowEditUser == 1)
                     {
                         MessageBox.Show("User Updated Successfully");
-                        refreshDataGrid(grid);
+                        refreshDataGridQuery(grid);
                         componentHide(activatebtn, editbtn, nametxt, emailtxt, gendertxt, namelbl, emaillbl, genderlbl);
                     }
 
@@ -133,7 +134,7 @@ namespace BogsySystem.Forms.Properties
         {
             string selectedFilter = filter.SelectedItem.ToString();
 
-            if (selectedFilter == "All") refreshDataGrid(grid);
+            if (selectedFilter == "All") refreshDataGridQuery(grid);
             else if (selectedFilter == "Activated" || selectedFilter == "Deactivated")
             {                
                 comboboxApplyFilter("IsActive", UsersStrings.bitValueFilter(selectedFilter), grid);
@@ -218,7 +219,7 @@ namespace BogsySystem.Forms.Properties
             return searchButtonQuery;
         }
 
-        public void refreshDataGrid(DataGridView grid)
+        public void refreshDataGridQuery(DataGridView grid)
         {
             DataTable refreshDataGrid = new DataTable();
             ObjDBAccess.readDatathroughAdapter(UsersStrings.getUsersQuery, refreshDataGrid);

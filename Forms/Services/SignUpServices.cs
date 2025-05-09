@@ -18,7 +18,8 @@ namespace BogsySystem.Forms.Properties
         public static string Username { get; private set; }
         public static string Gender { get; private set; }
 
-        public void registerButtonFunction(TextBox name, TextBox uname, TextBox pass, TextBox email, ComboBox gender, Form currentForm)
+        public void registerButtonFunction(TextBox name, TextBox uname, TextBox pass, TextBox email, ComboBox gender, 
+            Form currentForm)
         {
             Name = name.Text;
             Username = uname.Text;
@@ -66,8 +67,7 @@ namespace BogsySystem.Forms.Properties
                     MessageBox.Show("Account Created Successfully");
 
                     currentForm.Hide();
-
-                    //Transfer to this new form
+                   
                     Login login = new Login();
                     login.Show();
                 }
