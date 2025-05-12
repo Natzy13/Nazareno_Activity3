@@ -109,9 +109,8 @@ namespace BogsySystem.Forms.Properties
 
             grid.Columns["Name"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["Format"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["TitlesWithQuantities"].HeaderText = "Title";
+            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;

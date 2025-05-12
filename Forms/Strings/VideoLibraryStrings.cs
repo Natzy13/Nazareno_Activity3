@@ -35,20 +35,14 @@ namespace BogsySystem.Forms.Strings
             return message ;
         }
 
-        public static string filterSearch()
-        {
-            string searchFilter = $"SELECT * FROM MediaItems WHERE IsAvailable = 1 AND {filterSearchCondition}";
-            return searchFilter ;
-        }
-
-        public static string filterSearchCondition(string column, string value)
+        public static string filterSearch(string column, string value)
         {
             string condition = column == "MediaID"
-                ? $"{column} = '{value}'"
-                : $"{column} LIKE '%{value}%'";
-            return condition ;
-        }
+            ? $"{column} = '{value}'"
+            : $"{column} LIKE '%{value}%'";
 
-        
+            string filterSearch = $"SELECT * FROM MediaItems WHERE IsAvailable = 1 AND {condition}";
+            return filterSearch;
+        }      
     }
 }

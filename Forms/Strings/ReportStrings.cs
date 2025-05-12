@@ -21,17 +21,17 @@ namespace BogsySystem.Forms.Strings
 
         public static string getUsersActiveRentals(int selectedUser)
         {
-            string tablequery = $@"
+            string getUsersActiveRentals = $@"
 SELECT 
-    MediaItems.Title,
-    Rentals.Quantity,
-    Rentals.RentalDate    
-FROM Rentals
-INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID
-LEFT JOIN RentalHistory ON Rentals.RentalID = RentalHistory.RentalID
-WHERE Rentals.UserID = '{selectedUser}' AND RentalHistory.IsReturned = 0;";
+    MI.Title,
+    RD.Quantity,
+    RD.RentalDate
+FROM RentalDetails RD
+INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
+WHERE RH.UserID = '{selectedUser}' AND RD.IsReturned = 0;";
 
-            return tablequery;
+            return getUsersActiveRentals;
         }
 
         public static string filterSearch(string column, string value)
@@ -40,8 +40,8 @@ WHERE Rentals.UserID = '{selectedUser}' AND RentalHistory.IsReturned = 0;";
                 ? $"{column} = '{value}'"
                 : $"{column} LIKE '%{value}%'";
 
-            String tablequery = $"SELECT ID, Name, Username FROM Users WHERE IsAdmin = 0 AND {condition}";
-            return tablequery;
+            string filterSearch = $"SELECT ID, Name, Username FROM Users WHERE IsAdmin = 0 AND {condition}";
+            return filterSearch;
         }
     }
 }

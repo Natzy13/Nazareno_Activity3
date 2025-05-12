@@ -121,6 +121,21 @@ namespace BogsySystem.Forms.Properties
             string filterColumn = searchfilter.SelectedItem?.ToString();
             string filterValue = searchtxt.Text.Trim();
 
+            if (filterValue.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    DataTable allUsers = GetUsersQuery();
+                    grid.DataSource = allUsers;
+                    DataGridProperties2(grid);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                return;
+            }
+
             if (filterColumn == "ID")
             {
                 if (!int.TryParse(filterValue, out _))

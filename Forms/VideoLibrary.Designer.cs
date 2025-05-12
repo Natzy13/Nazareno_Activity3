@@ -266,9 +266,10 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(419, 26);
+            searchtxt.Location = new Point(347, 26);
             searchtxt.Name = "searchtxt";
-            searchtxt.Size = new Size(130, 26);
+            searchtxt.PlaceholderText = "Type \"all\" to show all";
+            searchtxt.Size = new Size(202, 26);
             searchtxt.TabIndex = 27;
             // 
             // searchfilter
@@ -276,7 +277,7 @@
             searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchfilter.FormattingEnabled = true;
             searchfilter.Items.AddRange(new object[] { "ID", "Title" });
-            searchfilter.Location = new Point(348, 26);
+            searchfilter.Location = new Point(269, 26);
             searchfilter.Name = "searchfilter";
             searchfilter.Size = new Size(65, 25);
             searchfilter.TabIndex = 29;

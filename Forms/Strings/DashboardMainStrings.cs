@@ -10,28 +10,38 @@ namespace BogsySystem.Forms.Strings
     {
         public static string queryTotalMedia = "SELECT COUNT(*) FROM MediaItems WHERE IsAvailable = 1";
 
-        public static string queryTotalRentals = "SELECT COUNT(*) FROM Rentals";
+        public static string queryTotalRentals = "SELECT COUNT(*) FROM RentalHeader";
 
         public static string queryTotalRegistered = "SELECT COUNT(*) FROM Users WHERE IsAdmin = 0";
 
-        public static string queryActiveRentals = "SELECT COUNT(*) FROM RentalHistory WHERE IsReturned = 0";
+        public static string queryActiveRentals = "SELECT COUNT(*) FROM RentalDetails WHERE IsReturned = 0";
 
-        public static string queryTotalRevenue = "SELECT SUM(TotalFee) FROM RentalHistory WHERE IsPaid = 1";
+        public static string queryTotalRevenue = "SELECT SUM(TotalFee) FROM RentalDetails WHERE IsPaid = 1";
 
-        public static string queryOverdueRent = "SELECT COUNT(*) FROM Rentals INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID WHERE DATEDIFF(DAY, Rentals.RentalDate, GETDATE()) > MediaItems.MaxRentalDays;";
+        public static string queryOverdueRent = @"
+SELECT COUNT(*) 
+FROM RentalDetails RD
+INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+WHERE DATEDIFF(DAY, RD.RentalDate, GETDATE()) > MI.MaxRentalDays
+AND RD.IsReturned = 0;";
 
         public static string historyQuery = @"
-        SELECT 
-            RH.RentalID,
-            U.Name,
-            M.Title,
-            M.Format,
-            RH.RentalDate,
-            RH.ReturnDate 
-        FROM RentalHistory RH
-        JOIN MediaItems M ON RH.MediaID = M.MediaID
-        JOIN Users U ON RH.UserID = U.ID
-        WHERE RH.IsPaid = 1
-        ORDER BY RH.ReturnDate DESC";
+SELECT 
+    RH.RentalID,
+    U.Name,
+    STUFF((
+        SELECT ', ' + MI.Title + ' [' + MI.Format + '] (x' + CAST(RD.Quantity AS VARCHAR) + ')'
+        FROM RentalDetails RD
+        INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+        WHERE RD.RentalID = RH.RentalID
+        FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS TitlesWithQuantities,
+    MIN(RD.RentalDate) AS RentalDate,
+    MAX(RD.ReturnDate) AS ReturnDate
+FROM RentalHeader RH
+INNER JOIN RentalDetails RD ON RH.RentalID = RD.RentalID
+INNER JOIN Users U ON RH.UserID = U.ID
+WHERE RD.IsReturned = 1
+GROUP BY RH.RentalID, U.Name
+ORDER BY MAX(RD.ReturnDate) DESC;";
     }
 }

@@ -71,14 +71,10 @@ namespace BogsySystem.UserForms.Services
             int mediaID = -1;
             int quantity = (int)quantitytxt.Value;
             decimal price = 0;
-            int availableCopies = 0;
-
-          
+            int availableCopies = 0;      
             if (cartGrid.SelectedRows.Count > 0)
             {
                 mediaID = Convert.ToInt32(cartGrid.SelectedRows[0].Cells["MediaID"].Value);
-
-               
                 foreach (DataGridViewRow row in rentGrid.Rows)
                 {
                     if (!row.IsNewRow && Convert.ToInt32(row.Cells["MediaID"].Value) == mediaID)
@@ -107,23 +103,14 @@ namespace BogsySystem.UserForms.Services
                 }
             }
 
-          
             else if (rentGrid.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = rentGrid.SelectedRows[0];
                 mediaID = Convert.ToInt32(selectedRow.Cells["MediaID"].Value);
                 string title = selectedRow.Cells["Title"].Value.ToString();
                 price = Convert.ToDecimal(selectedRow.Cells["Price"].Value);
-                availableCopies = Convert.ToInt32(selectedRow.Cells["AvailableCopies"].Value);
-
-                quantity = 1; // New items always added with quantity 1
-
-                if (quantity > availableCopies)
-                {
-                    MessageBox.Show("Not enough copies available!");
-                    return;
-                }
-
+                quantity = 1;
+                
                 DataRow existingRow = cartTable.Rows
                     .Cast<DataRow>()
                     .FirstOrDefault(r => Convert.ToInt32(r["MediaID"]) == mediaID);
@@ -137,7 +124,6 @@ namespace BogsySystem.UserForms.Services
             decimal totalSubtotal = cartTable.AsEnumerable().Sum(r => r.Field<decimal>("Subtotal"));
             subtotaltxt.Text = totalSubtotal.ToString("F2");
             addCartComponent(rentGrid, cartGrid, rentbtn, quantitytxt, quantitylbl);
-
         }
 
         public void clearCartButtonFunction(DataGridView cartGrid,Label subtotaltxt, Label quantitylbl,
@@ -158,17 +144,12 @@ namespace BogsySystem.UserForms.Services
            componentHide(quantitylbl, quantitytxt, rentbtn, cartGrid);
         }
 
-        public int CreateRentalHeader(int userID, decimal totalFee)
+        public int createRentalHeaderQuery(int userID, decimal totalFee)
         {
-            SqlCommand cmd = new SqlCommand(@"
-        INSERT INTO RentalHeader (UserID, RentalDate, TotalFee)
-        VALUES (@userID, @rentalDate, @totalFee);
-        SELECT SCOPE_IDENTITY();");
-
+            SqlCommand cmd = new SqlCommand(UserRentStrings.createRentalHeaderQuery);
             cmd.Parameters.AddWithValue("@userID", userID);
             cmd.Parameters.AddWithValue("@rentalDate", DateTime.Now);
             cmd.Parameters.AddWithValue("@totalFee", totalFee);
-
             object result = ObjDBAccess.executeScalar(cmd);
             ObjDBAccess.closeConn();
             return Convert.ToInt32(result);
@@ -191,10 +172,8 @@ namespace BogsySystem.UserForms.Services
                 }
             }
 
-            // Create RentalHeader once
-            int rentalID = CreateRentalHeader(userID, totalFee);
+            int rentalID = createRentalHeaderQuery(userID, totalFee);
 
-            // Loop to add RentalDetails
             foreach (DataGridViewRow row in cart.Rows)
             {
                 if (!row.IsNewRow)
@@ -203,9 +182,9 @@ namespace BogsySystem.UserForms.Services
                     string title = row.Cells["Title"].Value.ToString();
                     int quantity = Convert.ToInt32(row.Cells["Quantity"].Value);
 
-                    int result = userRentQuery(rentalID, mediaID, quantity);
+                    int userRent = userRentQuery(rentalID, mediaID, quantity);
 
-                    if (result > 0)
+                    if (userRent > 0)
                     {
                         rentedItems.Add($"- {title} ({quantity} pcs)");
                         quantitytxt.Value = 1;
@@ -343,6 +322,21 @@ namespace BogsySystem.UserForms.Services
         public void searchButtonFunction(DataGridView grid, TextBox searchtxt)
         {
             string filterValue = searchtxt.Text.Trim();
+
+            if (filterValue.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    DataTable allMedia = displayMediaQuery();
+                    grid.DataSource = allMedia;
+                    dataGridProperties(grid);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                return;
+            }
 
             if (string.IsNullOrEmpty(filterValue))
             {

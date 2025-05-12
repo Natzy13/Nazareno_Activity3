@@ -289,6 +289,21 @@ namespace BogsySystem.Forms.Properties
             string filterColumn = searchfilter.SelectedItem?.ToString();
             string filterValue = searchtxt.Text.Trim();
 
+            if (filterValue.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    DataTable allMedia = displayMediaQuery();
+                    grid.DataSource = allMedia;
+                    dataGridProperties(grid);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                return;
+            }
+
             if (filterColumn == "ID")
             {
                 if (!int.TryParse(filterValue, out _))
@@ -326,7 +341,7 @@ namespace BogsySystem.Forms.Properties
         public DataTable searchButtonQuery(string column, string value)
         {
             DataTable searchButtonQuery = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.filterSearch(), searchButtonQuery);
+            ObjDBAccess.readDatathroughAdapter(VideoLibraryStrings.filterSearch(column,value), searchButtonQuery);
             ObjDBAccess.closeConn();
             return searchButtonQuery;
         }

@@ -10,6 +10,11 @@ namespace BogsySystem.UserForms.Strings
     {
        public static string displayMediaQuery = "SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
 
+        public static string createRentalHeaderQuery = @"
+        INSERT INTO RentalHeader (UserID, RentalDate, TotalFee)
+        VALUES (@userID, @rentalDate, @totalFee);
+        SELECT SCOPE_IDENTITY();";
+
         public static string userRentQuery = @"
 DECLARE @pricePerMedia DECIMAL(10, 2);
 SELECT @pricePerMedia = Price FROM MediaItems WHERE MediaID = @mediaID;

@@ -163,10 +163,10 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(333, 26);
+            searchtxt.Location = new Point(394, 26);
             searchtxt.Name = "searchtxt";
             searchtxt.PlaceholderText = "Search Title";
-            searchtxt.Size = new Size(216, 26);
+            searchtxt.Size = new Size(155, 26);
             searchtxt.TabIndex = 30;
             // 
             // dataGridCart
