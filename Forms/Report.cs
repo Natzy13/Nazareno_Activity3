@@ -29,7 +29,7 @@ namespace BogsySystem.Forms
 
         private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            services.userGridFunction(e,dataGridUsers,activerentlbl,dataGridUserRented);
+            services.cellClickFunction(e,dataGridUsers,activerentlbl,dataGridUserRented);
         }
 
         private void dataGridUsers_Click(object sender, EventArgs e)

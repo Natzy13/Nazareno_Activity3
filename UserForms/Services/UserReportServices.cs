@@ -94,29 +94,27 @@ namespace BogsySystem.UserForms.Services
 
         public void dataGridProperties(DataGridView grid)
         {
-            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;         
+            grid.Columns["RentalID"].Visible = false;
+            grid.Columns["TitlesWithQuantities"].HeaderText = "Title";
+            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;         
 
             grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["ReturnDate"].HeaderText = "Return Date";
-            grid.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;        
 
-            grid.Columns["Quantity"].HeaderText = "Qty";
-            grid.Columns["Quantity"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["Fees"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["Fee"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["ChargeFee"].HeaderText = "Charge Fee";
-            grid.Columns["ChargeFee"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["ChargeFees"].HeaderText = "Charge Fee";
+            grid.Columns["ChargeFees"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["TotalFee"].HeaderText = "Total";
             grid.Columns["TotalFee"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["PaidDate"].HeaderText = "Date";
+            grid.Columns["PaidDate"].HeaderText = "Paid";
             grid.Columns["PaidDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["Cash"].SortMode = DataGridViewColumnSortMode.NotSortable;
+          
         }
     }
 }

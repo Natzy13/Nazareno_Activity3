@@ -11,27 +11,15 @@ namespace BogsySystem.UserForms.Strings
        public static string displayMediaQuery = "SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
 
         public static string userRentQuery = @"
-DECLARE @newRentalID INT;
 DECLARE @pricePerMedia DECIMAL(10, 2);
-
--- Get the media price per piece
 SELECT @pricePerMedia = Price FROM MediaItems WHERE MediaID = @mediaID;
 
--- Insert into Rentals with calculated fee and capture RentalID
-INSERT INTO Rentals (UserID, MediaID, RentalDate, Quantity, Fee)
-VALUES (@userID, @mediaID, @rentalDate, @quantity, @pricePerMedia * @quantity);
-
-SET @newRentalID = SCOPE_IDENTITY();
-
--- Input the format in Rental History
 DECLARE @format NVARCHAR(50);
 SELECT @format = Format FROM MediaItems WHERE MediaID = @mediaID;
 
--- Insert into RentalHistory
-INSERT INTO RentalHistory (RentalID, UserID, MediaID, Format, RentalDate, ReturnDate,IsReturned, Quantity, QuantityReturned , Fee , ChargeFee , TotalFee,IsPaid, PaidDate, Cash, Change)
-VALUES (@newRentalID, @userID, @mediaID, @format,  @rentalDate, NULL, 0, @quantity, 0 , 0 , 0 , 0, 0, NULL, 0 , 0);
+INSERT INTO RentalDetails (RentalID, MediaID, Format, RentalDate, Quantity, Fee, TotalFee)
+VALUES (@rentalID, @mediaID, @format, @rentalDate, @quantity, @pricePerMedia, @pricePerMedia * @quantity);
 
--- Update AvailableCopies
 UPDATE MediaItems 
 SET AvailableCopies = AvailableCopies - @quantity 
 WHERE MediaID = @mediaID;";
@@ -39,9 +27,9 @@ WHERE MediaID = @mediaID;";
         public static string comboFilterQuery(string column, string value)
         {
             string filter = $@"
-            SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
-            FROM MediaItems 
-            WHERE AvailableCopies > 0 AND {column} = '{value}'";
+SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
+FROM MediaItems 
+WHERE AvailableCopies > 0 AND IsAvailable = 1 AND {column} = '{value}'";
             return filter;
         }
 
@@ -50,7 +38,7 @@ WHERE MediaID = @mediaID;";
             string message = $@"
             SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
             FROM MediaItems 
-            WHERE AvailableCopies > 0 AND {column} = '{value}'";
+            WHERE AvailableCopies > 0 AND IsAvailable = 1 AND {column} = '{value}'";
             return message;
         }
 
@@ -59,7 +47,7 @@ WHERE MediaID = @mediaID;";
             string searchFilter = $@"
             SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays 
             FROM MediaItems 
-            WHERE AvailableCopies > 0 AND TITLE LIKE '%{value}%'";
+            WHERE AvailableCopies > 0 AND IsAvailable = 1 AND TITLE LIKE '%{value}%'";
             return searchFilter;
         }
     }

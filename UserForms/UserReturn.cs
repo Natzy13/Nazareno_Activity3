@@ -18,7 +18,6 @@ namespace BogsySystem.UserForms
     public partial class UserReturn : Form
     {
         UserReturnServices services = new UserReturnServices();
-
         public UserReturn()
         {
             InitializeComponent();
@@ -35,7 +34,7 @@ namespace BogsySystem.UserForms
         }
         private void dataGridReturn_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            services.cellClickFunction(e, dataGridReturn, returnbtn);
+            services.cellClickFunction2(e, dataGridReturn, returnbtn);
         }
 
         private void dataGridReturn_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

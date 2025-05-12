@@ -8,66 +8,89 @@ namespace BogsySystem.UserForms.Strings
 {
     public class UserReturnStrings
     {
-       public static string displayReturnQuery(int loginID)
+    
+        public static string displayReturnQuery(int loginID)
         {
-            string displayReturnQuery = $@"SELECT 
-                              Rentals.RentalID, 
-                              Rentals.MediaID, 
-                              MediaItems.Title,
-                              MediaItems.Format,
-                              MediaItems.Price,
-                              Rentals.RentalDate,
-                              Rentals.Quantity,
-                              MediaItems.MaxRentalDays                                                        
-                          FROM Rentals
-                          INNER JOIN MediaItems ON Rentals.MediaID = MediaItems.MediaID
-                          INNER JOIN RentalHistory ON RentalHistory.RentalID = Rentals.RentalID
-                          WHERE Rentals.UserID = {loginID} AND RentalHistory.IsReturned = 0 ORDER BY Rentals.RentalDate DESC;";
+            string displayReturnQuery = $@"
+     SELECT 
+    RH.RentalID,
+    STUFF((
+        SELECT ', ' + MI.Title + ' (x' + CAST(RD.Quantity AS VARCHAR) + ')'
+        FROM RentalDetails RD
+        INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+        WHERE RD.RentalID = RH.RentalID
+        FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS TitlesWithQuantities,
+    MIN(RD.RentalDate) AS RentalDate,
+    SUM(RD.Quantity) AS TotalQuantity
+FROM RentalHeader RH
+INNER JOIN RentalDetails RD ON RH.RentalID = RD.RentalID
+WHERE RH.UserID = {loginID} AND RD.IsReturned = 0
+GROUP BY RH.RentalID
+ORDER BY MIN(RD.RentalDate) DESC;";
             return displayReturnQuery;
         }
 
-       
-            public static string userReturnQuery = @"
+        public static string userReturnQuery = @"
 DECLARE @maxRentalDays INT;
 DECLARE @pricePerMedia DECIMAL(10, 2);
 DECLARE @mediaID INT;
-
--- Get MediaID from Rentals table
-SELECT @mediaID = MediaID FROM Rentals WHERE RentalID = @rentalID;
-
--- Get the price per media and max rental days from MediaItems table
-SELECT 
-    @pricePerMedia = Price, 
-    @maxRentalDays = MaxRentalDays
-FROM MediaItems
-WHERE MediaID = @mediaID;
-
--- Calculate the Fee (price * quantity)
+DECLARE @rentalDate DATETIME;
 DECLARE @baseRentalFee DECIMAL(10, 2);
-SET @baseRentalFee = @pricePerMedia * @quantityRent;
+DECLARE @overdueFee DECIMAL(10, 2);
+DECLARE @totalFee DECIMAL(10, 2);
 
--- Calculate the overdue fee if applicable
-DECLARE @overdueFee DECIMAL(10, 2) = 0;
-IF DATEDIFF(DAY, (SELECT RentalDate FROM Rentals WHERE RentalID = @rentalID), GETDATE()) > @maxRentalDays
+-- Cursor to iterate over each media in the rental
+DECLARE rental_cursor CURSOR FOR
+SELECT MediaID, RentalDate, Quantity
+FROM RentalDetails
+WHERE RentalID = @rentalID AND IsReturned = 0;
+
+OPEN rental_cursor;
+
+FETCH NEXT FROM rental_cursor INTO @mediaID, @rentalDate, @quantityRent;
+
+WHILE @@FETCH_STATUS = 0
 BEGIN
-    SET @overdueFee = (DATEDIFF(DAY, (SELECT RentalDate FROM Rentals WHERE RentalID = @rentalID), GETDATE()) - @maxRentalDays) * @overdueChargePerDay * @quantityRent;
+    -- Get price and max rental days
+    SELECT 
+        @pricePerMedia = Price, 
+        @maxRentalDays = MaxRentalDays
+    FROM MediaItems
+    WHERE MediaID = @mediaID;
+
+    -- Base fee
+    SET @baseRentalFee = @pricePerMedia * @quantityRent;
+
+    -- Overdue fee calculation
+    SET @overdueFee = 0;
+    IF DATEDIFF(DAY, @rentalDate, GETDATE()) > @maxRentalDays
+    BEGIN
+        SET @overdueFee = (DATEDIFF(DAY, @rentalDate, GETDATE()) - @maxRentalDays) * @overdueChargePerDay * @quantityRent;
+    END
+
+    -- Total fee
+    SET @totalFee = @baseRentalFee + @overdueFee;
+
+    -- Update RentalDetails
+    UPDATE RentalDetails
+    SET 
+        ReturnDate = GETDATE(),
+        IsReturned = 1,
+        QuantityReturned = @quantityRent,
+        Fee = @baseRentalFee,
+        ChargeFee = @overdueFee,
+        TotalFee = @totalFee
+    WHERE RentalID = @rentalID AND MediaID = @mediaID AND IsReturned = 0;
+
+    -- Update stock
+    UPDATE MediaItems
+    SET AvailableCopies = AvailableCopies + @quantityRent
+    WHERE MediaID = @mediaID;
+
+    FETCH NEXT FROM rental_cursor INTO @mediaID, @rentalDate, @quantityRent;
 END
 
--- Update RentalHistory table 
-UPDATE RentalHistory
-SET 
-    ReturnDate = GETDATE(),
-    IsReturned = 1,
-    QuantityReturned = @quantityRent,
-    Fee = @baseRentalFee,
-    ChargeFee = @overdueFee,
-    TotalFee = @baseRentalFee + @overdueFee
-WHERE RentalID = @rentalID;
-
--- Update AvailableCopies in MediaItems
-UPDATE MediaItems
-SET AvailableCopies = AvailableCopies + @quantityRent
-WHERE MediaID = @mediaID;";
-                 
+CLOSE rental_cursor;
+DEALLOCATE rental_cursor;";
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BogsySystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec8f7f93349436de74c36422d5f3f4dd2bd128a9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22597a5d5c122f09cf10b8d803ba522b4eac8c05")]
 [assembly: System.Reflection.AssemblyProductAttribute("BogsySystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BogsySystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

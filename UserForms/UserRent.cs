@@ -12,15 +12,18 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace BogsySystem.UserForms
 {
     public partial class UserRent : Form
     {
-        DBAccess ObjDBAccess = new DBAccess();
+        
         UserRentServices services = new UserRentServices();
-      
+        
+        private int AvailableCopies { get; set; }
+
         public UserRent()
         {
             InitializeComponent();
@@ -28,12 +31,24 @@ namespace BogsySystem.UserForms
 
         private void UserRent_Load(object sender, EventArgs e)
         {
-            services.userRentLoad(quantitylbl, quantitytxt, rentbtn, dataGridRent);
+            services.userRentLoad(quantitylbl, quantitytxt, rentbtn, dataGridRent, 
+                dataGridCart, services.cartTable);
+        
+        }
+
+        private void addCart_Click(object sender, EventArgs e)
+        {
+            services.addCartButtonFunction(dataGridRent, quantitylbl, quantitytxt, services.cartTable, subtotaltxt, dataGridCart, rentbtn);
+        }
+
+        private void clearCart_Click(object sender, EventArgs e)
+        {
+            services.clearCartButtonFunction(dataGridCart, subtotaltxt, quantitylbl, quantitytxt, rentbtn);
         }
 
         private void rentbtn_Click(object sender, EventArgs e)
         {
-           services.rentButtonFunction(quantitytxt,dataGridRent);
+            services.rentButtonFunction(quantitytxt, dataGridRent, dataGridCart, subtotaltxt);
         }
 
         private void filterbtn_SelectedIndexChanged(object sender, EventArgs e)
@@ -43,24 +58,39 @@ namespace BogsySystem.UserForms
 
         private void dataGridRent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           services.cellClickFunction(e, dataGridRent,quantitylbl,quantitytxt,rentbtn);
+            services.cellClickFunction(e, dataGridRent, dataGridCart, quantitylbl, quantitytxt);
+        }
+
+        private void dataGridCart_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            services.cartCellClickFunction(e, dataGridCart,dataGridRent, quantitytxt, quantitylbl);
         }
 
         private void dataGridRent_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             dataGridRent.ClearSelection();
-            services.componentHide(quantitylbl, quantitytxt, rentbtn);
         }
 
         private void dataGridRent_Click(object sender, EventArgs e)
         {
             dataGridRent.ClearSelection();
-            services.componentHide(quantitylbl, quantitytxt, rentbtn);
         }
 
         private void searchbtn_Click(object sender, EventArgs e)
         {
-            services.searchButtonFunction(dataGridRent,searchtxt);
+            services.searchButtonFunction(dataGridRent, searchtxt);
+        }
+ 
+        private void dataGridCart_Click(object sender, EventArgs e)
+        {
+            dataGridCart.ClearSelection();
+            services.componentHide(quantitylbl, quantitytxt, rentbtn, dataGridCart);
+        }
+
+        private void dataGridCart_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridCart.ClearSelection();
+            services.componentHide(quantitylbl, quantitytxt, rentbtn, dataGridCart);
         }
     }
 }

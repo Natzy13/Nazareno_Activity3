@@ -29,7 +29,7 @@ namespace BogsySystem.UserForms.Services
                 if (payMedia.Rows.Count > 0)
                 {
                     grid.DataSource = payMedia;
-                    dataGridProperties(grid);
+                    dataGridProperties2(grid);
                 }
                 else MessageBox.Show("No returned media found, so there are no pending payments", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -40,17 +40,18 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
+     
+
         public DataTable displayPayQuery(int userID)
         {
-            DataTable displayPayQuery = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, displayPayQuery, userID);
+            DataTable displayPayQuery2 = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, displayPayQuery2, userID);
             ObjDBAccess.closeConn();
 
-            return displayPayQuery;
+            return displayPayQuery2;
         }
-
         public void payButtonFunction(TextBox feetxt, Label feelbl, TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt,
-            Label totalfeelbl, TextBox paytxt, Label paylbl, Button paybtn, DataGridView grid)
+           Label totalfeelbl, TextBox paytxt, Label paylbl, Button paybtn, DataGridView grid)
         {
             decimal totalFee = Convert.ToDecimal(totalfeetxt.Text);
 
@@ -74,7 +75,7 @@ namespace BogsySystem.UserForms.Services
                             MessageBox.Show($"Payment successful!\nChange: {change:F2}");
                             paytxt.Text = "";
                             grid.ClearSelection();
-                            componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, 
+                            componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt,
                                 paylbl, paybtn);
                             refreshDataGridQuery(userID, grid);
                         }
@@ -85,7 +86,7 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
-        public int userPayQuery(int rentalID, int userID,decimal pay,decimal changeAmount) 
+        public int userPayQuery(int rentalID, int userID, decimal pay, decimal changeAmount)
         {
             SqlCommand payRental = new SqlCommand(UserPayStrings.payRentalQuery);
             payRental.Parameters.AddWithValue("@paidDate", DateTime.Now);
@@ -97,10 +98,10 @@ namespace BogsySystem.UserForms.Services
             ObjDBAccess.closeConn();
             return userPayQuery;
         }
-
-        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, TextBox feetxt, Label feelbl, 
-            TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt,Label totalfeelbl, TextBox paytxt, 
-            Label paylbl, Button paybtn)
+      
+        public void cellClickFunction(DataGridViewCellEventArgs e, DataGridView grid, TextBox feetxt, Label feelbl,
+           TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt, Label totalfeelbl, TextBox paytxt,
+           Label paylbl, Button paybtn)
         {
             try
             {
@@ -110,13 +111,13 @@ namespace BogsySystem.UserForms.Services
                     // Select the current row
                     grid.CurrentRow.Selected = true;
                     componentShow(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt, paylbl, paybtn);
-               
+
                     DataGridViewRow row = grid.Rows[e.RowIndex];
                     // Retrieve the selected data into a variable
                     rentalID = Convert.ToInt32(row.Cells["RentalID"].Value);
 
                     //Display to the textbox the selected cell
-                    feetxt.Text = row.Cells["Fee"].Value.ToString();
+                    feetxt.Text = row.Cells["Subtotal"].Value.ToString();
                     chargefeetxt.Text = row.Cells["ChargeFee"].Value.ToString();
                     totalfeetxt.Text = row.Cells["TotalFee"].Value.ToString();
                 }
@@ -133,7 +134,7 @@ namespace BogsySystem.UserForms.Services
             ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, refreshDataGrid, userID);
             ObjDBAccess.closeConn();
             grid.DataSource = refreshDataGrid;
-            dataGridProperties(grid);
+            dataGridProperties2(grid);
         }
 
         public void componentHide(
@@ -172,31 +173,25 @@ namespace BogsySystem.UserForms.Services
             paybtn.Visible = true;
         }
 
-        public void dataGridProperties(DataGridView grid)
+        public void dataGridProperties2(DataGridView grid)
         {
             grid.Columns["RentalID"].Visible = false;
-            grid.Columns["Fee"].Visible = false;
+            grid.Columns["Subtotal"].Visible = false;
             grid.Columns["ChargeFee"].Visible = false;
-            grid.Columns["TotalFee"].Visible = false;
+            grid.Columns["TotalFee"].Visible = false; 
+            grid.Columns["QuantityReturned"].Visible = false;
 
-            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
-            grid.Columns["Format"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["TitlesWithQuantities"].HeaderText = "Title - Format - Quantity";
+            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["PricePerPiece"].HeaderText = "Price";
-            grid.Columns["PricePerPiece"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["RentalDate"].HeaderText = "Rental Date";
+            grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["ReturnDate"].HeaderText = "Return Date";
             grid.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["QuantityReturned"].HeaderText = "Quantity";
-            grid.Columns["QuantityReturned"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
             grid.Columns["MaxRentalDays"].HeaderText = "Max Rent Days";
             grid.Columns["MaxRentalDays"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
         }
     }
 }

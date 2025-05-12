@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BogsySystem.UserForms.Services
 {
     public class UserReturnServices
@@ -20,7 +21,8 @@ namespace BogsySystem.UserForms.Services
         private int QuantityRent { get; set; }
         private int LoginID { get; set; }
         private string Title { get; set; }
-     
+        private string TitleQuantities { get; set; }
+
         public void userReturnLoad(Button returnbtn, DataGridView grid)
         {
             LoginID = int.Parse(LoginServices.ID);
@@ -59,13 +61,14 @@ namespace BogsySystem.UserForms.Services
             int rowsUserReturn = userReturnQuery(RentalID, QuantityRent);
             if (rowsUserReturn > 0)
             {
-                MessageBox.Show($"Successfully returned {QuantityRent} copies of " + Title); ;
+                MessageBox.Show($"Successfully returned:\n\n{TitleQuantities}", 
+                    "Return Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataGridQuery(LoginID, grid);
             }
-            else MessageBox.Show("Error occurred while returning the media");        
+            else MessageBox.Show("Error occurred while returning the media");
         }
 
-        public int userReturnQuery(int rentalID, int quantityRent) 
+        public int userReturnQuery(int rentalID, int quantityRent)
         {
             decimal overdueChargePerDay = 5;
             SqlCommand cmdReturn = new SqlCommand(UserReturnStrings.userReturnQuery);
@@ -100,10 +103,31 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
+        public void cellClickFunction2(DataGridViewCellEventArgs e, DataGridView grid, Button returnbtn)
+        {
+            try
+            {
+                if (e.RowIndex >= 0)
+                {
+                    DataGridViewRow clickedRow = grid.Rows[e.RowIndex];
+                    RentalID = Convert.ToInt32(clickedRow.Cells["RentalID"].Value);
+                    QuantityRent = Convert.ToInt32(clickedRow.Cells["TotalQuantity"].Value);
+                    TitleQuantities = clickedRow.Cells["TitlesWithQuantities"].Value.ToString();
+
+                    clickedRow.Selected = true;
+                    componentShow(returnbtn);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
         public DataTable refreshDataGridQuery(int loginID, DataGridView grid)
-        {        
+        {
             DataTable refreshDataGridQuery = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), refreshDataGridQuery);           
+            ObjDBAccess.readDatathroughAdapter(UserReturnStrings.displayReturnQuery(loginID), refreshDataGridQuery);
             ObjDBAccess.closeConn();
             grid.DataSource = refreshDataGridQuery;
             dataGridProperties(grid);
@@ -123,21 +147,17 @@ namespace BogsySystem.UserForms.Services
         public void dataGridProperties(DataGridView grid)
         {
             grid.Columns["RentalID"].Visible = false;
-            grid.Columns["MediaID"].Visible = false;
 
-            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["Format"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["Price"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["TitlesWithQuantities"].HeaderText = "Title/Quantity";
+            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["Quantity"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["TotalQuantity"].HeaderText = "Quantity";
+            grid.Columns["TotalQuantity"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["MaxRentalDays"].HeaderText = "Max Rent Days";
-            grid.Columns["MaxRentalDays"].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
+
     }
 }
