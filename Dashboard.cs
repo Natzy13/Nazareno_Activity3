@@ -120,7 +120,12 @@ namespace BogsySystem
             OpenChildForm(new Report());
         }
 
-       
+        private void userreportbtn_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, color1);
+            OpenChildForm(new UserReport());
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();

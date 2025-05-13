@@ -24,28 +24,9 @@ namespace BogsySystem.Forms
 
         private void Report_Load(object sender, EventArgs e)
         {
-            services.reportLoadFunction(dataGridReport, dataGridUsers, dataGridUserRented, activerentlbl);
+            services.reportLoadFunction(dataGridReport);
         }
 
-        private void dataGridUsers_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            services.cellClickFunction(e,dataGridUsers,activerentlbl,dataGridUserRented);
-        }
-
-        private void dataGridUsers_Click(object sender, EventArgs e)
-        {
-            dataGridUsers.ClearSelection();
-        }
-
-        public void UserActiveRent()
-        {
-           services.UserActiveRent(activerentlbl,dataGridUserRented);
-        }
-
-        private void searchbtn_Click(object sender, EventArgs e)
-        {
-            services.searchButtonFunction(dataGridUsers, searchfilter, searchtxt);
-        }
     }
 
 }

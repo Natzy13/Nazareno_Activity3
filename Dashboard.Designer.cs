@@ -43,6 +43,7 @@ namespace BogsySystem
             currentPaneltitle = new Label();
             iconCurrentPaneltitle = new IconPictureBox();
             panelDesktop = new Panel();
+            userreportbtn = new IconButton();
             menuPanel.SuspendLayout();
             logoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureLogo).BeginInit();
@@ -53,6 +54,7 @@ namespace BogsySystem
             // menuPanel
             // 
             menuPanel.BackColor = Color.FromArgb(31, 30, 68);
+            menuPanel.Controls.Add(userreportbtn);
             menuPanel.Controls.Add(logoutbtn);
             menuPanel.Controls.Add(reportbtn);
             menuPanel.Controls.Add(usersbtn);
@@ -105,7 +107,7 @@ namespace BogsySystem
             reportbtn.Padding = new Padding(3, 0, 0, 0);
             reportbtn.Size = new Size(188, 42);
             reportbtn.TabIndex = 4;
-            reportbtn.Text = "Report";
+            reportbtn.Text = "Video Report";
             reportbtn.TextAlign = ContentAlignment.MiddleLeft;
             reportbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
             reportbtn.UseVisualStyleBackColor = true;
@@ -261,6 +263,29 @@ namespace BogsySystem
             panelDesktop.Size = new Size(612, 401);
             panelDesktop.TabIndex = 2;
             // 
+            // userreportbtn
+            // 
+            userreportbtn.Dock = DockStyle.Top;
+            userreportbtn.FlatAppearance.BorderSize = 0;
+            userreportbtn.FlatStyle = FlatStyle.Flat;
+            userreportbtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userreportbtn.ForeColor = Color.Gainsboro;
+            userreportbtn.IconChar = IconChar.ChartSimple;
+            userreportbtn.IconColor = Color.White;
+            userreportbtn.IconFont = IconFont.Auto;
+            userreportbtn.IconSize = 30;
+            userreportbtn.ImageAlign = ContentAlignment.MiddleLeft;
+            userreportbtn.Location = new Point(0, 275);
+            userreportbtn.Name = "userreportbtn";
+            userreportbtn.Padding = new Padding(3, 0, 0, 0);
+            userreportbtn.Size = new Size(188, 42);
+            userreportbtn.TabIndex = 6;
+            userreportbtn.Text = "User Report";
+            userreportbtn.TextAlign = ContentAlignment.MiddleLeft;
+            userreportbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
+            userreportbtn.UseVisualStyleBackColor = true;
+            userreportbtn.Click += userreportbtn_Click;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -298,5 +323,6 @@ namespace BogsySystem
         private Panel panelDesktop;
         private Button exitbtn;
         private IconButton logoutbtn;
+        private IconButton userreportbtn;
     }
 }
