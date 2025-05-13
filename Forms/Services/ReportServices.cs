@@ -1,4 +1,5 @@
 ﻿using BogsySystem.Forms.Strings;
+using BogsySystem.UserForms.Strings;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,6 +38,58 @@ namespace BogsySystem.Forms.Properties
             DataTable mediaReport = new DataTable();
             ObjDBAccess.readDatathroughAdapter(ReportStrings.queryReport, mediaReport);
             return mediaReport;
+        }
+
+        public void searchButtonFunction(DataGridView grid, TextBox searchtxt)
+        {
+            string filterValue = searchtxt.Text.Trim();
+
+            if (filterValue.Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    DataTable allMedia = GetMediaReportQuery();
+                    grid.DataSource = allMedia;
+                    dataGridProperties(grid);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                return;
+            }
+
+            if (string.IsNullOrEmpty(filterValue))
+            {
+                MessageBox.Show("Please enter a title to search.");
+                return;
+            }
+
+            try
+            {
+                DataTable filteredMedia = searchButtonQuery(filterValue);
+                if (filteredMedia.Rows.Count > 0)
+                {
+                    grid.DataSource = filteredMedia;
+                    dataGridProperties(grid);
+                }
+                else
+                {
+                    MessageBox.Show("No matching media found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        public DataTable searchButtonQuery(string value)
+        {
+            DataTable searchButtonQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(ReportStrings.filterSearch(value), searchButtonQuery);
+            ObjDBAccess.closeConn();
+            return searchButtonQuery;
         }
 
         public void dataGridProperties(DataGridView grid)

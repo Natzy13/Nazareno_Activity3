@@ -16,7 +16,7 @@ namespace BogsySystem.Forms
     public partial class Report : Form
     {
         ReportServices services = new ReportServices();
-       
+
         public Report()
         {
             InitializeComponent();
@@ -27,6 +27,10 @@ namespace BogsySystem.Forms
             services.reportLoadFunction(dataGridReport);
         }
 
+        private void searchbtn_Click(object sender, EventArgs e)
+        {
+            services.searchButtonFunction(dataGridReport, searchtxt);
+        }
     }
 
 }

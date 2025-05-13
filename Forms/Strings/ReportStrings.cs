@@ -16,5 +16,19 @@ namespace BogsySystem.Forms.Strings
         FROM MediaItems
         WHERE IsAvailable = 1
         ORDER BY Title ASC;";
+
+        public static string filterSearch(string value)
+        {
+            string searchFilter = $@"
+            SELECT 
+            Title, 
+            AvailableCopies, 
+            (TotalCopies - AvailableCopies) AS RentedCopies 
+        FROM MediaItems
+        WHERE IsAvailable = 1 AND Title LIKE '%{value}%'";
+            return searchFilter;
+        }
     }
+
+
 }
