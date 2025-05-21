@@ -48,50 +48,50 @@
             // rentsummarylbl
             // 
             rentsummarylbl.AutoSize = true;
-            rentsummarylbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            rentsummarylbl.Font = new Font("Century Gothic", 24F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             rentsummarylbl.Location = new Point(27, 20);
             rentsummarylbl.Name = "rentsummarylbl";
-            rentsummarylbl.Size = new Size(160, 23);
+            rentsummarylbl.Size = new Size(269, 39);
             rentsummarylbl.TabIndex = 11;
             rentsummarylbl.Text = "Rental Summary";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(51, 79);
+            label1.Font = new Font("Century Gothic", 20.25F);
+            label1.Location = new Point(65, 90);
             label1.Name = "label1";
-            label1.Size = new Size(165, 21);
+            label1.Size = new Size(273, 33);
             label1.TabIndex = 12;
             label1.Text = "Total Rentals Made:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(27, 118);
+            label2.Font = new Font("Century Gothic", 20.25F);
+            label2.Location = new Point(27, 144);
             label2.Name = "label2";
-            label2.Size = new Size(189, 21);
+            label2.Size = new Size(311, 33);
             label2.TabIndex = 13;
             label2.Text = "Total Quantity Rented:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(345, 79);
+            label3.Font = new Font("Century Gothic", 20.25F);
+            label3.Location = new Point(573, 90);
             label3.Name = "label3";
-            label3.Size = new Size(129, 21);
+            label3.Size = new Size(217, 33);
             label3.TabIndex = 14;
             label3.Text = "Total Fees Paid:";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(315, 118);
+            label4.Font = new Font("Century Gothic", 20.25F);
+            label4.Location = new Point(527, 144);
             label4.Name = "label4";
-            label4.Size = new Size(159, 21);
+            label4.Size = new Size(263, 33);
             label4.TabIndex = 15;
             label4.Text = "Total Overcharges:";
             // 
@@ -123,71 +123,71 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridHistory.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridHistory.EnableHeadersVisualStyles = false;
-            dataGridHistory.Location = new Point(12, 196);
+            dataGridHistory.Location = new Point(28, 260);
             dataGridHistory.Name = "dataGridHistory";
             dataGridHistory.ReadOnly = true;
             dataGridHistory.RowHeadersVisible = false;
             dataGridHistory.ScrollBars = ScrollBars.Vertical;
-            dataGridHistory.Size = new Size(588, 193);
+            dataGridHistory.Size = new Size(945, 468);
             dataGridHistory.TabIndex = 16;
             // 
             // totalrenttxt
             // 
             totalrenttxt.AutoSize = true;
-            totalrenttxt.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalrenttxt.Location = new Point(222, 79);
+            totalrenttxt.Font = new Font("Century Gothic", 20.25F);
+            totalrenttxt.Location = new Point(367, 90);
             totalrenttxt.Name = "totalrenttxt";
-            totalrenttxt.Size = new Size(19, 21);
+            totalrenttxt.Size = new Size(30, 33);
             totalrenttxt.TabIndex = 17;
             totalrenttxt.Text = "0";
             // 
             // totalqtytxt
             // 
             totalqtytxt.AutoSize = true;
-            totalqtytxt.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalqtytxt.Location = new Point(222, 118);
+            totalqtytxt.Font = new Font("Century Gothic", 20.25F);
+            totalqtytxt.Location = new Point(367, 144);
             totalqtytxt.Name = "totalqtytxt";
-            totalqtytxt.Size = new Size(19, 21);
+            totalqtytxt.Size = new Size(30, 33);
             totalqtytxt.TabIndex = 18;
             totalqtytxt.Text = "0";
             // 
             // totalfeetxt
             // 
             totalfeetxt.AutoSize = true;
-            totalfeetxt.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalfeetxt.Location = new Point(480, 79);
+            totalfeetxt.Font = new Font("Century Gothic", 20.25F);
+            totalfeetxt.Location = new Point(827, 90);
             totalfeetxt.Name = "totalfeetxt";
-            totalfeetxt.Size = new Size(19, 21);
+            totalfeetxt.Size = new Size(30, 33);
             totalfeetxt.TabIndex = 19;
             totalfeetxt.Text = "0";
             // 
             // totalchargetxt
             // 
             totalchargetxt.AutoSize = true;
-            totalchargetxt.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalchargetxt.Location = new Point(480, 118);
+            totalchargetxt.Font = new Font("Century Gothic", 20.25F);
+            totalchargetxt.Location = new Point(827, 144);
             totalchargetxt.Name = "totalchargetxt";
-            totalchargetxt.Size = new Size(19, 21);
+            totalchargetxt.Size = new Size(30, 33);
             totalchargetxt.TabIndex = 20;
             totalchargetxt.Text = "0";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(192, 156);
+            label5.Font = new Font("Century Gothic", 20.25F);
+            label5.Location = new Point(285, 206);
             label5.Name = "label5";
-            label5.Size = new Size(160, 21);
+            label5.Size = new Size(263, 33);
             label5.TabIndex = 21;
             label5.Text = "Total Amount Paid:";
             // 
             // totalamttxt
             // 
             totalamttxt.AutoSize = true;
-            totalamttxt.Font = new Font("Century Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalamttxt.Location = new Point(358, 156);
+            totalamttxt.Font = new Font("Century Gothic", 20.25F);
+            totalamttxt.Location = new Point(569, 206);
             totalamttxt.Name = "totalamttxt";
-            totalamttxt.Size = new Size(19, 21);
+            totalamttxt.Size = new Size(30, 33);
             totalamttxt.TabIndex = 22;
             totalamttxt.Text = "0";
             // 
@@ -195,7 +195,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(totalamttxt);
             Controls.Add(label5);
             Controls.Add(totalchargetxt);

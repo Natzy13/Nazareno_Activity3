@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             dataGridReport = new DataGridView();
             searchbtn = new FontAwesome.Sharp.IconButton();
             searchtxt = new TextBox();
@@ -45,30 +45,30 @@
             dataGridReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridReport.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridReport.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle5.ForeColor = Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dataGridReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridReport.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle6.ForeColor = Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = Color.White;
-            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            dataGridReport.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = Color.White;
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridReport.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridReport.EnableHeadersVisualStyles = false;
-            dataGridReport.Location = new Point(27, 58);
+            dataGridReport.Location = new Point(28, 57);
             dataGridReport.Name = "dataGridReport";
             dataGridReport.ReadOnly = true;
             dataGridReport.RowHeadersVisible = false;
             dataGridReport.ScrollBars = ScrollBars.Vertical;
-            dataGridReport.Size = new Size(558, 321);
+            dataGridReport.Size = new Size(945, 669);
             dataGridReport.TabIndex = 2;
             // 
             // searchbtn
@@ -82,7 +82,7 @@
             searchbtn.IconColor = Color.White;
             searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             searchbtn.IconSize = 19;
-            searchbtn.Location = new Point(555, 27);
+            searchbtn.Location = new Point(943, 25);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(30, 26);
             searchbtn.TabIndex = 33;
@@ -93,23 +93,23 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(349, 27);
+            searchtxt.Location = new Point(668, 25);
             searchtxt.Name = "searchtxt";
             searchtxt.PlaceholderText = "Enter title or type all";
-            searchtxt.Size = new Size(200, 26);
+            searchtxt.Size = new Size(271, 26);
             searchtxt.TabIndex = 32;
             // 
             // Report
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(searchbtn);
             Controls.Add(searchtxt);
             Controls.Add(dataGridReport);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Report";
-            Text = "Report";
+            Text = "Video Report";
             Load += Report_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridReport).EndInit();
             ResumeLayout(false);

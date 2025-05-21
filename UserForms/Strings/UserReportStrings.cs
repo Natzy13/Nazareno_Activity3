@@ -14,7 +14,7 @@ namespace BogsySystem.UserForms.Strings
 SELECT COUNT(DISTINCT RH.RentalID)
 FROM RentalHeader RH
 INNER JOIN RentalDetails RD ON RH.RentalID = RD.RentalID
-WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
+WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1  AND RD.IsReturned = 1";
             return queryTotalRent ;
         }
 
@@ -24,7 +24,7 @@ WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
 SELECT SUM(RD.Quantity)
 FROM RentalDetails RD
 INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
-WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
+WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1  AND RD.IsReturned = 1";
             return queryTotalQuantity ;
         }
 
@@ -34,7 +34,7 @@ WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
 SELECT SUM(RD.Fee)
 FROM RentalDetails RD
 INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
-WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
+WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1  AND RD.IsReturned = 1";
             return queryTotalFee ;
         }
 
@@ -44,7 +44,7 @@ WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
 SELECT SUM(RD.ChargeFee)
 FROM RentalDetails RD
 INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
-WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
+WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1  AND RD.IsReturned = 1";
             return queryTotalCharge ;
         }
 
@@ -54,40 +54,29 @@ WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
 SELECT SUM(RD.TotalFee)
 FROM RentalDetails RD
 INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
-WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1";
+WHERE RH.UserID = '{loginID}' AND RD.IsPaid = 1  AND RD.IsReturned = 1";
             return queryTotalAmount ;
         }
 
         public static string queryUserHistory(int loginID)
         {
-           string queryUserHistory = $@"
+            string queryUserHistory = $@"
 SELECT 
-    RH.RentalID,
-    STUFF((
-        SELECT ', ' + MI.Title + ' [' + MI.Format + '] (x' + CAST(RD.Quantity AS VARCHAR) + ')'
-        FROM RentalDetails RD
-        INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
-        WHERE RD.RentalID = RH.RentalID
-        FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS TitlesWithQuantities,
-    MIN(RD.RentalDate) AS RentalDate,
-    MAX(RD.ReturnDate) AS ReturnDate,
-    STUFF((
-        SELECT ', ' + CAST(RD.Fee AS VARCHAR)
-        FROM RentalDetails RD
-        WHERE RD.RentalID = RH.RentalID
-        FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS Fees,
-    STUFF((
-        SELECT ', ' + CAST(RD.ChargeFee AS VARCHAR)
-        FROM RentalDetails RD
-        WHERE RD.RentalID = RH.RentalID
-        FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS ChargeFees,
-    SUM(RD.TotalFee) AS TotalFee,
-    MAX(RD.PaidDate) AS PaidDate
-FROM RentalHeader RH
-INNER JOIN RentalDetails RD ON RH.RentalID = RD.RentalID
-WHERE RH.UserID = {loginID} AND RD.IsPaid = 1
-GROUP BY RH.RentalID
-ORDER BY MIN(RD.RentalDate) DESC;";
+    RD.RentalDetailID,
+    MI.Title + ' [' + MI.Format + ']' AS Title,
+    RD.Quantity,
+    RD.TotalFee,
+    RD.RentalDate,
+    RD.ReturnDate,
+    RD.Cash,
+    RD.Change
+FROM RentalDetails RD
+INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
+INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+WHERE RH.UserID = {loginID}
+  AND RD.IsPaid = 1
+  AND RD.IsReturned = 1
+ORDER BY RD.ReturnDate DESC;";
             return queryUserHistory;
         }
     }

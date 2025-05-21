@@ -104,12 +104,6 @@ namespace BogsySystem.UserForms
             OpenChildForm(new UserRent());
         }
 
-        private void returnbtn_Click(object sender, EventArgs e)
-        {
-            ActivateButton(sender, color2);
-            OpenChildForm(new UserReturn());
-        }
-
         private void exitbtn_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -117,19 +111,19 @@ namespace BogsySystem.UserForms
 
         private void reportbtn_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender, color1);
+            ActivateButton(sender, color4);
             OpenChildForm(new UserReport());
         }
 
         private void paybtn_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender, color3);
+            ActivateButton(sender, color2);
             OpenChildForm(new UserPayProperties());
         }
 
         private void accountbtn_Click(object sender, EventArgs e)
         {
-            ActivateButton(sender, color4);
+            ActivateButton(sender, color3);
             OpenChildForm(new UserAccount());
         }
 

@@ -236,10 +236,12 @@ namespace BogsySystem.Forms.Services
 
         public void DataGridProperties3(DataGridView grid)
         {
-            grid.Columns["RentalID"].Visible = false;
+            grid.Columns["RentalDetailID"].Visible = false;
+       
+            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            grid.Columns["TitlesWithQuantities"].HeaderText = "Title";
-            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["TotalFee"].HeaderText = "Total";
+            grid.Columns["TotalFee"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;

@@ -77,12 +77,12 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridVid.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridVid.EnableHeadersVisualStyles = false;
-            dataGridVid.Location = new Point(27, 57);
+            dataGridVid.Location = new Point(28, 57);
             dataGridVid.Name = "dataGridVid";
             dataGridVid.ReadOnly = true;
             dataGridVid.RowHeadersVisible = false;
             dataGridVid.ScrollBars = ScrollBars.Horizontal;
-            dataGridVid.Size = new Size(558, 234);
+            dataGridVid.Size = new Size(945, 561);
             dataGridVid.TabIndex = 1;
             dataGridVid.CellClick += dataGridVid_CellClick;
             dataGridVid.CellMouseDoubleClick += dataGridVid_CellMouseDoubleClick;
@@ -90,82 +90,82 @@
             // 
             // vidtitletxt
             // 
-            vidtitletxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            vidtitletxt.Location = new Point(91, 311);
+            vidtitletxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            vidtitletxt.Location = new Point(121, 648);
             vidtitletxt.Name = "vidtitletxt";
-            vidtitletxt.Size = new Size(212, 26);
+            vidtitletxt.Size = new Size(310, 31);
             vidtitletxt.TabIndex = 2;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(27, 319);
+            label1.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(27, 650);
             label1.Name = "label1";
-            label1.Size = new Size(36, 18);
+            label1.Size = new Size(46, 23);
             label1.TabIndex = 3;
             label1.Text = "Title";
             // 
             // formatlbl
             // 
             formatlbl.AutoSize = true;
-            formatlbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            formatlbl.Location = new Point(27, 360);
+            formatlbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            formatlbl.Location = new Point(27, 693);
             formatlbl.Name = "formatlbl";
-            formatlbl.Size = new Size(58, 18);
+            formatlbl.Size = new Size(74, 23);
             formatlbl.TabIndex = 5;
             formatlbl.Text = "Format";
             // 
             // formatxt
             // 
-            formatxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            formatxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             formatxt.FormattingEnabled = true;
             formatxt.Items.AddRange(new object[] { "VCD", "DVD" });
-            formatxt.Location = new Point(91, 356);
+            formatxt.Location = new Point(121, 693);
             formatxt.Name = "formatxt";
-            formatxt.Size = new Size(77, 28);
+            formatxt.Size = new Size(135, 30);
             formatxt.TabIndex = 6;
             formatxt.Text = "Select";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(347, 360);
+            label2.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(471, 650);
             label2.Name = "label2";
-            label2.Size = new Size(70, 18);
+            label2.Size = new Size(89, 23);
             label2.TabIndex = 7;
             label2.Text = "Quantity";
             // 
             // quantitytxt
             // 
-            quantitytxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            quantitytxt.Location = new Point(423, 356);
+            quantitytxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            quantitytxt.Location = new Point(625, 648);
             quantitytxt.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             quantitytxt.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             quantitytxt.Name = "quantitytxt";
-            quantitytxt.Size = new Size(34, 26);
+            quantitytxt.Size = new Size(34, 31);
             quantitytxt.TabIndex = 8;
             quantitytxt.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(183, 360);
+            label3.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(471, 693);
             label3.Name = "label3";
-            label3.Size = new Size(80, 18);
+            label3.Size = new Size(100, 23);
             label3.TabIndex = 9;
             label3.Text = "Rent Days";
             // 
             // maxrenttxt
             // 
-            maxrenttxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            maxrenttxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             maxrenttxt.FormattingEnabled = true;
             maxrenttxt.Items.AddRange(new object[] { "1", "2", "3" });
-            maxrenttxt.Location = new Point(269, 356);
+            maxrenttxt.Location = new Point(625, 693);
             maxrenttxt.Name = "maxrenttxt";
-            maxrenttxt.Size = new Size(34, 28);
+            maxrenttxt.Size = new Size(34, 30);
             maxrenttxt.TabIndex = 10;
             maxrenttxt.Text = "0";
             // 
@@ -174,16 +174,16 @@
             editbtn.BackColor = Color.Black;
             editbtn.FlatAppearance.BorderSize = 0;
             editbtn.FlatStyle = FlatStyle.Flat;
-            editbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            editbtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             editbtn.ForeColor = Color.White;
             editbtn.IconChar = FontAwesome.Sharp.IconChar.Pen;
             editbtn.IconColor = Color.White;
             editbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             editbtn.IconSize = 19;
             editbtn.ImageAlign = ContentAlignment.MiddleRight;
-            editbtn.Location = new Point(475, 312);
+            editbtn.Location = new Point(721, 693);
             editbtn.Name = "editbtn";
-            editbtn.Size = new Size(110, 26);
+            editbtn.Size = new Size(120, 31);
             editbtn.TabIndex = 14;
             editbtn.Text = "Edit";
             editbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -195,16 +195,16 @@
             removebtn.BackColor = Color.Firebrick;
             removebtn.FlatAppearance.BorderSize = 0;
             removebtn.FlatStyle = FlatStyle.Flat;
-            removebtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            removebtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             removebtn.ForeColor = Color.White;
             removebtn.IconChar = FontAwesome.Sharp.IconChar.Trash;
             removebtn.IconColor = Color.White;
             removebtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             removebtn.IconSize = 19;
             removebtn.ImageAlign = ContentAlignment.MiddleRight;
-            removebtn.Location = new Point(475, 356);
+            removebtn.Location = new Point(852, 692);
             removebtn.Name = "removebtn";
-            removebtn.Size = new Size(110, 26);
+            removebtn.Size = new Size(120, 31);
             removebtn.TabIndex = 15;
             removebtn.Text = "Remove";
             removebtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -216,16 +216,16 @@
             addbtn.BackColor = Color.ForestGreen;
             addbtn.FlatAppearance.BorderSize = 0;
             addbtn.FlatStyle = FlatStyle.Flat;
-            addbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addbtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             addbtn.ForeColor = Color.White;
             addbtn.IconChar = FontAwesome.Sharp.IconChar.PlusSquare;
             addbtn.IconColor = Color.White;
             addbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             addbtn.IconSize = 19;
             addbtn.ImageAlign = ContentAlignment.MiddleRight;
-            addbtn.Location = new Point(347, 311);
+            addbtn.Location = new Point(721, 648);
             addbtn.Name = "addbtn";
-            addbtn.Size = new Size(110, 26);
+            addbtn.Size = new Size(251, 31);
             addbtn.TabIndex = 16;
             addbtn.Text = "Add";
             addbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -237,9 +237,9 @@
             filterbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             filterbtn.FormattingEnabled = true;
             filterbtn.Items.AddRange(new object[] { "All", "VCD", "DVD", "Max Rent 1 day", "Max Rent 2 days", "Max Rent 3 days" });
-            filterbtn.Location = new Point(27, 26);
+            filterbtn.Location = new Point(30, 25);
             filterbtn.Name = "filterbtn";
-            filterbtn.Size = new Size(135, 25);
+            filterbtn.Size = new Size(110, 25);
             filterbtn.TabIndex = 24;
             filterbtn.Text = "Filter";
             filterbtn.SelectedIndexChanged += filterbtn_SelectedIndexChanged;
@@ -255,7 +255,7 @@
             searchbtn.IconColor = Color.White;
             searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             searchbtn.IconSize = 19;
-            searchbtn.Location = new Point(555, 26);
+            searchbtn.Location = new Point(942, 25);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(30, 26);
             searchbtn.TabIndex = 28;
@@ -266,10 +266,10 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(347, 26);
+            searchtxt.Location = new Point(668, 25);
             searchtxt.Name = "searchtxt";
             searchtxt.PlaceholderText = "Type \"all\" to show all";
-            searchtxt.Size = new Size(202, 26);
+            searchtxt.Size = new Size(271, 26);
             searchtxt.TabIndex = 27;
             // 
             // searchfilter
@@ -277,7 +277,7 @@
             searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchfilter.FormattingEnabled = true;
             searchfilter.Items.AddRange(new object[] { "ID", "Title" });
-            searchfilter.Location = new Point(269, 26);
+            searchfilter.Location = new Point(594, 25);
             searchfilter.Name = "searchfilter";
             searchfilter.Size = new Size(65, 25);
             searchfilter.TabIndex = 29;
@@ -287,7 +287,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(searchfilter);
             Controls.Add(searchbtn);
             Controls.Add(searchtxt);

@@ -33,7 +33,6 @@
             reportbtn = new FontAwesome.Sharp.IconButton();
             accountbtn = new FontAwesome.Sharp.IconButton();
             paybtn = new FontAwesome.Sharp.IconButton();
-            returnbtn = new FontAwesome.Sharp.IconButton();
             rentbtn = new FontAwesome.Sharp.IconButton();
             logoPanel = new Panel();
             pictureLogo = new PictureBox();
@@ -56,13 +55,12 @@
             menuPanel.Controls.Add(reportbtn);
             menuPanel.Controls.Add(accountbtn);
             menuPanel.Controls.Add(paybtn);
-            menuPanel.Controls.Add(returnbtn);
             menuPanel.Controls.Add(rentbtn);
             menuPanel.Controls.Add(logoPanel);
             menuPanel.Dock = DockStyle.Left;
             menuPanel.Location = new Point(0, 0);
             menuPanel.Name = "menuPanel";
-            menuPanel.Size = new Size(188, 450);
+            menuPanel.Size = new Size(188, 800);
             menuPanel.TabIndex = 1;
             // 
             // logoutbtn
@@ -77,7 +75,7 @@
             logoutbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             logoutbtn.IconSize = 30;
             logoutbtn.ImageAlign = ContentAlignment.MiddleLeft;
-            logoutbtn.Location = new Point(0, 408);
+            logoutbtn.Location = new Point(0, 758);
             logoutbtn.Name = "logoutbtn";
             logoutbtn.Padding = new Padding(3, 0, 0, 0);
             logoutbtn.Size = new Size(188, 42);
@@ -100,7 +98,7 @@
             reportbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             reportbtn.IconSize = 30;
             reportbtn.ImageAlign = ContentAlignment.MiddleLeft;
-            reportbtn.Location = new Point(0, 275);
+            reportbtn.Location = new Point(0, 233);
             reportbtn.Name = "reportbtn";
             reportbtn.Padding = new Padding(3, 0, 0, 0);
             reportbtn.Size = new Size(188, 42);
@@ -123,7 +121,7 @@
             accountbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             accountbtn.IconSize = 30;
             accountbtn.ImageAlign = ContentAlignment.MiddleLeft;
-            accountbtn.Location = new Point(0, 233);
+            accountbtn.Location = new Point(0, 191);
             accountbtn.Name = "accountbtn";
             accountbtn.Padding = new Padding(3, 0, 0, 0);
             accountbtn.Size = new Size(188, 42);
@@ -146,39 +144,16 @@
             paybtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             paybtn.IconSize = 30;
             paybtn.ImageAlign = ContentAlignment.MiddleLeft;
-            paybtn.Location = new Point(0, 191);
+            paybtn.Location = new Point(0, 149);
             paybtn.Name = "paybtn";
             paybtn.Padding = new Padding(3, 0, 0, 0);
             paybtn.Size = new Size(188, 42);
             paybtn.TabIndex = 3;
-            paybtn.Text = "Payment";
+            paybtn.Text = "Return/Pay";
             paybtn.TextAlign = ContentAlignment.MiddleLeft;
             paybtn.TextImageRelation = TextImageRelation.ImageBeforeText;
             paybtn.UseVisualStyleBackColor = true;
             paybtn.Click += paybtn_Click;
-            // 
-            // returnbtn
-            // 
-            returnbtn.Dock = DockStyle.Top;
-            returnbtn.FlatAppearance.BorderSize = 0;
-            returnbtn.FlatStyle = FlatStyle.Flat;
-            returnbtn.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            returnbtn.ForeColor = Color.Gainsboro;
-            returnbtn.IconChar = FontAwesome.Sharp.IconChar.Film;
-            returnbtn.IconColor = Color.White;
-            returnbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            returnbtn.IconSize = 30;
-            returnbtn.ImageAlign = ContentAlignment.MiddleLeft;
-            returnbtn.Location = new Point(0, 149);
-            returnbtn.Name = "returnbtn";
-            returnbtn.Padding = new Padding(3, 0, 0, 0);
-            returnbtn.Size = new Size(188, 42);
-            returnbtn.TabIndex = 2;
-            returnbtn.Text = "Return";
-            returnbtn.TextAlign = ContentAlignment.MiddleLeft;
-            returnbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
-            returnbtn.UseVisualStyleBackColor = true;
-            returnbtn.Click += returnbtn_Click;
             // 
             // rentbtn
             // 
@@ -232,7 +207,7 @@
             panelTitle.Dock = DockStyle.Top;
             panelTitle.Location = new Point(188, 0);
             panelTitle.Name = "panelTitle";
-            panelTitle.Size = new Size(612, 49);
+            panelTitle.Size = new Size(1001, 49);
             panelTitle.TabIndex = 2;
             // 
             // exitbtn
@@ -242,7 +217,7 @@
             exitbtn.FlatStyle = FlatStyle.Flat;
             exitbtn.Font = new Font("Century Gothic", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             exitbtn.ForeColor = Color.Red;
-            exitbtn.Location = new Point(588, 1);
+            exitbtn.Location = new Point(979, 0);
             exitbtn.Name = "exitbtn";
             exitbtn.Size = new Size(22, 22);
             exitbtn.TabIndex = 0;
@@ -281,14 +256,14 @@
             panelDesktop.Dock = DockStyle.Fill;
             panelDesktop.Location = new Point(188, 49);
             panelDesktop.Name = "panelDesktop";
-            panelDesktop.Size = new Size(612, 401);
+            panelDesktop.Size = new Size(1001, 751);
             panelDesktop.TabIndex = 3;
             // 
             // UserDashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1189, 800);
             Controls.Add(panelDesktop);
             Controls.Add(panelTitle);
             Controls.Add(menuPanel);
@@ -310,7 +285,6 @@
         private Panel menuPanel;
         private FontAwesome.Sharp.IconButton accountbtn;
         private FontAwesome.Sharp.IconButton paybtn;
-        private FontAwesome.Sharp.IconButton returnbtn;
         private FontAwesome.Sharp.IconButton rentbtn;
         private Panel logoPanel;
         private PictureBox pictureLogo;

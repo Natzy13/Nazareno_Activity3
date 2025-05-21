@@ -71,12 +71,12 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dataGridUsers.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridUsers.EnableHeadersVisualStyles = false;
-            dataGridUsers.Location = new Point(30, 57);
+            dataGridUsers.Location = new Point(28, 57);
             dataGridUsers.Name = "dataGridUsers";
             dataGridUsers.ReadOnly = true;
             dataGridUsers.RowHeadersVisible = false;
             dataGridUsers.ScrollBars = ScrollBars.Vertical;
-            dataGridUsers.Size = new Size(558, 234);
+            dataGridUsers.Size = new Size(945, 561);
             dataGridUsers.TabIndex = 0;
             dataGridUsers.CellClick += dataGridUsers_CellClick;
             dataGridUsers.CellDoubleClick += dataGridUsers_CellDoubleClick;
@@ -87,16 +87,16 @@
             activatebtn.BackColor = Color.Green;
             activatebtn.FlatAppearance.BorderSize = 0;
             activatebtn.FlatStyle = FlatStyle.Flat;
-            activatebtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            activatebtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             activatebtn.ForeColor = Color.White;
             activatebtn.IconChar = FontAwesome.Sharp.IconChar.Unlock;
             activatebtn.IconColor = Color.White;
             activatebtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             activatebtn.IconSize = 20;
             activatebtn.ImageAlign = ContentAlignment.MiddleRight;
-            activatebtn.Location = new Point(351, 352);
+            activatebtn.Location = new Point(736, 650);
             activatebtn.Name = "activatebtn";
-            activatebtn.Size = new Size(109, 26);
+            activatebtn.Size = new Size(237, 31);
             activatebtn.TabIndex = 15;
             activatebtn.Text = "Activate";
             activatebtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -106,57 +106,57 @@
             // namelbl
             // 
             namelbl.AutoSize = true;
-            namelbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            namelbl.Location = new Point(27, 319);
+            namelbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            namelbl.Location = new Point(27, 650);
             namelbl.Name = "namelbl";
-            namelbl.Size = new Size(53, 18);
+            namelbl.Size = new Size(67, 23);
             namelbl.TabIndex = 17;
             namelbl.Text = "Name";
             // 
             // nametxt
             // 
-            nametxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            nametxt.Location = new Point(91, 311);
+            nametxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nametxt.Location = new Point(111, 648);
             nametxt.Name = "nametxt";
-            nametxt.Size = new Size(234, 26);
+            nametxt.Size = new Size(351, 31);
             nametxt.TabIndex = 16;
             // 
             // emaillbl
             // 
             emaillbl.AutoSize = true;
-            emaillbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            emaillbl.Location = new Point(27, 360);
+            emaillbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            emaillbl.Location = new Point(27, 693);
             emaillbl.Name = "emaillbl";
-            emaillbl.Size = new Size(48, 18);
+            emaillbl.Size = new Size(61, 23);
             emaillbl.TabIndex = 19;
             emaillbl.Text = "Email";
             // 
             // emailtxt
             // 
-            emailtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            emailtxt.Location = new Point(91, 352);
+            emailtxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            emailtxt.Location = new Point(111, 691);
             emailtxt.Name = "emailtxt";
-            emailtxt.Size = new Size(234, 26);
+            emailtxt.Size = new Size(351, 31);
             emailtxt.TabIndex = 18;
             // 
             // gendertxt
             // 
-            gendertxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            gendertxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             gendertxt.FormattingEnabled = true;
             gendertxt.Items.AddRange(new object[] { "Male", "Female", "Others" });
-            gendertxt.Location = new Point(422, 311);
+            gendertxt.Location = new Point(493, 692);
             gendertxt.Name = "gendertxt";
-            gendertxt.Size = new Size(166, 28);
+            gendertxt.Size = new Size(166, 30);
             gendertxt.TabIndex = 21;
             gendertxt.Text = "Select Gender";
             // 
             // genderlbl
             // 
             genderlbl.AutoSize = true;
-            genderlbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            genderlbl.Location = new Point(351, 315);
+            genderlbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            genderlbl.Location = new Point(493, 650);
             genderlbl.Name = "genderlbl";
-            genderlbl.Size = new Size(65, 18);
+            genderlbl.Size = new Size(80, 23);
             genderlbl.TabIndex = 20;
             genderlbl.Text = "Gender";
             // 
@@ -165,16 +165,16 @@
             editbtn.BackColor = Color.Black;
             editbtn.FlatAppearance.BorderSize = 0;
             editbtn.FlatStyle = FlatStyle.Flat;
-            editbtn.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            editbtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             editbtn.ForeColor = Color.White;
             editbtn.IconChar = FontAwesome.Sharp.IconChar.Pen;
             editbtn.IconColor = Color.White;
             editbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             editbtn.IconSize = 20;
             editbtn.ImageAlign = ContentAlignment.MiddleRight;
-            editbtn.Location = new Point(479, 353);
+            editbtn.Location = new Point(736, 693);
             editbtn.Name = "editbtn";
-            editbtn.Size = new Size(109, 26);
+            editbtn.Size = new Size(237, 31);
             editbtn.TabIndex = 22;
             editbtn.Text = "Edit";
             editbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -188,7 +188,7 @@
             filter.Items.AddRange(new object[] { "All", "Activated", "Deactivated", "Male", "Female" });
             filter.Location = new Point(30, 26);
             filter.Name = "filter";
-            filter.Size = new Size(109, 25);
+            filter.Size = new Size(110, 25);
             filter.TabIndex = 23;
             filter.Text = "Filter";
             filter.SelectedIndexChanged += filter_SelectedIndexChanged;
@@ -196,9 +196,9 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(422, 26);
+            searchtxt.Location = new Point(668, 25);
             searchtxt.Name = "searchtxt";
-            searchtxt.Size = new Size(130, 26);
+            searchtxt.Size = new Size(271, 26);
             searchtxt.TabIndex = 24;
             // 
             // searchbtn
@@ -212,7 +212,7 @@
             searchbtn.IconColor = Color.White;
             searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             searchbtn.IconSize = 19;
-            searchbtn.Location = new Point(558, 26);
+            searchbtn.Location = new Point(943, 25);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(30, 26);
             searchbtn.TabIndex = 25;
@@ -225,7 +225,7 @@
             searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchfilter.FormattingEnabled = true;
             searchfilter.Items.AddRange(new object[] { "ID", "Name" });
-            searchfilter.Location = new Point(351, 26);
+            searchfilter.Location = new Point(594, 25);
             searchfilter.Name = "searchfilter";
             searchfilter.Size = new Size(65, 25);
             searchfilter.TabIndex = 26;
@@ -235,7 +235,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(searchfilter);
             Controls.Add(searchbtn);
             Controls.Add(searchtxt);

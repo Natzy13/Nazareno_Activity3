@@ -53,7 +53,7 @@
             searchfilter.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             searchfilter.FormattingEnabled = true;
             searchfilter.Items.AddRange(new object[] { "ID", "Name" });
-            searchfilter.Location = new Point(309, 21);
+            searchfilter.Location = new Point(594, 25);
             searchfilter.Name = "searchfilter";
             searchfilter.Size = new Size(65, 25);
             searchfilter.TabIndex = 40;
@@ -70,7 +70,7 @@
             searchbtn.IconColor = Color.White;
             searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             searchbtn.IconSize = 19;
-            searchbtn.Location = new Point(553, 21);
+            searchbtn.Location = new Point(943, 25);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(30, 26);
             searchbtn.TabIndex = 39;
@@ -81,19 +81,19 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(380, 21);
+            searchtxt.Location = new Point(668, 25);
             searchtxt.Name = "searchtxt";
             searchtxt.PlaceholderText = "Type \"all\" to show all";
-            searchtxt.Size = new Size(167, 26);
+            searchtxt.Size = new Size(271, 26);
             searchtxt.TabIndex = 38;
             // 
             // activerentlbl
             // 
             activerentlbl.AutoSize = true;
-            activerentlbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            activerentlbl.Location = new Point(27, 222);
+            activerentlbl.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            activerentlbl.Location = new Point(27, 382);
             activerentlbl.Name = "activerentlbl";
-            activerentlbl.Size = new Size(201, 18);
+            activerentlbl.Size = new Size(273, 25);
             activerentlbl.TabIndex = 36;
             activerentlbl.Text = "User Active Rented Media";
             // 
@@ -124,12 +124,12 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridUserRented.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridUserRented.EnableHeadersVisualStyles = false;
-            dataGridUserRented.Location = new Point(27, 243);
+            dataGridUserRented.Location = new Point(27, 410);
             dataGridUserRented.Name = "dataGridUserRented";
             dataGridUserRented.ReadOnly = true;
             dataGridUserRented.RowHeadersVisible = false;
             dataGridUserRented.ScrollBars = ScrollBars.Vertical;
-            dataGridUserRented.Size = new Size(275, 136);
+            dataGridUserRented.Size = new Size(460, 315);
             dataGridUserRented.TabIndex = 35;
             dataGridUserRented.Click += dataGridUserRented_Click;
             // 
@@ -160,22 +160,22 @@
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
             dataGridUsers.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridUsers.EnableHeadersVisualStyles = false;
-            dataGridUsers.Location = new Point(27, 53);
+            dataGridUsers.Location = new Point(28, 57);
             dataGridUsers.Name = "dataGridUsers";
             dataGridUsers.ReadOnly = true;
             dataGridUsers.RowHeadersVisible = false;
             dataGridUsers.ScrollBars = ScrollBars.Vertical;
-            dataGridUsers.Size = new Size(558, 161);
+            dataGridUsers.Size = new Size(945, 309);
             dataGridUsers.TabIndex = 34;
             dataGridUsers.CellClick += dataGridUsers_CellClick;
             // 
             // backlbl
             // 
             backlbl.AutoSize = true;
-            backlbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            backlbl.Location = new Point(195, 301);
+            backlbl.Font = new Font("Century Gothic", 24F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            backlbl.Location = new Point(310, 564);
             backlbl.Name = "backlbl";
-            backlbl.Size = new Size(222, 22);
+            backlbl.Size = new Size(380, 39);
             backlbl.TabIndex = 37;
             backlbl.Text = "Select a user to display ";
             // 
@@ -206,21 +206,21 @@
             dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
             dataGridUserHistory.DefaultCellStyle = dataGridViewCellStyle6;
             dataGridUserHistory.EnableHeadersVisualStyles = false;
-            dataGridUserHistory.Location = new Point(309, 243);
+            dataGridUserHistory.Location = new Point(513, 410);
             dataGridUserHistory.Name = "dataGridUserHistory";
             dataGridUserHistory.ReadOnly = true;
             dataGridUserHistory.RowHeadersVisible = false;
             dataGridUserHistory.ScrollBars = ScrollBars.Vertical;
-            dataGridUserHistory.Size = new Size(275, 136);
+            dataGridUserHistory.Size = new Size(460, 315);
             dataGridUserHistory.TabIndex = 41;
             // 
             // historylbl
             // 
             historylbl.AutoSize = true;
-            historylbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            historylbl.Location = new Point(309, 222);
+            historylbl.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            historylbl.Location = new Point(512, 382);
             historylbl.Name = "historylbl";
-            historylbl.Size = new Size(94, 18);
+            historylbl.Size = new Size(126, 25);
             historylbl.TabIndex = 42;
             historylbl.Text = "User History";
             // 
@@ -228,7 +228,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(historylbl);
             Controls.Add(dataGridUserHistory);
             Controls.Add(searchfilter);
@@ -241,7 +241,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "UserReport";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "UserReport";
+            Text = "User Report";
             Load += UserReport_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridUserRented).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridUsers).EndInit();

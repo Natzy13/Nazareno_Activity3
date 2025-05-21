@@ -105,18 +105,22 @@ namespace BogsySystem.Forms.Properties
 
         public void dataGridProperties(DataGridView grid)
         {
-            grid.Columns["RentalID"].Visible = false;
-
+            grid.Columns["RentalDetailID"].Visible = false;
             grid.Columns["Name"].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            grid.Columns["TitlesWithQuantities"].HeaderText = "Title";
-            grid.Columns["TitlesWithQuantities"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["Title"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["Quantity"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["RentalDate"].HeaderText = "Rent Date";
             grid.Columns["RentalDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             grid.Columns["ReturnDate"].HeaderText = "Return Date";
             grid.Columns["ReturnDate"].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            grid.Columns["TotalFee"].HeaderText = "Total";
+            grid.Columns["TotalFee"].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            grid.Columns["Cash"].SortMode = DataGridViewColumnSortMode.NotSortable;
+            grid.Columns["Change"].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
 }

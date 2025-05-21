@@ -70,12 +70,12 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridPay.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridPay.EnableHeadersVisualStyles = false;
-            dataGridPay.Location = new Point(27, 26);
+            dataGridPay.Location = new Point(28, 26);
             dataGridPay.Name = "dataGridPay";
             dataGridPay.ReadOnly = true;
             dataGridPay.RowHeadersVisible = false;
             dataGridPay.ScrollBars = ScrollBars.Vertical;
-            dataGridPay.Size = new Size(558, 292);
+            dataGridPay.Size = new Size(945, 600);
             dataGridPay.TabIndex = 3;
             dataGridPay.CellClick += dataGridPay_CellClick;
             dataGridPay.CellDoubleClick += dataGridPay_CellDoubleClick;
@@ -86,16 +86,16 @@
             paybtn.BackColor = Color.ForestGreen;
             paybtn.FlatAppearance.BorderSize = 0;
             paybtn.FlatStyle = FlatStyle.Flat;
-            paybtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            paybtn.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             paybtn.ForeColor = Color.White;
             paybtn.IconChar = FontAwesome.Sharp.IconChar.MoneyBill;
             paybtn.IconColor = Color.White;
             paybtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             paybtn.IconSize = 19;
             paybtn.ImageAlign = ContentAlignment.MiddleRight;
-            paybtn.Location = new Point(475, 356);
+            paybtn.Location = new Point(722, 694);
             paybtn.Name = "paybtn";
-            paybtn.Size = new Size(110, 26);
+            paybtn.Size = new Size(251, 31);
             paybtn.TabIndex = 21;
             paybtn.Text = "Pay";
             paybtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -105,83 +105,83 @@
             // chargefeelbl
             // 
             chargefeelbl.AutoSize = true;
-            chargefeelbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            chargefeelbl.Location = new Point(27, 364);
+            chargefeelbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
+            chargefeelbl.Location = new Point(27, 697);
             chargefeelbl.Name = "chargefeelbl";
-            chargefeelbl.Size = new Size(112, 18);
+            chargefeelbl.Size = new Size(139, 23);
             chargefeelbl.TabIndex = 23;
             chargefeelbl.Text = "Overdue Fee :";
             // 
             // feelbl
             // 
             feelbl.AutoSize = true;
-            feelbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            feelbl.Location = new Point(48, 332);
+            feelbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
+            feelbl.Location = new Point(70, 652);
             feelbl.Name = "feelbl";
-            feelbl.Size = new Size(91, 18);
+            feelbl.Size = new Size(96, 23);
             feelbl.TabIndex = 24;
-            feelbl.Text = "Total Price :";
+            feelbl.Text = "Subtotal :";
             // 
             // totalfeelbl
             // 
             totalfeelbl.AutoSize = true;
-            totalfeelbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            totalfeelbl.Location = new Point(233, 332);
+            totalfeelbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
+            totalfeelbl.Location = new Point(366, 650);
             totalfeelbl.Name = "totalfeelbl";
-            totalfeelbl.Size = new Size(117, 18);
+            totalfeelbl.Size = new Size(146, 23);
             totalfeelbl.TabIndex = 25;
             totalfeelbl.Text = "Final Rent Fee :";
             // 
             // paylbl
             // 
             paylbl.AutoSize = true;
-            paylbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            paylbl.Location = new Point(307, 359);
+            paylbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold);
+            paylbl.Location = new Point(457, 694);
             paylbl.Name = "paylbl";
-            paylbl.Size = new Size(43, 18);
+            paylbl.Size = new Size(55, 23);
             paylbl.TabIndex = 26;
             paylbl.Text = "Pay :";
             // 
             // feetxt
             // 
-            feetxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            feetxt.Location = new Point(145, 328);
+            feetxt.Font = new Font("Century Gothic", 14.25F);
+            feetxt.Location = new Point(188, 648);
             feetxt.Name = "feetxt";
             feetxt.ReadOnly = true;
-            feetxt.Size = new Size(68, 26);
+            feetxt.Size = new Size(150, 31);
             feetxt.TabIndex = 27;
             // 
             // chargefeetxt
             // 
-            chargefeetxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            chargefeetxt.Location = new Point(145, 360);
+            chargefeetxt.Font = new Font("Century Gothic", 14.25F);
+            chargefeetxt.Location = new Point(188, 694);
             chargefeetxt.Name = "chargefeetxt";
             chargefeetxt.ReadOnly = true;
-            chargefeetxt.Size = new Size(68, 26);
+            chargefeetxt.Size = new Size(150, 31);
             chargefeetxt.TabIndex = 28;
             // 
             // paytxt
             // 
-            paytxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            paytxt.Location = new Point(356, 356);
+            paytxt.Font = new Font("Century Gothic", 14.25F);
+            paytxt.Location = new Point(535, 693);
             paytxt.Name = "paytxt";
-            paytxt.Size = new Size(92, 26);
+            paytxt.Size = new Size(150, 31);
             paytxt.TabIndex = 29;
             // 
             // totalfeetxt
             // 
-            totalfeetxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            totalfeetxt.Location = new Point(356, 324);
+            totalfeetxt.Font = new Font("Century Gothic", 14.25F);
+            totalfeetxt.Location = new Point(535, 650);
             totalfeetxt.Name = "totalfeetxt";
             totalfeetxt.ReadOnly = true;
-            totalfeetxt.Size = new Size(92, 26);
+            totalfeetxt.Size = new Size(150, 31);
             totalfeetxt.TabIndex = 30;
             // 
-            // UserPay
+            // UserPayProperties
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(totalfeetxt);
             Controls.Add(paytxt);
             Controls.Add(chargefeetxt);
@@ -193,9 +193,9 @@
             Controls.Add(paybtn);
             Controls.Add(dataGridPay);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "UserPay";
+            Name = "UserPayProperties";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "UserPay";
+            Text = "Payment";
             Load += UserPay_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridPay).EndInit();
             ResumeLayout(false);

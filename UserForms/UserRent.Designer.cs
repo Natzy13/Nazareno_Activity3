@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             dataGridRent = new DataGridView();
             rentbtn = new FontAwesome.Sharp.IconButton();
             quantitytxt = new NumericUpDown();
@@ -58,30 +58,30 @@
             dataGridRent.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridRent.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridRent.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridRent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle9.ForeColor = Color.White;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dataGridRent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             dataGridRent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(192, 192, 255);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridRent.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = Color.White;
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle10.ForeColor = Color.Black;
+            dataGridViewCellStyle10.SelectionBackColor = Color.FromArgb(192, 192, 255);
+            dataGridViewCellStyle10.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
+            dataGridRent.DefaultCellStyle = dataGridViewCellStyle10;
             dataGridRent.EnableHeadersVisualStyles = false;
-            dataGridRent.Location = new Point(27, 57);
+            dataGridRent.Location = new Point(30, 57);
             dataGridRent.Name = "dataGridRent";
             dataGridRent.ReadOnly = true;
             dataGridRent.RowHeadersVisible = false;
             dataGridRent.ScrollBars = ScrollBars.Horizontal;
-            dataGridRent.Size = new Size(349, 281);
+            dataGridRent.Size = new Size(632, 616);
             dataGridRent.TabIndex = 2;
             dataGridRent.CellClick += dataGridRent_CellClick;
             dataGridRent.CellMouseDoubleClick += dataGridRent_CellMouseDoubleClick;
@@ -99,9 +99,9 @@
             rentbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             rentbtn.IconSize = 19;
             rentbtn.ImageAlign = ContentAlignment.MiddleRight;
-            rentbtn.Location = new Point(394, 356);
+            rentbtn.Location = new Point(682, 701);
             rentbtn.Name = "rentbtn";
-            rentbtn.Size = new Size(191, 26);
+            rentbtn.Size = new Size(288, 31);
             rentbtn.TabIndex = 17;
             rentbtn.Text = "Rent";
             rentbtn.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -110,22 +110,22 @@
             // 
             // quantitytxt
             // 
-            quantitytxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            quantitytxt.Location = new Point(103, 356);
+            quantitytxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            quantitytxt.Location = new Point(131, 701);
             quantitytxt.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             quantitytxt.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             quantitytxt.Name = "quantitytxt";
-            quantitytxt.Size = new Size(34, 26);
+            quantitytxt.Size = new Size(34, 31);
             quantitytxt.TabIndex = 18;
             quantitytxt.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // quantitylbl
             // 
             quantitylbl.AutoSize = true;
-            quantitylbl.Font = new Font("Century Gothic", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            quantitylbl.Location = new Point(27, 359);
+            quantitylbl.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            quantitylbl.Location = new Point(30, 702);
             quantitylbl.Name = "quantitylbl";
-            quantitylbl.Size = new Size(70, 18);
+            quantitylbl.Size = new Size(89, 23);
             quantitylbl.TabIndex = 19;
             quantitylbl.Text = "Quantity";
             // 
@@ -134,9 +134,9 @@
             filterbtn.Font = new Font("Century Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             filterbtn.FormattingEnabled = true;
             filterbtn.Items.AddRange(new object[] { "All", "VCD", "DVD", "Max Rent 1 day", "Max Rent 2 days", "Max Rent 3 days" });
-            filterbtn.Location = new Point(27, 26);
+            filterbtn.Location = new Point(30, 26);
             filterbtn.Name = "filterbtn";
-            filterbtn.Size = new Size(135, 25);
+            filterbtn.Size = new Size(110, 25);
             filterbtn.TabIndex = 25;
             filterbtn.Text = "Filter";
             filterbtn.SelectedIndexChanged += filterbtn_SelectedIndexChanged;
@@ -152,7 +152,7 @@
             searchbtn.IconColor = Color.White;
             searchbtn.IconFont = FontAwesome.Sharp.IconFont.Auto;
             searchbtn.IconSize = 19;
-            searchbtn.Location = new Point(555, 26);
+            searchbtn.Location = new Point(632, 26);
             searchbtn.Name = "searchbtn";
             searchbtn.Size = new Size(30, 26);
             searchbtn.TabIndex = 31;
@@ -163,10 +163,10 @@
             // searchtxt
             // 
             searchtxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            searchtxt.Location = new Point(394, 26);
+            searchtxt.Location = new Point(355, 26);
             searchtxt.Name = "searchtxt";
             searchtxt.PlaceholderText = "Search Title";
-            searchtxt.Size = new Size(155, 26);
+            searchtxt.Size = new Size(271, 26);
             searchtxt.TabIndex = 30;
             // 
             // dataGridCart
@@ -178,30 +178,30 @@
             dataGridCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridCart.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridCart.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridCart.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle11.ForeColor = Color.White;
+            dataGridViewCellStyle11.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.True;
+            dataGridCart.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             dataGridCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(192, 192, 255);
-            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridCart.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = Color.White;
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle12.ForeColor = Color.Black;
+            dataGridViewCellStyle12.SelectionBackColor = Color.FromArgb(192, 192, 255);
+            dataGridViewCellStyle12.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
+            dataGridCart.DefaultCellStyle = dataGridViewCellStyle12;
             dataGridCart.EnableHeadersVisualStyles = false;
-            dataGridCart.Location = new Point(394, 58);
+            dataGridCart.Location = new Point(682, 57);
             dataGridCart.Name = "dataGridCart";
             dataGridCart.ReadOnly = true;
             dataGridCart.RowHeadersVisible = false;
             dataGridCart.ScrollBars = ScrollBars.Horizontal;
-            dataGridCart.Size = new Size(191, 248);
+            dataGridCart.Size = new Size(288, 571);
             dataGridCart.TabIndex = 32;
             dataGridCart.CellClick += dataGridCart_CellClick;
             dataGridCart.CellDoubleClick += dataGridCart_CellDoubleClick;
@@ -219,9 +219,9 @@
             clearCart.IconFont = FontAwesome.Sharp.IconFont.Auto;
             clearCart.IconSize = 19;
             clearCart.ImageAlign = ContentAlignment.MiddleRight;
-            clearCart.Location = new Point(286, 356);
+            clearCart.Location = new Point(482, 701);
             clearCart.Name = "clearCart";
-            clearCart.Size = new Size(90, 26);
+            clearCart.Size = new Size(180, 31);
             clearCart.TabIndex = 33;
             clearCart.Text = "Clear";
             clearCart.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -240,9 +240,9 @@
             addCart.IconFont = FontAwesome.Sharp.IconFont.Auto;
             addCart.IconSize = 19;
             addCart.ImageAlign = ContentAlignment.MiddleRight;
-            addCart.Location = new Point(190, 356);
+            addCart.Location = new Point(286, 701);
             addCart.Name = "addCart";
-            addCart.Size = new Size(90, 26);
+            addCart.Size = new Size(180, 31);
             addCart.TabIndex = 34;
             addCart.Text = "Add";
             addCart.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -252,20 +252,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Century Gothic", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(394, 320);
+            label1.Font = new Font("Century Gothic", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(682, 650);
             label1.Name = "label1";
-            label1.Size = new Size(75, 19);
+            label1.Size = new Size(91, 23);
             label1.TabIndex = 35;
             label1.Text = "Subtotal:";
             // 
             // subtotaltxt
             // 
             subtotaltxt.AutoSize = true;
-            subtotaltxt.Font = new Font("Century Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            subtotaltxt.Location = new Point(478, 320);
+            subtotaltxt.Font = new Font("Century Gothic", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subtotaltxt.Location = new Point(791, 650);
             subtotaltxt.Name = "subtotaltxt";
-            subtotaltxt.Size = new Size(37, 20);
+            subtotaltxt.Size = new Size(48, 22);
             subtotaltxt.TabIndex = 36;
             subtotaltxt.Text = "0.00";
             // 
@@ -273,7 +273,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(612, 401);
+            ClientSize = new Size(1001, 751);
             Controls.Add(subtotaltxt);
             Controls.Add(label1);
             Controls.Add(addCart);

@@ -40,8 +40,5 @@
     <Compile Update="UserForms\UserReport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UserForms\UserReturn.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
 </Project>

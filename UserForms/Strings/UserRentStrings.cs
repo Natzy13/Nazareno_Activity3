@@ -8,7 +8,7 @@ namespace BogsySystem.UserForms.Strings
 {
     public class UserRentStrings
     {
-       public static string displayMediaQuery = "SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
+        public static string displayMediaQuery = "SELECT MediaID, Title, Format, Price, AvailableCopies, MaxRentalDays FROM MediaItems WHERE AvailableCopies > 0 AND IsAvailable = 1";
 
         public static string createRentalHeaderQuery = @"
         INSERT INTO RentalHeader (UserID, RentalDate, TotalFee)
@@ -22,8 +22,8 @@ SELECT @pricePerMedia = Price FROM MediaItems WHERE MediaID = @mediaID;
 DECLARE @format NVARCHAR(50);
 SELECT @format = Format FROM MediaItems WHERE MediaID = @mediaID;
 
-INSERT INTO RentalDetails (RentalID, MediaID, Format, RentalDate, Quantity, Fee, TotalFee)
-VALUES (@rentalID, @mediaID, @format, @rentalDate, @quantity, @pricePerMedia, @pricePerMedia * @quantity);
+INSERT INTO RentalDetails (RentalID, MediaID, Format, RentalDate, Quantity, Fee)
+VALUES (@rentalID, @mediaID, @format, @rentalDate, @quantity, @pricePerMedia);
 
 UPDATE MediaItems 
 SET AvailableCopies = AvailableCopies - @quantity 

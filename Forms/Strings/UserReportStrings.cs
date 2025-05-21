@@ -29,22 +29,19 @@ WHERE RH.UserID = '{selectedUser}' AND RD.IsReturned = 0;";
         public static string getUsersHistoryQuery(int selectedUser)
         {
             string getUsersHistoryQuery = $@"
-    SELECT 
-        RH.RentalID, 
-        STUFF((
-            SELECT ', ' + MI.Title + ' [' + MI.Format + '] (x' + CAST(RD.Quantity AS VARCHAR) + ')'
-            FROM RentalDetails RD
-            INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
-            WHERE RD.RentalID = RH.RentalID
-            FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS TitlesWithQuantities,
-        MIN(RD.RentalDate) AS RentalDate,
-        MAX(RD.ReturnDate) AS ReturnDate
-    FROM RentalHeader RH
-    INNER JOIN RentalDetails RD ON RH.RentalID = RD.RentalID
-    INNER JOIN Users U ON RH.UserID = U.ID
-    WHERE RD.IsReturned = 1 AND RH.UserID = '{selectedUser}'
-    GROUP BY RH.RentalID
-    ORDER BY MAX(RD.ReturnDate) DESC;";
+    SELECT
+    RD.RentalDetailID,
+    MI.Title + ' [' + MI.Format + ']' AS Title,
+    RD.Quantity,
+    RD.TotalFee,
+    RD.RentalDate,
+    RD.ReturnDate
+FROM RentalDetails RD
+INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
+INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
+WHERE RD.IsReturned = 1
+  AND RH.UserID = '{selectedUser}'
+ORDER BY RD.ReturnDate DESC;";
             return getUsersHistoryQuery;
         }
 
