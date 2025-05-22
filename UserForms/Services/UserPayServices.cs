@@ -10,15 +10,14 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace BogsySystem.UserForms.Services
 {
     public class UserPayServices
     {
         private DBAccess ObjDBAccess = new DBAccess();
-        private int RentalDetailID { get; set; }
-        private string Title { get; set; }
-        private int QuantityRent { get; set; }
+        public static int RentalDetailID { get; set; }
 
         public void userPayLoad(TextBox feetxt, Label feelbl, TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt,
             Label totalfeelbl, TextBox paytxt, Label paylbl, Button paybtn, DataGridView grid)
@@ -43,16 +42,14 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
-
-
         public DataTable displayPayQuery(int userID)
         {
-            DataTable displayPayQuery2 = new DataTable();
-            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, displayPayQuery2, userID);
+            DataTable displayPayQuery = new DataTable();
+            ObjDBAccess.readDatathroughAdapter(UserPayStrings.payQuery, displayPayQuery, userID);
             ObjDBAccess.closeConn();
-
-            return displayPayQuery2;
+            return displayPayQuery;
         }
+
         public void payButtonFunction(TextBox feetxt, Label feelbl, TextBox chargefeetxt, Label chargefeelbl, TextBox totalfeetxt,
            Label totalfeelbl, TextBox paytxt, Label paylbl, Button paybtn, DataGridView grid)
         {
@@ -73,17 +70,19 @@ namespace BogsySystem.UserForms.Services
                         decimal change = pay - totalFee;
 
                         int userID = int.Parse(LoginServices.ID);
-                        int rowUserPay = userPayQuery(RentalDetailID, QuantityRent, fee, pay, change,
+                        int rowUserPay = userPayQuery(RentalDetailID, fee, pay, change,
                             overdueFee, totalFee);
 
                         if (rowUserPay > 0)
-                        {
-                            MessageBox.Show($"Payment successful for: {Title} (x{QuantityRent})\nChange: {change:F2}");
+                        {                    
                             paytxt.Text = "";
                             grid.ClearSelection();
                             componentHide(feetxt, feelbl, chargefeetxt, chargefeelbl, totalfeetxt, totalfeelbl, paytxt,
                                 paylbl, paybtn);
                             refreshDataGridQuery(userID, grid);
+
+                            ReceiptForm receipt = new ReceiptForm();
+                            receipt.Show();
                         }
                         else MessageBox.Show("There was an error with the rental.");
                     }
@@ -92,12 +91,11 @@ namespace BogsySystem.UserForms.Services
             }
         }
 
-        public int userPayQuery(int rentalDetailID, int quantityRent, decimal fee,decimal pay, decimal changeAmount, 
+        public int userPayQuery(int rentalDetailID, decimal fee,decimal pay, decimal changeAmount, 
             decimal chargeFee, decimal totalFee)
         {
             SqlCommand payRental = new SqlCommand(UserPayStrings.userReturnAndPayQuery);
             payRental.Parameters.AddWithValue("@rentalDetailID", rentalDetailID);
-            payRental.Parameters.AddWithValue("@quantityRent", quantityRent); 
             payRental.Parameters.AddWithValue("@fee", fee);
             payRental.Parameters.AddWithValue("@chargeFee", chargeFee);
             payRental.Parameters.AddWithValue("@totalFee", totalFee);
@@ -124,13 +122,12 @@ namespace BogsySystem.UserForms.Services
 
                     DataGridViewRow row = grid.Rows[e.RowIndex];
                     // Retrieve the selected data into a variable
-                    RentalDetailID = Convert.ToInt32(row.Cells["RentalDetailID"].Value);
-                    Title = row.Cells["Title"].Value.ToString();
-
+                    RentalDetailID = Convert.ToInt32(row.Cells["RentalDetailID"].Value);                   
+                
                     //Subtotal
                     decimal fee = Convert.ToDecimal(row.Cells["Fee"].Value);
-                    QuantityRent = Convert.ToInt32(row.Cells["Quantity"].Value);
-                    decimal subtotal = fee * QuantityRent;
+                    int quantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+                    decimal subtotal = fee * quantity;
                     
                     //Overdue Charge
                     DateTime rentalDate = Convert.ToDateTime(row.Cells["RentalDate"].Value);
@@ -138,7 +135,7 @@ namespace BogsySystem.UserForms.Services
                     decimal overdueChargePerDay = 5.00m;
                     int overdueDays = (DateTime.Now - rentalDate).Days - maxRentalDays;
                     overdueDays = Math.Max(0, overdueDays);
-                    decimal overdueFee = overdueDays * overdueChargePerDay * QuantityRent;
+                    decimal overdueFee = overdueDays * overdueChargePerDay * quantity;
 
                     //TotalFee
                     decimal totalFee = subtotal + overdueFee;
@@ -203,6 +200,7 @@ namespace BogsySystem.UserForms.Services
         public void dataGridProperties2(DataGridView grid)
         {
             grid.Columns["RentalDetailID"].Visible = false;
+            grid.Columns["Name"].Visible = false;
             grid.Columns["Fee"].Visible = false;
             grid.Columns["ChargeFee"].Visible = false;
             grid.Columns["TotalFee"].Visible = false;

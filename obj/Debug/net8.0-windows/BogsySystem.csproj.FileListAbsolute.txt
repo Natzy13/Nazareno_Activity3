@@ -63,7 +63,6 @@ D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.UserDashboard.resources
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.UserRent.resources
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.UserReport.resources
-D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.UserReturn.resources
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.csproj.GenerateResource.cache
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.GeneratedMSBuildEditorConfig.editorconfig
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.AssemblyInfoInputs.cache
@@ -78,3 +77,4 @@ D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\ref\BogsySystem.dll
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.UserPayProperties.resources
 D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.Forms.UserReport.resources
+D:\Program Files\Visual Studio\OJT\TutorialFirstTopic\BogsySystem\obj\Debug\net8.0-windows\BogsySystem.UserForms.ReceiptForm.resources

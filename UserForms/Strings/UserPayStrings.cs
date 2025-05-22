@@ -19,10 +19,12 @@ SELECT
     RD.RentalDate,
     RD.Fee,
     RD.ChargeFee,
-    RD.TotalFee
+    RD.TotalFee,
+    U.Name 
 FROM RentalDetails RD
 INNER JOIN MediaItems MI ON RD.MediaID = MI.MediaID
 INNER JOIN RentalHeader RH ON RD.RentalID = RH.RentalID
+INNER JOIN Users U ON RH.UserID = U.ID
 WHERE RH.UserID = @userID
   AND RD.IsReturned = 0
   AND RD.IsPaid = 0
@@ -39,9 +41,13 @@ SET
     TotalFee = @totalFee
 WHERE RentalDetailID = @rentalDetailID AND IsReturned = 0;
 
--- 2. Update media stock
+-- 2. Update media stock based on the actual quantity rented
 UPDATE MediaItems
-SET AvailableCopies = AvailableCopies + @quantityRent
+SET AvailableCopies = AvailableCopies + (
+    SELECT Quantity 
+    FROM RentalDetails 
+    WHERE RentalDetailID = @rentalDetailID
+)
 WHERE MediaID = (
     SELECT MediaID 
     FROM RentalDetails 
@@ -55,8 +61,7 @@ SET
     PaidDate = @paidDate,
     Cash = @cash,
     [Change] = @change
-WHERE RentalDetailID = @rentalDetailID;
-";
+WHERE RentalDetailID = @rentalDetailID;";
     }
 
 }
